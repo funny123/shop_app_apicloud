@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/minmax.css"/>
+		<style>
+			body {
+			}
+			.aui-tab {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-flex-wrap: nowrap;
+				flex-wrap: nowrap;
+				-webkit-align-self: center;
+				align-self: center;
+				position: relative;
+			}
+			.aui-tab-item {
+				width: 100%;
+				height: 4.4rem;
+				line-height: 4.4rem;
+				position: relative;
+				overflow: hidden;
+				font-size: 1.4rem;
+				text-align: center;
+				color: #212121;
+				background-color: #ffffff;
+				margin-left: -1px;
+				-webkit-box-flex: 1;
+				box-flex: 1;
+			}
+			.aui-tab-item a {
+				color: #00ACC1;
+			}
+			.aui-tab-item.aui-active {
+				color: #039be5;
+				border-bottom: 2px solid #039be5;
+				z-index: 100;
+			}
+			.barcode {
+				width: 23.0rem;
+				height: 5.0rem;
+				border: 1px solid #039be5;
+			}
+			.inputwarp {
+				float: left;
+				/*margin-left: 1.0rem;*/
+			}
+			.inputright {
+				line-height: 5.0rem;
+				float: right;
+				/*background: #0062CC;*/
+				margin-right: 1.0rem;
+			}
+			.queren {
+				position: fixed;
+				bottom: 0px;
+				width: 100%;
+			}
+			.querenleft {
+				background: #00ACC1;
+				float: left;
+				width: 30%;
+				height: 4.3rem;
+				line-height: 4.3rem;
+				text-align: center;
+			}
+			.querenright {
+				background: #E66961;
+				float: right;
+				width: 70%;
+				height: 4.3rem;
+				line-height: 4.3rem;
+				text-align: center;
+			}
+			.keyborad1 {
+				width: 23%;
+				/*height: 2.0rem;*/
+				line-height: 6.0rem;
+				text-align: center;
+			}
+			.slh {
+				line-height: 6.0rem;
+				margin-left: 2.0rem;
+			}
+		</style>
+		</style>
+	</head>
+	<body>
+		<div class="aui-tab" id="tab" style="position: fixed; top: 0px;width: 100%">
+			<div class="aui-tab-item aui-active">
+				盘点库存
+			</div>
+			<div class="aui-tab-item">
+				<a href="stocktaking_list.html">盘点记录</a>
+			</div>
+		</div>
+		<div class="inputwarp" style="padding-top: 5.0rem;">
+			<input type="text" name="barcode" id="barcode" class="barcode" onkeypress="if(event.keyCode==13) {tijiao();return false;}"/>
+		</div>
+		<div class="inputright" style="padding-top: 5.0rem;">
+			<span onclick="tijiao();">提交</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span onclick="scanner();">扫描</span>
+		</div>
+		<div style="clear: both;"></div>
+		<div style="margin-top: 1.0rem;" >
+			盘点编号：
+			<input id="orderNo" size="8" />
+			<span id="create_orderNo" onclick="create_orderNo();">创建</span>
+		</div>
+		<div style="margin-top: 1.0rem;" onclick="changeNum();">
+			更改数量
+		</div>
+		<div id="keyborad" class="queren" style="display: none;z-index: 100;background:#039be5">
+			<div class="slh">
+				数量：
+				<input type="number" id="new_num" readonly="readonly" />
+				<span onclick="clearKey();">取消</span>
+			</div>
+			<div>
+				<span class="keyborad1" id="n7" onclick="selectNum(7);"> 7 </span>
+				<span class="keyborad1" id="n8" onclick="selectNum(8);"> 8 </span>
+				<span class="keyborad1" id="n9" onclick="selectNum(9);"> 9 </span>
+				<span class="keyborad1" id="backspace" onclick="selectNum('backspace');"> 退格 </span>
+			</div>
+			<div>
+				<span class="keyborad1" id="n4" onclick="selectNum(4);"> 4 </span>
+				<span class="keyborad1" id="n5" onclick="selectNum(5);"> 5 </span>
+				<span class="keyborad1" id="n6" onclick="selectNum(6);"> 6 </span>
+				<span class="keyborad1" id="clear" onclick="selectNum('clear');"> 清空 </span>
+			</div>
+			<div>
+				<span class="keyborad1" id="n1" onclick="selectNum(1);"> 1 </span>
+				<span class="keyborad1" id="n2" onclick="selectNum(2);"> 2 </span>
+				<span class="keyborad1" id="n3" onclick="selectNum(3);"> 3 </span>
+				<span class="keyborad1" onclick="changeNumSubmit();"> &nbsp; </span>
+			</div>
+			<div>
+				<span class="keyborad1" id="n0" onclick="selectNum(0);"> 0 </span>
+				<span class="keyborad1" id="n0" onclick="selectNum(0);"> &nbsp; </span>
+				<span class="keyborad1"> . </span>
+				<span class="keyborad1" onclick="changeNumSubmit();"> 确定 </span>
+			</div>
+		</div>
+		<!--<div class="aui-content aui-margin-b-15">-->
+		<ul style="margin-bottom: 3.0rem" id="table-view"></ul>
+		<!--</div>-->
+		<div class="queren" style="z-index: 90">
+			<div class="querenleft" onclick="if(confirm('确实要删除吗?'))clearstorage();">
+				删除这些记录
+			</div>
+			<div class="querenright" onclick="gathering_other();">
+				共<span id="total_num">0</span>件 确认完成盘点
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var db;
+		var FNScanner;
+		var d = new Date();
+		var m = (d.getMonth() + 1);
+		if (m < 10) {
+			m = "0" + m;
+		}
+		var r = d.getDate();
+		if (r < 10) {
+			r = "0" + r;
+		}
+		var StocktakingTime = d.getFullYear() + m + r;
+		apiready = function() {
+			//			alert($api.getStorage('stocktaking_num'));
+			if (!$api.getStorage('stocktaking_ordernum')) {
+				$api.byId('orderNo').value = StocktakingTime;
+			} else {
+				$api.byId('create_orderNo').innerHTML = '已创建 盘点中'
+				$api.byId("orderNo").readOnly = true;
+				$api.byId('orderNo').value = $api.getStorage('stocktaking_ordernum');
+			}
+			$api.byId('barcode').focus();
+			FNScanner = api.require('FNScanner');
+			db = api.require('db');
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_Stocktaking where status=2 order by id desc"
+			}, function(ret, err) {
+				//			alert(JSON.stringify(ret));
+				//			alert(JSON.stringify(err));
+				var total_num = 0;
+				if (ret.data.length > 0) {
+					for (var i = 0; i < ret.data.length; i++) {
+						var str = '<li><div style="float: left">' + '商品:' + ret.data[i].ProName + ' x ' + ret.data[i].Num + '</div><div style="float: right" onclick="delete_order(' + ret.data[i].id + ');">删除</div>';
+						var str = str + '<div style="clear: both"><div>条码:' + ret.data[i].BarCode + '<br>' + ret.data[i].time + '</div><br></li>';
+						//						var str = str + '时间:' + ret.data[i].StockTime + '<br>';
+						$api.append($api.byId('table-view'), str);
+						total_num += parseInt(ret.data[i].Num);
+					}
+					$api.byId('total_num').innerHTML = total_num;
+					$api.byId('barcode').value = '';
+					if ($api.getStorage('stocktaking_num')==1) {
+						api.startPlay({
+							path : 'widget://image/di.wav'
+						}, function(ret, err) {
+							if (ret) {
+							$api.setStorage('stocktaking_num', '');
+							}
+						});
+					}
+				}
+			});
+		};
+		function winreload() {
+			window.location.reload();
+		}
+
+		function create_orderNo() {
+			var create_orderNo_New = $api.byId('orderNo').value;
+			if (!(/^\d{8,8}$/.test(create_orderNo_New))) {
+				alert('请输入正确的编号，8位数字，建议使用默认的');
+				return false;
+			}
+			$api.setStorage('stocktaking_ordernum', $api.byId('orderNo').value);
+			alert('盘点库存操作建议在停业时间，并确保所有员工已同步好数据');
+			winreload();
+		}
+
+		function scanner() {
+			FNScanner.openScanner({
+				autorotation : false
+			}, function(ret, err) {
+				if (ret.eventType == 'success') {
+					$api.byId('barcode').value = ret.content;
+					tijiao();
+					setTimeout("scanner1()", 1000);
+				}
+			});
+		}
+
+		function scanner1() {
+			FNScanner.openScanner({
+				autorotation : false
+			}, function(ret, err) {
+				if (ret.eventType == 'success') {
+					$api.byId('barcode').value = ret.content;
+					tijiao();
+					setTimeout("scanner()", 1000);
+				}
+			});
+		}
+
+		function tijiao() {
+			if (!$api.getStorage('stocktaking_ordernum')) {
+				alert('请先创建盘点编号');
+				return false;
+			}
+			var BarCode = $api.byId('barcode').value;
+			if (!(/^\d{5,18}$/.test(BarCode))) {
+				alert('请输入正确的条码');
+				return false;
+			}
+			var d = new Date();
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			var Time1 = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+			//判断条形码是否存在
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_Product where Barcode= '" + BarCode + "'"
+			}, function(ret, err) {
+				if (ret.data.length > 0) {
+					db.selectSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "SELECT * FROM T_Stocktaking where status=2 and orderNo='" + $api.getStorage('stocktaking_ordernum') + "' and Pid= '" + ret.data[0].Pid + "'"
+					}, function(ret2, err2) {
+					
+						if (ret2.data.length > 0) {alert(ret2.data[0].uidtimestamp);
+							var new_num1 = parseInt(ret2.data[0].Num) + 1;
+							//							alert(new_num1);
+							db.selectSql({
+								name : 'ghuog_db' + $api.getStorage('mobile'),
+								sql : "UPDATE T_Stocktaking SET Num='" + new_num1 + "' where status=2 and orderNo='" + $api.getStorage('stocktaking_ordernum') + "' and Pid= '" + ret2.data[0].Pid + "'"
+							}, function(ret3, err3) {
+								if (ret3.status) {
+									$api.setStorage('stocktaking_num', 1);
+									winreload();
+								}
+							});
+						} else {
+							//						alert(22);
+							var uidtimestamp=$api.getStorage('uid')+new Date().getTime();
+							db.selectSql({
+								name : 'ghuog_db' + $api.getStorage('mobile'),
+								sql : "INSERT INTO T_Stocktaking(orderNo,Pid,BarCode,ProName,Num,time,status,uidtimestamp)VALUES('" + $api.getStorage('stocktaking_ordernum') + "','" + ret.data[0].Pid + "','" + ret.data[0].BarCode + "','" + ret.data[0].ProName + "',1,'" + Time1 + "',2,'" + uidtimestamp + "')"
+							}, function(ret3, err3) {
+								if (ret3.status) {
+									$api.setStorage('stocktaking_num', 1);
+									winreload();
+								}
+							});
+						}
+					});
+				} else {
+					api.startPlay({
+						path : 'widget://image/wrong.wav'
+					}, function(ret, err) {
+						if (ret) {
+						}
+					});
+					alert('商品不存在，请先添加商品');
+					$api.val($api.byId('barcode'), '');
+				}
+			});
+		}
+
+		function changeNum() {
+			$api.byId('keyborad').style.display = "";
+		}
+
+		function clearKey() {
+			$api.byId('keyborad').style.display = "none";
+		}
+
+		function selectNum(num) {
+			if (num == 'clear') {
+				$api.byId('new_num').value = '';
+			} else if (num == 'backspace') {
+				$api.byId('new_num').value = $api.byId('new_num').value.substring(0, $api.byId('new_num').value.length - 1);
+			} else {
+				$api.byId('new_num').value = $api.byId('new_num').value + num;
+			}
+		}
+
+		function changeNumSubmit() {
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_Stocktaking where status=2"
+			}, function(ret, err) {
+				if (ret.data.length > 0) {
+					var NewNum = $api.byId('new_num').value;
+					if (!(/(^[1-9]\d*$)/.test(NewNum))) {
+						alert('请输入正确的数量');
+						return false;
+					}
+					db.selectSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "SELECT * FROM T_Stocktaking where status=2 order by id desc limit 1"
+					}, function(ret3, err3) {
+						if (ret3.status) {
+							db.executeSql({
+								name : 'ghuog_db' + $api.getStorage('mobile'),
+								sql : "UPDATE T_Stocktaking SET Num='" + NewNum + "' where id= '" + ret3.data[0].id + "'"
+							}, function(ret, err) {
+								if (ret.status) {
+									api.toast({
+										msg : '商品数量更新成功'
+									});
+									winreload();
+								}
+							});
+						}
+					});
+				} else {
+					alert('请先扫描条码');
+				}
+			});
+		}
+
+		function clearstorage() {
+			$api.setStorage('stocktaking_num', '')
+			$api.setStorage('stocktaking_ordernum', '')
+			db.executeSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "delete from T_Stocktaking where status=2"
+			}, function(ret, err) {
+				if (ret.status) {
+					winreload();
+				}
+			});
+		}
+
+		function gathering_other() {
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_Stocktaking where Status='2'"
+			}, function(ret, err) {
+				//				alert(JSON.stringify(ret.data));
+				if (ret.data.length > 0) {
+					api.ajax({
+						url : 'http://ririqiang.com/ghuog/api_shop/upload_stocktaking_info.php',
+						method : 'post',
+						data : {
+							values : {
+								stocktaking_data : JSON.stringify(ret.data),
+								mobile : $api.getStorage('mobile'),
+								token : $api.getStorage('token'),
+								uuid : api.deviceId,
+								service_id : $api.getStorage('service_id'),
+								boss_id : $api.getStorage('boss_id')
+							}
+						}
+					}, function(ret, err) {
+					//alert(ret.code);
+						if (ret.code == '700200') {
+							//修改入库状态值为更新
+							db.executeSql({
+								name : 'ghuog_db' + $api.getStorage('mobile'),
+								sql : "DELETE FROM T_Stocktaking where Status=2"
+							}, function(ret, err) {
+								if (ret.status) {
+									//							alert('出库库存表更新成功');
+									api.toast({
+										msg : '盘点记录上传成功'
+									});
+									$api.setStorage('stocktaking_num', '')
+									$api.setStorage('stocktaking_ordernum', '')
+									setTimeout("winreload()", 1000);
+								}
+							});
+						} else if (ret.code == '700201') {
+							api.toast({
+								msg : '盘点记录上传失败'
+							});
+						} else {
+							api.toast({
+								msg : '网络错误'
+							});
+						}
+					});
+				} else {
+					api.toast({
+						msg : '没有新增盘点记录，无须上传'
+					});
+				}
+			});
+			//			db.executeSql({
+			//				name : 'ghuog_db' + $api.getStorage('mobile'),
+			//				sql : "UPDATE T_Stocktaking SET Status=1 where Status=2"
+			//			}, function(ret, err) {
+			//				if (ret.status) {
+			//				}
+			//				winreload();
+			//			});
+		}
+
+		function delete_order(id) {
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_Stocktaking where status=2"
+			}, function(ret3, err3) {
+				if (ret3.data.length == 1) {
+					$api.setStorage('stocktaking_num', '')
+				}
+			});
+			db.executeSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "delete from T_Stocktaking where id= '" + id + "'"
+			}, function(ret, err) {
+				if (ret.status) {
+					api.toast({
+						msg : '删除成功'
+					});
+					winreload();
+				}
+			});
+		}
+
+		function backtoIndex() {
+			api.closeToWin({
+				name : 'root'
+			});
+		}
+	</script>
+</html>

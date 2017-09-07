@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		.aui-tips-content {
+		    line-height: 45px;
+		    height: 45px;
+		    padding-left: 10px;
+		    padding-right: 10px; 
+		  }
+		  .aui-list-view{line-height:30px;}
+		  .aui-list-view i.iconfont {
+		    padding: 5px;
+		    border-radius: 4px;
+		    margin-right: 10px;
+		    color: #ffffff;
+		    font-size: 1.125em;
+		}
+		.aui-list-view .aui-img-object {
+		    max-width: 30px;
+		    height: 30px;
+		    line-height: 30px;
+		}
+		.aui-radio{margin:0;}
+		.aui-btn-ff9800{background:#ff9800;color: #fff;padding:8px 40px;}
+		</style>
+	</head>
+	<body>	
+		<div class="aui-tips aui-tips-danger">
+	        <div class="aui-tips-content">
+	            <i class="aui-iconfont aui-icon-warnfill"></i>30分钟内完成支付,否则订单将被取消.
+	        </div>
+	    </div>
+		<div class="aui-content">
+	        <ul class="aui-list-view aui-in">
+	            <li class="aui-list-view-cell">
+	                <div>订单金额: <a class="aui-text-FF9800n">￥68.8</a></div>
+	            </li>
+	        </ul>
+	    </div>
+	    <div class="aui-content">
+	        <ul class="aui-list-view aui-in">
+	            <li class="aui-list-view-cell">
+	                还需支付 <span class="aui-pull-right aui-text-FF9800n">￥68.8</span>
+	            </li>
+	            <li class="aui-list-view-cell aui-img">
+	            	<img class="aui-img-object aui-pull-left" src="../../image/wechat_pay.png">
+	                微信支付<div class="aui-pull-right"><input class="aui-radio aui-radio-warning" type="radio" name="pay" checked></div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                <img class="aui-img-object aui-pull-left" src="../../image/alipay_pay.png">
+	                支付宝支付<div class="aui-pull-right"><input class="aui-radio aui-radio-warning" type="radio" name="pay"></div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	               <img class="aui-img-object aui-pull-left" src="../../image/union_pay.png">
+	               银联支付<div class="aui-pull-right"><input class="aui-radio aui-radio-warning" type="radio" name="pay"></div>
+	            </li>
+	        </ul>
+	    </div>
+	    <div class="aui-content aui-text-center">
+	        <button class="aui-btn aui-btn-ff9800">立即支付</button>
+	    </div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript">
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		apiready = function() {
+			api.parseTapmode();
+		};
+	</script>
+</html>

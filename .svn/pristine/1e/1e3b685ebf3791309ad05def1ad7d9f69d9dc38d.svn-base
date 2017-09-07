@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>订单详情</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/re_public.css" />
+		<link rel="stylesheet" type="text/css" href="../css/new_file.css" />
+	</head>
+	<body>
+		<div class="aui-content">
+			<div class="aui-order">
+				<p>订单号</p><p id="orddr"></p>
+			</div>
+			
+			<div class="aui-order">
+				<p>下单时间</p><p id="time"></p>
+			</div>
+			
+			
+			
+			<ul class="mui-table-view mui-table-view-chevron" id="list"></ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+		var table = document.body.querySelector('.mui-table-view');
+			var cells = document.body.querySelectorAll('.mui-table-view-cell');
+			//var orddr = api.pageParam.orddr;
+//			alert($api.getStorage('token'));
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/personer_order_detail.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						orddr : $api.getStorage('orddrid')
+					}
+				}
+			}, function(data, err) {
+				if (data) {
+					//					var data = ret.data;
+					document.getElementById("orddr").innerHTML = data.data[0].orddr;
+					document.getElementById("time").innerHTML = data.data[0].time;
+					//	                document.getElementById("dimension").innerHTML = data.data.dimension;
+					//	                document.getElementById("pic").setAttribute("src", 'http:///pic/' + data.data.serial_number + '.jpg');
+					var k = data.data.length;
+					for ( i = 0; i <= k - 1; i++) {
+						var li = document.createElement('li');
+						li.className = 'mui-table-view-cell mui-media';
+						//li.innerHTML = '<a data-id="' + i + '" href="javascript:;" class="mui-navigate-right1"><img class="mui-media-object mui-pull-left" src="http:///pic/' + data.data[i].serial_number + '.jpg"><div class="mui-media-body">' + data.data[i].pro_name + '<p class="mui-ellipsis">￥' + data.data[i].yiwu_price + '</p></div></a><button class="mui-btn mui-btn-danger mui-btn-outlined" onclick="cart(' + data.data[i].id + ');">购物车</button>';
+						//								li.innerHTML .= li.innerHTML = '<a data-id="' + i + '" href="javascript:;" class="mui-navigate-right1"><img class="mui-media-object mui-pull-left" src="http:///pic/' + data.data[i].serial_number + '.jpg"><div class="mui-media-body">' + data.data[i].pro_name + '<p class="mui-ellipsis">￥' + data.data[i].yiwu_price + '</p></div></a><span class="mui-btn mui-btn-danger mui-btn-outlined" id="cart'+i+'">购物车</span>';
+						
+						var str = '子订单号:' + data.data[i].child_order + '<br>';
+						var str = str + '商品名称:' + data.data[i].pro_name + '<br>';
+						li.innerHTML = str;
+						table.appendChild(li);
+					}
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		};
+	</script>
+</html>

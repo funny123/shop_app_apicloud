@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+	<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/inquiry.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+	<article class="article">
+		<div class="wrap details">
+			<div class="choose">
+				<label>商品名称</label>
+				<input type="text" placeholder="商品名称" id="pro_name" readonly/>
+			</div>
+			<div class="choose">
+				<label>订购数量</label>
+				<input type="text" placeholder="商品数量" id="pro_num" readonly/>
+			</div>
+			<div class="choose">
+				<label>收货城市</label>
+				<input type="text" placeholder="收货城市" id="city" readonly/>
+			</div>
+			<div class="choose">
+				<label>联系人</label>
+				<input type="text" placeholder="收货人" id="member_name" readonly/>
+			</div>
+			<div class="choose">
+				<label>联系方式</label>
+				<input type="text" placeholder="联系方式" id="phone" readonly/>
+			</div>
+		</div>
+
+	</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+				api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/inquiry_detail.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						iid : $api.getStorage('iid')
+					}
+				}
+			}, function(data, err) {
+				if (data) {
+					document.getElementById("pro_name").value = data.data.pro_name;
+					document.getElementById("pro_num").value = data.data.pro_num;
+					document.getElementById("city").value = data.data.city;
+					document.getElementById("phone").value = data.data.phone;
+					document.getElementById("member_name").value = data.data.member_name;
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		};
+	</script>
+</html>

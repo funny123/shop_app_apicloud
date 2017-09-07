@@ -1,0 +1,373 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-slide.css" />
+		<style type="text/css">			
+			.bg-dark {
+				background: #333333 !important;
+			}
+			.aui-slide-node img {
+			   	width:100%;
+			    height: 100%;
+			}
+			.o2o {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-orient: horizontal;
+				-webkit-flex-flow: row;
+				flex-flow: row;
+				width: 100%;
+				background: #ffff;
+				margin-bottom: 5px;
+			}
+			.o2o-item {
+				-webkit-box-flex: 1;
+				-webkit-flex: 1;
+				flex: 1;
+				height: 150px;
+				text-align: center;
+				line-height: 0;
+				color: #fff;
+				font-size: 20px;
+			}
+			.o2o-item:nth-child(1) {
+				margin-right: 3px;
+				background: url(../image/hd.png) no-repeat left top;
+				background-size: cover;
+				-webkit-background-size: cover;
+			}
+			.o2o-item:nth-child(2) {
+				margin-left: 2px
+			}
+			.item-item {
+				height: 73px;
+				width: 100%;
+				text-align: center;
+				color: #fff;
+				font-size: 20px;
+				line-height: 0;
+			}
+			.item-item:nth-child(1) {
+				margin-bottom: 5px;
+				height: 72px;
+				background: url(../image/jc.png) no-repeat left top;
+				background-size: cover;
+				-webkit-background-size: cover;
+			}
+			.item-item:nth-child(2) {
+				background: url(../image/sc.png) no-repeat left top;
+				background-size: cover;
+				-webkit-background-size: cover;
+			}
+				.topmenu {
+			background: #e74c3c;
+			overflow: hidden;
+			padding: 10px 0;
+			margin-bottom: 0;
+		}
+		.topmenu .aui-iconfont,
+		.topmenu p {
+			color: #ffffff;
+		}
+		.topmenu .aui-iconfont {
+			font-size: 1.6em;
+		}
+		.slider img {
+			width: 100%;
+			height: 120px;
+			display: inherit;
+		}
+        .aui-content.box{
+            background: #fff;
+        }
+        .box {
+            /*padding-top: 15px;*/
+        }
+        .box-title {
+            margin: 15px 10px 5px 10px;
+            /*margin-bottom: 5px;*/
+            height: 20px;
+            line-height: 20px;
+            border-left: 5px solid #ff9900;
+            color: #666;
+            font-weight: 700;
+            padding-left: 10px;
+        }
+        .box .aui-list-view {
+            margin-bottom: 0;
+        }
+        .aui-list-view i.aui-iconfont {
+            margin-right: 0;
+        }
+.aui-ellipsis-1 {
+	padding-right: 1px !important;
+	display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal !important;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.aui-ellipsis-2 {
+	padding-right: 5px !important;
+}
+		</style>
+	</head>
+	<body>
+		<div id="aui-slide">
+			<div class="aui-slide-wrap" >
+				<div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center">
+					<img src="../image/banner.jpg" />
+				</div>
+				<div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center">
+					<img src="../image/banner2.jpg" />
+				</div>
+				<div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center">
+					<img src="../image/banner.jpg" />
+				</div>
+			</div>
+			<div class="aui-slide-page-wrap"><!--分页容器--></div>
+		</div>
+		<div class="demo-list">
+			<ul>
+				<li data-funcName="layout_head" tapmode onclick="randomSwitchBtn(this,'分类',1)">
+					<div class="content-area">
+						<p class="aui-bg-ffc74e">
+							<i class="aui-iconfont aui-icon-sort"></i>
+						</p>
+						<span>分类</span>
+					</div>
+				</li>
+				<li data-funcName="business_head" tapmode onclick="openWinto('notice_head','baike/notice_head')">
+					<div class="content-area">
+						<p class="aui-bg-96e462">
+							<i class="aui-iconfont aui-icon-read"></i>
+						</p>
+						<span>百科</span>
+					</div>
+				</li>
+				<li  data-funcName="doudou_head">
+					<div class="content-area">
+						<p class="aui-bg-67d2f8">
+							<i class="aui-iconfont aui-icon-evaluate"></i>
+						</p>
+						<span>新品速递</span>
+					</div>
+				</li>
+				<li  data-funcName="library_head">
+					<div class="content-area">
+						<p class="aui-bg-b789fd">
+							<i class="aui-iconfont aui-icon-deliver"></i>
+						</p>
+						<span>物流&middot;售后</span>
+					</div>
+				</li>
+				<li  data-funcName="game_head">
+					<div class="content-area">
+						<p class="aui-bg-FF6665">
+							<i class="aui-iconfont aui-icon-ticket"></i>
+						</p>
+						<span>优惠券</span>
+					</div>
+				</li>
+				<li  data-funcName="game_head">
+					<div class="content-area">
+						<p class="aui-bg-33CB9A">
+							<i class="aui-iconfont aui-icon-tagfill"></i>
+						</p>
+						<span>天天特惠</span>
+					</div>
+				</li>
+				<li  data-funcName="game_head">
+					<div class="content-area">
+						<p class="aui-bg-fd6e90">
+							<i class="aui-iconfont aui-icon-presentfill"></i>
+						</p>
+						<span>充值有礼</span>
+					</div>
+				</li>
+				<li  data-funcName="game_head">
+					<div class="content-area">
+						<p class="aui-bg-FC9700">
+							<i class="aui-iconfont aui-icon-goodsfill"></i>
+						</p>
+						<span>赠品</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="o2o">
+			<div class="o2o-item" tapmode onclick=""></div>
+			<div class="o2o-item">
+				<div class="item-item" tapmode onclick=""></div>
+				<div class="item-item" tapmode onclick=""></div>
+			</div>
+		</div>
+		<div class="aui-content active-area">
+			<ul>
+				
+			</ul>
+		</div>
+		<div class="aui-content" style="margin-bottom: 5px;">
+			<p class="aui-padded-10 aui-bg-ffffff aui-text-black"><label class="active-ars"></label>人气推荐</p>
+			<ul id="nice-articles">
+				<li>
+					<img src="../image/pic.jpg" data-echo="../image/pic.jpg" alt="" title="" class="article-img" />
+					<div class="article-info">
+						<div class="aui-ellipsis-1" style="margin-bottom: 8px;">
+							墨西哥牛油果墨西哥牛油果墨西哥牛油果
+						</div>
+						<p class="aui-padded-5-0">墨西哥牛油果4个/盒 <em class="aui-pull-right aui-money">￥238.00</em></p>
+						<span><div class="ui-label-s">送</div> 越南红心火龙果一颗</span>
+					</div>					
+				</li>
+				<li>
+					<img src="../image/pic.jpg" data-echo="../image/pic.jpg" alt="" title="" class="article-img" />
+					<div class="article-info">
+						<div class="aui-ellipsis-1" style="margin-bottom: 8px;">
+							墨西哥牛油果墨西哥牛油果墨西哥牛油果
+						</div>
+						<p class="aui-padded-5-0">墨西哥牛油果4个/盒 <em class="aui-pull-right aui-money">￥238.00</em></p>
+						<span><div class="ui-label-s">送</div> 越南红心火龙果一颗</span>
+					</div>					
+				</li>
+				<li>
+					<img src="../image/pic.jpg" data-echo="../image/pic.jpg" alt="" title="" class="article-img" />
+					<div class="article-info">
+						<div class="aui-ellipsis-1" style="margin-bottom: 8px;">
+							墨西哥牛油果墨西哥牛油果墨西哥牛油果
+						</div>
+						<p class="aui-padded-5-0">墨西哥牛油果4个/盒 <em class="aui-pull-right aui-money">￥238.00</em></p>
+						<span><div class="ui-label-s">送</div> 越南红心火龙果一颗</span>
+					</div>					
+				</li>
+			</ul>
+		</div>
+		
+		<div class="aui-content box">
+        <p class="aui-padded-10 aui-bg-ffffff aui-text-black"><label class="active-ars"></label>热卖商品</p>
+        
+        <ul class="aui-list-view aui-grid-view">
+            <li class="aui-list-view-cell aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+                <img class="aui-img-object" src="../image/pic2.jpg" data-echo="../image/pic2.jpg">
+                <div class="aui-img-body aui-text-left">
+                    	<span class="aui-ellipsis-1">商品名称商品名称立刻就看见商品名称商品名称立刻就看见</span>
+                    	<span class="aui-hot-ft14"><div class="ui-label-s">送</div> 越南红心火龙果一颗</span>
+                    <p>
+                        <span class="goods-price aui-money">￥88.88元</span>
+                    </p>
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+                <div class="aui-img-body aui-text-left aui-ellipsis-2">
+                    <span class="aui-ellipsis-1">商品名称商品名称立刻就看见商品名称商品名称立刻就看见</span>
+                    <span  class="aui-hot-ft14"><div class="ui-label-s">送</div> 越南红心火龙果一颗</span>
+                    <p>
+                        <span class="goods-price aui-money">￥88.88元</span>
+                    </p>
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+                <div class="aui-img-body aui-text-left aui-ellipsis-2">
+                    <span class="aui-ellipsis-1">商品名称商品名称立刻就看见商品名称商品名称立刻就看见</span>
+                    <span  class="aui-hot-ft14"><div class="ui-label-s">送</div> 越南红心火龙果一颗</span>
+                    <p>
+                        <span class="goods-price aui-money">￥88.88元</span>
+                    </p>
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+                <img class="aui-img-object" src="../image/pic2.jpg" data-echo="../image/pic2.jpg">
+                <div class="aui-img-body aui-text-left aui-ellipsis-2">
+                    <span class="aui-ellipsis-1">商品名称商品名称立刻就看见商品名称商品名称立刻就看见</span>
+                    <span  class="aui-hot-ft14"><div class="ui-label-s">送</div> 越南红心火龙果一颗</span>
+                    <p>
+                        <span class="goods-price aui-money">￥88.88元</span>
+                    </p>
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+                <img class="aui-img-object" src="../image/pic2.jpg" data-echo="../image/pic2.jpg">
+                <div class="aui-img-body aui-text-left aui-ellipsis-2">
+                    <span class="aui-ellipsis-1">商品名称商品名称立刻就看见商品名称商品名称立刻就看见</span>
+                    <span  class="aui-hot-ft14"><div class="ui-label-s">送</div> 越南红心火龙果一颗</span>
+                    <p>
+                        <span class="goods-price aui-money">￥88.88元</span>
+                    </p>
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+                <div class="aui-img-body aui-text-left aui-ellipsis-2">
+                    <span class="aui-ellipsis-1">商品名称商品名称立刻就看见商品名称商品名称立刻就看见</span>
+                    <span  class="aui-hot-ft14"><div class="ui-label-s">送</div> 越南红心火龙果一颗</span>
+                    <p>
+                        <span class="goods-price aui-money">￥88.88元</span>
+                    </p>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+    
+
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/common.js"></script>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/echo.min.js"></script>
+	<script type="text/javascript" src="../script/aui-slide.js"></script>
+	<script type="text/javascript">
+		var slide = new auiSlide({
+			container:document.getElementById("aui-slide"),
+			// "width":300,
+			"height":180,
+			"speed":300,
+			"autoPlay": 3000, //自动播放
+			"pageShow":true,
+			"pageStyle":'dot',
+			"loop":true,
+			'dotPosition':'center'
+		});
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		Zepto(function() {
+			$(".demo-list").on("tap", "li", function() {
+				var funcName = $(this).attr("data-funcName");
+				if (funcName) {
+					//H.$openWin(funcName, funcName + '.html');
+				} else {
+					//H.$alert("苦逼程序猿，正在疯狂加班中……");
+				}
+			});
+			$("#nice-articles").on("tap", "li", function() {
+				//H.$openWin('case_view_head', 'case_view_head.html');
+			});
+		});
+		function randomSwitchBtn(obj, name, index){
+			var jsfun = "randomSwitchBtn(this,'分类',1);";
+				api.execScript({
+					name: 'root',
+				    script: jsfun
+				});
+		}
+		apiready = function() {
+			api.parseTapmode();
+		};
+	</script>
+</html>

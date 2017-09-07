@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<style>
+			body {
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			今日营业额 <span id="today_sum"></span>
+		</div>
+		<div onclick="yesterday_sum();">
+			昨日营业额 <span id="yesterday_sum"></span>
+		</div>
+		<div onclick="qianri_sum();">
+			前日营业额 <span id="qianri_sum"></span>
+		</div>
+		
+		<br>
+		<br>
+		开始时间<input type="datetime-local" id="start_time" /><br>
+		结束时间<input type="datetime-local" id="end_time" /><br>
+		<span onclick="zidingyi_sum();">统计</span><span id="zidingyi_sum"></span>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			var d = new Date();
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			//var TimeNow = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+			var start_time = d.getFullYear() + "-" + m + "-" + r + " 00:00:00";
+			var end_time = d.getFullYear() + "-" + m + "-" + r + " 23:59:59";
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/report_cashlist.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						start_time : start_time,
+						end_time : end_time
+					}
+				}
+			}, function(data, err) {
+				//			alert(JSON.stringify(data));
+				if (data) {
+					$api.byId('today_sum').innerHTML = data.total;
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+		
+		function yesterday_sum() {
+			var d_yesterday = new Date().getTime() - 86400000;
+			var d = new Date(d_yesterday);
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			var start_time = d.getFullYear() + "-" + m + "-" + r + " 00:00:00";
+			var end_time = d.getFullYear() + "-" + m + "-" + r + " 23:59:59";
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/report_cashlist.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						start_time : start_time,
+						end_time : end_time
+					}
+				}
+			}, function(data, err) {
+				//			alert(JSON.stringify(data));
+				if (data) {
+					$api.byId('yesterday_sum').innerHTML = data.total;
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+
+		function qianri_sum() {
+		var d_yesterday = new Date().getTime() - 172800000;
+			var d = new Date(d_yesterday);
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			var start_time = d.getFullYear() + "-" + m + "-" + r + " 00:00:00";
+			var end_time = d.getFullYear() + "-" + m + "-" + r + " 23:59:59";
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/report_cashlist.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						start_time : start_time,
+						end_time : end_time
+					}
+				}
+			}, function(data, err) {
+				//			alert(JSON.stringify(data));
+				if (data) {
+					$api.byId('qianri_sum').innerHTML = data.total;
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+		
+		
+		function zidingyi_sum() {
+	
+		
+		var start_time=$api.byId('start_time').value.replace(/T/, " ")
+		var start_time = start_time +":00";
+		
+		var end_time=$api.byId('end_time').value.replace(/T/, " ")
+		var end_time = end_time +":59";
+		alert(start_time+" - "+end_time);
+		
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/report_cashlist.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						start_time : start_time,
+						end_time : end_time
+					}
+				}
+			}, function(data, err) {
+				//			alert(JSON.stringify(data));
+				if (data) {
+					$api.byId('zidingyi_sum').innerHTML = data.total;
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+	</script>
+</html>

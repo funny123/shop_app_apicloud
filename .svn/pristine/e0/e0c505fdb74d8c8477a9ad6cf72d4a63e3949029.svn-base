@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/inquiry.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+
+		<article class="article">
+		<div class="top_fixed">
+			<div class="top">
+				<div class="focus">提交询价</div>
+				<a href="inquiry_list.html">我的询价</a>
+			</div>
+		</div>
+		
+<div class="wrap">
+			<div id="role1pic" class="photo">
+				<div class="shrink">
+					<div id='showpic'><div id='showpic1'></div></div>
+					<div><span onclick="camera();"></span></div>
+					<div><span onclick="library();"></span></div>
+				</div>
+			</div>
+
+			<div class="choose">
+				<label>商品名称</label>
+				<input type="text" placeholder="请输入商品名称" id="pro_name"/>
+			</div>
+			<div class="choose inquiry">
+				<label>条形码</label>
+				<input type="number" id="barcode" placeholder="请输入条形码或扫描" />
+				<span onclick="scaner();">扫描</span>
+			</div>
+			<div class="choose">
+				<label>订购数量</label>
+				<input type="number" placeholder="请输入订购数量" id="pro_num"/>
+			</div>
+			<div class="thread">收货人信息</div>
+			<div class="choose">
+				<label>收货城市</label>
+				<input type="text" placeholder="请输入收货城市" id="city"/>
+			</div>
+			<div class="choose">
+				<label>联系人</label>
+				<input type="text" placeholder="请输入收货人" id="member_name"/>
+			</div>
+			<div class="choose">
+				<label>联系方式</label>
+				<input type="number" placeholder="请输入联系电话" id="mobile"/>
+			</div>
+
+			<button id="reg" onclick="inquiry_submit();">提交</button>
+		</div>
+	</article>
+
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var FNScanner;
+	apiready = function() {
+		//		$api.fixStatusBar($api.dom('header'));
+		$api.byId('barcode').value = $api.getStorage('pro_inquiry_barcode');
+		$api.byId('pro_name').value = $api.getStorage('pro_inquiry_name');
+		$api.byId('city').value = $api.getStorage('address');
+		$api.byId('mobile').value = $api.getStorage('mobile');
+		$api.byId('member_name').value = $api.getStorage('realname');
+		FNScanner = api.require('FNScanner');
+		//		FNScanner.openScanner({
+		//			autorotation : true
+		//		}, function(ret, err) {
+		//			if (ret.eventType='success') {
+		//			$api.byId('barcode').value = ret.content;
+		////				alert(JSON.stringify(ret));
+		//			} else {
+		//				alert(JSON.stringify(err));
+		//			}
+		//		});
+	};
+	//	function funActionSheet() {
+	//		api.actionSheet({
+	//			title : '底部弹出框',
+	//			cancelTitle : '取消',
+	//			destructiveTitle : '红色警告按钮',
+	//			buttons : ['按钮1', '按钮2', '按钮3']
+	//		}, function(ret, err) {
+	//			// api.alert({
+	//			//     msg: '你刚点击了'+ret.buttonIndex
+	//			// });
+	//		});
+	//	}
+	function inquiry_submit() {
+		var sPro_num = $api.byId('pro_num').value;
+		if (!$api.byId('pro_name').value) {
+			alert('请输入商品名');
+			return;
+		} else if (!(/(^[1-9]\d*$)/.test(sPro_num))) {
+			alert('请输入正确的数量');
+			return false;
+		} else if (!$api.byId('city').value) {
+			alert('请输入城市');
+			return;
+		} else if (!$api.byId('member_name').value) {
+			alert('请输入联系人');
+			return;
+		} else if (!$api.byId('mobile').value) {
+			alert('请输入电话');
+			return;
+		}
+		if (!$api.getStorage('inquiry_pic')) {
+			var pic = 1;
+		}
+		// else if (!$api.getStorage('pro_inquiry_barcode')) {
+		//			var pic = $api.getStorage('inquiry_pic');
+		//		}
+		else {
+			var pic = $api.getStorage('inquiry_pic');
+		}
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/inquiry_submit.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					boss_id : $api.getStorage('boss_id'),
+					//service_id : $api.getStorage('service_id'),
+					city : $api.byId("city").value,
+					pic : pic,
+					pro_name : $api.byId("pro_name").value,
+					barcode : $api.byId("barcode").value,
+					member_name : $api.byId("member_name").value,
+					pro_num : $api.byId("pro_num").value,
+					phone : $api.byId("mobile").value
+				}
+			}
+		}, function(data, err) {
+			alert(data.code);
+			if (data.code == 200800) {
+				api.toast({
+					msg : '提交成功'
+				});
+				$api.setStorage('inquiry_pic', '');
+				$api.setStorage('pro_inquiry_barcode', '');
+				$api.setStorage('pro_inquiry_name', '');
+				//				viewinquirylist();
+				winreload();
+			}
+		});
+	}
+
+	//var FNScanner = api.require('FNScanner');
+	function scaner() {
+		FNScanner.openScanner({
+			autorotation : false
+		}, function(ret, err) {
+			if (ret.eventType == 'success') {
+				$api.byId('barcode').value = ret.content;
+				//				alert(JSON.stringify(ret));
+			} else {
+				//				alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	function winreload() {
+		window.location.reload();
+	}
+
+function showpic() {
+		$api.byId('showpic1').innerHTML = "<img src='http://ririqiang.com/ghuog/upload_file/inquiry_img/" + $api.getStorage('inquiry_pic') + "'>";
+					
+	}
+
+	function camera() {
+		api.getPicture({
+			sourceType : 'camera',
+			encodingType : 'jpg',
+			mediaValue : 'pic',
+			destinationType : 'url',
+			allowEdit : true,
+			quality : 50,
+			targetWidth : 800,
+			targetHeight : 800,
+			saveToPhotoAlbum : false
+		}, function(ret, err) {
+			if (ret) {
+				//				alert(JSON.stringify(ret));
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/inquiry_upload_pic.php',
+					method : 'post',
+					data : {
+						values : {
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token')
+						},
+						files : {
+							upfile : ret.data
+						}
+					}
+				}, function(ret, err) {
+					if (ret.code == 200800) {
+						$api.setStorage('inquiry_pic', ret.picname);
+						setTimeout("showpic()", 1000);
+						} else {
+						api.toast({
+							msg : '网络错误'
+						});
+					}
+				});
+			} else {
+				alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	function library() {
+		api.getPicture({
+			sourceType : 'library',
+			encodingType : 'jpg',
+			mediaValue : 'pic',
+			destinationType : 'url',
+			allowEdit : true,
+			quality : 50,
+			targetWidth : 800,
+			targetHeight : 800,
+			saveToPhotoAlbum : false
+		}, function(ret, err) {
+			if (ret) {
+				//				alert(JSON.stringify(ret));
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/inquiry_upload_pic.php',
+					method : 'post',
+					data : {
+						values : {
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token')
+						},
+						files : {
+							upfile : ret.data
+						}
+					}
+				}, function(ret, err) {
+					if (ret.code == 200800) {
+						$api.setStorage('inquiry_pic', ret.picname);
+						setTimeout("showpic()", 1000);
+					} else {
+						api.toast({
+							msg : '网络错误'
+						});
+					}
+				});
+			} else {
+				alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	//	function viewinquirylist() {
+	//		api.openWin({
+	//			name : 'inquiry_list',
+	//			url : './a_headbackindex.html',
+	//			pageParam : {
+	//				title : '询价',
+	//				url : 'inquiry_list'
+	//			}
+	//		});
+	//	}
+</script>

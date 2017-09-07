@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		.aui-list-view .aui-img-object {
+		    max-width: 80px;
+		    height: 80px;
+		    line-height: 80px;
+		}
+		.aui-list-view i.aui-iconfont {
+		    padding: 5px;
+		    border-radius: 4px;
+		    margin-right: 10px;
+		    color: #999;
+		    font-size: 1.125em;
+		}
+		.aui-font12{font-size:12px;color: #848f94;}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+	        <ul class="aui-list-view">
+	            <li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openWinto('goods_show_win','../goods/goods_show_win');">
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                   <span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left aui-font12">关注时间: 2015-06-20</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            <i class="aui-iconfont aui-icon-delete aui-text-FF9800n"></i>
+	                        </div>
+	                    </div>
+	                </div>
+	            </li>
+	            
+	            <li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openWinto('goods_show_win','../goods/goods_show_win');">
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                   <span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left aui-font12">关注时间: 2015-06-20</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            <i class="aui-iconfont aui-icon-delete aui-text-FF9800n"></i>
+	                        </div>
+	                    </div>
+	                </div>
+	            </li>
+	            
+	            <li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openWinto('goods_show_win','../goods/goods_show_win');">
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                   <span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left aui-font12">关注时间: 2015-06-20</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            <i class="aui-iconfont aui-icon-delete aui-text-FF9800n"></i>
+	                        </div>
+	                    </div>
+	                </div>
+	            </li>
+	            
+	            <li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openWinto('goods_show_win','../goods/goods_show_win');">
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                   <span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left aui-font12">关注时间: 2015-06-20</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            <i class="aui-iconfont aui-icon-delete aui-text-FF9800n"></i>
+	                        </div>
+	                    </div>
+	                </div>
+	            </li>
+	            
+	            
+	          </ul>	      
+	      </div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript">
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		apiready = function() {
+			api.parseTapmode();
+		};
+	</script>
+</html>

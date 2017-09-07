@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+			.aui-list-view .aui-img-object {
+				max-width: 80px;
+				height: 80px;
+				line-height: 80px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+			<ul class="aui-list-view" id="goods_list">
+				<!--<li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openGoods(\'./goods_content\',\'' + ret.data[i].no + '\')" v-for="res in result">
+				<img class="aui-img-object aui-pull-left" src="{{res.images}}" data-echo="{{res.images}}">
+				<div class="aui-img-body">
+				<div class="aui-text-default aui-ellipsis-1">
+				12
+				</div>
+				<span class="aui-carfont aui-ellipsis-1">12</span>
+				<div class="aui-counter-box">
+				<div class="aui-pull-left aui-text-danger">
+				21
+				</div>
+				<div class="aui-text-default aui-pull-right"></div>
+				</div>
+				</div>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/common.js"></script>
+	<!--<script type="text/javascript" src="../../script/zepto.min.js"></script>-->
+	<script type="text/javascript" src="../script/echo.min.js"></script>
+	<script type="text/javascript" src="../script/vue.js"></script>
+	<script type="text/javascript">
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		var _page = 1;
+		$api.setStorage("currentPage", 1);
+		
+		apiready = function() {
+			//			alert(api.pageParam.clsno);
+//			fnInitPull();
+			headList(1);
+			fnInitPushRefresh();
+			api.parseTapmode();
+		};
+		
+		// 刷新
+		function fnInitPull() {
+			api.setRefreshHeaderInfo({
+				visible : true,
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#f0f0f0',
+				textColor : '#888',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...',
+				showTime : true
+			}, function(ret, err) {
+				api.refreshHeaderLoadDone();
+				headList(1);
+			});
+		};
+		
+
+		// 下拉加载更多
+		function fnInitPushRefresh() {
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 200
+				}
+			}, function(ret, err) {
+				_page = parseInt($api.getStorage("currentPage")) + 1;
+				// alert(_page);
+				$api.setStorage("currentPage", _page);
+				headList(_page);
+			});
+		};
+	</script>
+</html>

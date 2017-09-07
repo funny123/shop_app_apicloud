@@ -1,0 +1,146 @@
+/* 商品退货管理 */
+.article {
+    font-size: 1.4rem;
+    width: 100%;
+}
+/** 退货录入 */
+.article .wrap {
+    padding-bottom: 6rem;
+}
+/*** 搜索栏 */
+.article .wrap .operate {
+    margin: 0rem auto;
+    width: 35.0rem;
+    height: 6rem;
+    position: relative;
+    top: 5.8rem;
+}
+.article .wrap .operate input {
+    margin: 0rem 0rem 0rem -16.6rem;
+    width: 33.0rem;
+    height: 4.6rem;
+    position: relative;
+    left: 50%;
+    text-indent: 0.8rem;
+    z-index: 1;
+    border: 0.1rem solid #CCCCCC;
+}
+.article .wrap .operate span {
+    width: 3rem;
+    height: 2.8rem;
+    position: absolute;
+    right: 2rem;
+    top: 1rem;
+    z-index: 100;
+    background-image: url("../image/product_add_scan.png");
+    background-size: 3rem 2.8rem;
+}
+
+/*** 录入数据 */
+.article .wrap .good_list {
+    width: 100%;
+    position: relative;
+    top: 5.8rem;
+    border-top: 0.1rem solid #eaeaea;
+}
+.article .wrap .choose {
+    margin: 0.4rem 0rem 0rem 0rem;
+    padding-bottom: 0.4rem;
+    width: 100%;
+    height: 3.6rem;
+    line-height: 3.6rem;
+    border-bottom: 0.1rem solid #eaeaea;
+}
+.article .wrap .choose label {
+    width: 11rem;
+    text-indent: 1rem;
+}
+.article .wrap .choose input {
+    width: 20rem;
+    height: 3.2rem;
+    border: 0rem;
+}
+.article .wrap .choose input:focus {
+    outline:none !important;
+}
+.article .wrap .choose select {
+    padding: 0.4rem 0.6rem;
+}
+.article .wrap button {
+    width: 100%;
+    height: 4.3rem;
+    text-align: center;
+    line-height: 4.3rem;
+    color: #ffffff;
+    font-size: 1.6rem;
+    position: fixed;
+    bottom: 0rem;
+    background-color: #0b923b;
+}
+
+/** 退货列表 */
+.article .list {
+    padding-bottom: 2rem;
+    width: 100%;
+    position: relative;
+    top: 5.8rem;
+    border-top: 0.1rem solid #eaeaea;
+}
+.article .list ul {
+    margin: 0rem;padding: 0rem;
+    width: 100%;
+    height: 4rem;
+    line-height: 4rem;
+    border-bottom: 0.1rem solid #eaeaea;
+}
+
+.article .list ul li {
+    margin: 0rem;
+    padding: 0rem;
+    float: left;
+}
+.article .list ul li label {
+    padding: 0rem 0.2rem 0rem 0rem;
+    float: left;
+    text-indent: 0.8rem;
+}
+.article .list ul li span {
+    float: left;
+}
+.article .list ul li:nth-child(1) {
+    width: 37%;
+    font-size: 1.2rem;
+}
+.article .list ul li:nth-child(1) span {
+    width: 9.3rem;
+    height: 4rem;
+    overflow: hidden;
+}
+.article .list ul li:nth-child(2) {
+    margin-left: 1%;
+    width: 29%;
+    font-size: 1.2rem;
+}
+.article .list ul li:nth-child(2) span {
+    width: 6.3rem;
+    height: 4rem;
+    overflow: hidden;
+}
+.article .list ul li:nth-child(3) {
+    margin-left: 1%;
+    width: 32%;
+    font-size: 1.2rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

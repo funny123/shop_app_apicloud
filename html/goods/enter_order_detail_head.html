@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-tab-nav {
+				width: 100%;
+				display: box;
+				display: -webkit-box;
+				box-sizing: border-box;
+				font-size: 14px;
+				height: 40px;
+				background-color: #fff;
+				overflow: hidden;
+			}
+			.aui-tab-nav li {
+				height: 40px;
+				line-height: 40px;
+				box-flex: 1;
+				-webkit-box-flex: 1;
+				box-sizing: border-box;
+				text-align: center;
+				color: #666;
+				border-bottom: 2px solid transparent;
+				width: 100%;
+			}
+			.aui-nnav {
+				line-height: 55px;
+			}
+			.demo {
+				font-size: 15px;
+				color: #333;
+				background: #fff;
+			}
+			.buy {
+				background: #FF9800;
+				color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<header class="aui-bar aui-bar-nav aui-bar-warning" id='aui-header'>
+				<a class="aui-pull-left" tapmode onclick="api.closeWin();"> <span class="aui-iconfont aui-icon-left"></span>返回 </a>
+				<div class="aui-title">
+					确认订单
+				</div>
+			</header>
+			<footer class="aui-nav" id="aui-footer">
+				<div class="aui-col-xs-12 aui-text-center aui-nnav">
+					<div class="aui-col-xs-8 demo">
+						共<span class="aui-text-danger">{{num}}</span>件,总金额: <span class="aui-text-danger">￥{{price*num}}</span>
+					</div>
+					<div class="aui-col-xs-4 buy" tapmode onclick="payMent();">
+						提交订单
+					</div>
+					<!--<div class="aui-col-xs-4 buy" tapmode onclick="openWinto('payment_head','payment_head');">
+					提交订单
+					</div>-->
+				</div>
+			</footer>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			//			alert(api.pageParam.item_num);
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=getcontent&item_no=' + api.pageParam.item_no + '',
+				method : 'get',
+				data : {
+					values : {
+						//						name : 'haha'
+					},
+					files : {
+						//						file : 'fs://a.gif'
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					var app = new Vue({
+						el : "#wrap",
+						data : {
+							num : api.pageParam.item_num,
+							price : ret.data.price
+						}
+					});
+					$api.setStorage('price', api.pageParam.item_num * ret.data.price);
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+			api.parseTapmode();
+			var header = $api.byId('aui-header');
+			$api.fixStatusBar(header);
+			var headerPos = $api.offset(header);
+			var body_h = $api.offset($api.dom('body')).h;
+			var footer_h = $api.offset($api.byId('aui-footer')).h;
+			api.openFrame({
+				name : 'enter_order_detail_body',
+				url : 'enter_order_detail_body.html',
+				rect : {
+					x : 0,
+					y : headerPos.h,
+					w : 'auto',
+					h : body_h - headerPos.h - footer_h
+				},
+				pageParam : {
+					item_no : api.pageParam.item_no,
+					num : api.pageParam.item_num
+				}
+			});
+		}
+		function payMent() {
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v2',
+				method : 'post',
+				data : {
+					values : {
+						no : api.pageParam.item_no,
+						num : api.pageParam.item_num,
+						gettype : 1,
+						branch_no : 5,
+						common_contact_id : 130,
+						loginname : $api.getStorage('loginname'),
+						job : 'order_submit_ios'
+					},
+					files : {
+						//						file : 'fs://a.gif'
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					//					api.alert({
+					//						msg : JSON.stringify(ret)
+					//					});
+					api.openWin({
+						name : 'payment',
+						url : './payment_head.html',
+						slidBackType : 'edge',
+						pageParam : {
+//							param : price
+						}
+					});
+					//					$api.setStorage('price',api.pageParam.item_num*ret.data.price);
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		}
+	</script>
+</html>

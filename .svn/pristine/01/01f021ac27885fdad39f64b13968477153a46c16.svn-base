@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-list-view-cell:active {
+				background: #FFFFFF;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="address">
+			<div class="aui-content">
+				<ul class="aui-list-view">
+					<li class="aui-list-view-cell">
+						订单编号: {{ordername}}
+					</li>
+				</ul>
+			</div>
+			<div class="step1">
+				<!--<div>收货地址</div>	-->
+				<b class="s1-borderT"></b>
+				<div>
+					<div style="font-size: 16px;">
+						{{username}} <span class="" style="margin-left: 25px;">{{mobile}}</span>
+					</div>
+					<div>
+						{{address}}
+					</div>
+				</div>
+				<b class="s1-borderB"></b>
+				<span class="s-point"></span>
+			</div>
+		</div>
+		<div class="aui-content">
+			<ul class="aui-list-view" id="list"></ul>
+		</div>
+		<div class="aui-content" id="alipay">
+			<ul class="aui-list-view aui-in">
+				<li class="aui-list-view-cell">
+					支付金额
+					<div class="aui-pull-right aui-text-danger">
+						{{alltotal}}
+					</div>
+				</li>
+				<li class="aui-list-view-cell">
+					支付方式
+					<div class="aui-pull-right">
+						{{pay_name}}
+					</div>
+				</li>
+				<li class="aui-list-view-cell">
+					支付状态
+					<div class="aui-pull-right">
+						{{paystate}}
+					</div>
+				</li>
+				<li class="aui-list-view-cell">
+					下单时间
+					<div class="aui-pull-right">
+						{{time}}
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content" id="all">
+			<ul class="aui-list-view aui-in">
+				<li class="aui-list-view-cell">
+					商品总价
+					<div class="aui-pull-right aui-text-FF9800">
+						{{alltotal}}
+					</div>
+				</li>
+				<li class="aui-list-view-cell">
+					运费
+					<div class="aui-pull-right aui-text-FF9800">
+						￥20
+					</div>
+				</li>
+				<li class="aui-list-view-cell">
+					优惠券抵扣
+					<div class="aui-pull-right aui-text-default">
+						-￥0.00
+					</div>
+				</li>
+				<li class="aui-list-view-cell">
+					积分抵扣
+					<div class="aui-pull-right aui-text-default">
+						-￥0.00
+					</div>
+				</li>
+				<li class="aui-list-view-cell">
+					<span class=" aui-pull-right aui-text-FF9800" style="font-size: 18px;">￥0.0</span>
+					<div class="aui-pull-right aui-text-right">
+						积分抵扣:
+					</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript">
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		apiready = function() {
+			//			alert(api.pageParam.ordername);
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=order_content&ordername=' + api.pageParam.ordername + '',
+				method : 'get'
+			}, function(ret, err) {
+				if (ret) {
+					var vue1 = new Vue({
+						el : '#address',
+						data : {
+							ordername : ret.data.ordername,
+							username : ret.data.username,
+							mobile : ret.data.mobile,
+							address : ret.data.address
+						}
+					});
+					var vue2 = new Vue({
+						el : '#alipay',
+						data : {
+							alltotal : ret.data.alltotal,
+							pay_name : ret.data.pay_name,
+							time : ret.data.time,
+							paystate : ret.data.paystate
+						}
+					});
+					var vue3 = new Vue({
+						el : '#all',
+						data : {
+							alltotal : ret.data.alltotal
+//							pay_name : ret.data.pay_name,
+//							time : ret.data.time,
+//							paystate : ret.data.paystate
+						}
+					});
+					for (var i = 0; i <= ret.content.length - 1; i++) {
+						var str = '<li class="aui-list-view-cell aui-img aui-counter-list" >';
+						str = str + '<img class="aui-img-object aui-pull-left" src="'+ret.content[i].images+'" data-echo="'+ret.content[i].images+'">';
+						str = str + ' <div class="aui-img-body">';
+						str = str + ' <div class="aui-text-default aui-ellipsis-1">'+ret.content[i].name+'</div>';
+						str = str + '<div class="aui-counter-box">';
+//						str = str + '<div class="aui-pull-left">12个/盒</div>';
+						str = str + '<div class="aui-text-default aui-pull-right">x '+ret.content[i].num+'</div>';
+						str = str + '</div>';
+						str = str + '</div>';
+						str = str + '</li>';
+						$api.append($api.byId('list'), str);
+					}
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+			api.parseTapmode();
+		};
+	</script>
+</html>

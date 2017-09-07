@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+		<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+		<title>Hello APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<style>
+			#con {
+				margin: 10px;
+				font-size: 24px;
+			}
+			ul {
+				margin-bottom: 10px;
+			}
+			ul li {
+				margin: 5px 10px;
+				padding: 5px;
+				color: #000;
+				word-wrap: break-word;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="warp"></div>
+		<!--<label id="con">Hello APP</label>
+		<div id='sys-info'></div>-->
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var UIScrollPicture;
+		apiready = function() {
+			UIScrollPicture = api.require('UIScrollPicture');
+			UIScrollPicture.open({
+				rect : {
+					x : 0,
+					y : 0,
+					w : api.winWidth,
+					h : api.winHeight / 2
+				},
+				data : {
+					paths : ['widget://res/img/banner-gonggong_RA.jpg', 'widget://res/img/banner-qingdaoyanzhou_WA.jpg', 'widget://res/img/gongyong2_RB.jpg'],
+					captions : ['apicloud', 'apicloud', 'apicloud', 'apicloud']
+				},
+				styles : {
+					caption : {
+						height : 35,
+						color : '#E0FFFF',
+						size : 13,
+						bgColor : '#696969',
+						position : 'bottom'
+					},
+					indicator : {
+						align : 'center',
+						color : '#FFFFFF',
+						activeColor : '#DA70D6'
+					}
+				},
+				placeholderImg : 'widget://res/slide1.jpg',
+				contentMode : 'scaleToFill',
+				interval : 3,
+				fixedOn : api.frameName,
+				loop : true,
+				fixed : false
+			}, function(ret, err) {
+				if (ret) {
+					alert(JSON.stringify(ret));
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+		};
+	</script>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>个人中心</title>
+		<link rel="stylesheet" href="../css/re_public.css" />
+		<link rel="stylesheet" type="text/css" href="../css/new_file.css" />
+		<style>
+			body {
+				background: #f1eef5;
+			}
+			.empty {
+				text-align: center;
+				padding: 120px 0;
+			}
+		</style>
+	</head>
+	<body>
+		<!--<div class="empty"></div>-->
+		<div class="aui-person" id="setting" onclick="personer_setting();">
+			<span></span>个人设置<span></span>
+		</div>
+		<div class="aui-person aui-media-body">
+			<div class="" id="orderlist" onclick="personer_orderlist();">
+				<span></span>订单列表<span></span>
+			</div>
+			<!--<div class="" id="messageList" onclick="personer_messagelist();">
+				<span></span>消息列表<span></span>
+			</div>-->
+		</div>
+		<!--		<div class="aui-person" id="feedback" onclick="per_test();">
+		<span></span>系统续费<span></span>
+		</div>-->
+		<div class="aui-person" id="feedback" onclick="sign_in();">
+			<span></span>上班考勤<span></span>
+		</div>
+		<div class="aui-person" id="feedback" onclick="personer_cache();">
+			<span></span>更新缓存<span></span>
+		</div>
+		<div class="aui-person" id="feedback" onclick="dataupanddown();">
+			<span></span>同步数据<span></span>
+		</div>
+		<div class="aui-person" id="feedback" onclick="personer_feedback();">
+			<span></span>意见反馈<span></span>
+		</div>
+		<div class="aui-button" id="logout" onclick="logout();">
+			退出登录
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		//		var uuid;
+		var bMap;
+		apiready = function() {
+			//			alert($api.getStorage($api.getStorage('mobile') + '_db_version'));
+			bMap = api.require('bMap');
+		};
+		
+		function logout() {
+			//						$api.setStorage("token", '');
+			//		alert(api.deviceId);
+			
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/personer_logout.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token')
+					}
+				}
+			}, function(data) {
+				
+			});
+			
+					var db = api.require('db');
+						db.closeDatabase({
+							name : 'ghuog_db' + $api.getStorage('mobile')
+						}, function(ret, err) {
+							if (ret.status) {
+								//								alert(JSON.stringify(ret));
+							} else {
+								//								alert(JSON.stringify(err));
+							}
+						});
+						//alert(uuid);
+						$api.setStorage('mobile', '');
+						$api.setStorage('token', '');
+						$api.setStorage('uid', '');
+						$api.setStorage('alipay', '');
+						$api.setStorage('weixin', '');
+						$api.setStorage('realname', '');
+						$api.setStorage('address', '');
+						$api.setStorage('caiwu', '');
+						$api.setStorage('grade', '');
+						$api.setStorage('end_date', '');
+						$api.setStorage('is_buy', '');
+						$api.setStorage('is_inquiry', '');
+						$api.setStorage('is_addproduct', '');
+						$api.setStorage('is_checkoutscaner', '');
+						$api.setStorage('is_stock', '');
+						$api.setStorage('is_map', '');
+						$api.setStorage('is_return', '');
+						$api.setStorage('is_checkout', '');
+						$api.setStorage('is_procat', '');
+						$api.setStorage('is_sup', '');
+						$api.setStorage('is_membercard', '');
+						$api.setStorage('is_stocktaking', '');
+						$api.setStorage('is_saleactiviy', '');
+						$api.setStorage('is_o2oorder', '');
+						$api.setStorage('is_report', '');
+						$api.setStorage('role', '');
+						$api.setStorage('service_id', '');
+						$api.setStorage('boss_id', '');
+						$api.setStorage('is_pid', '');
+						$api.setStorage('is_position', '');
+						$api.setStorage('shop_name', '');
+						$api.setStorage('is_bossshop', '');
+						$api.setStorage('is_zhiying', '');
+//						$api.setStorage('beilv_pifajia', '');
+//						$api.setStorage('beilv_huiyuanjia', '');
+//						$api.setStorage('beilv_lingshoujia', '');
+						//    						plus.webview.getWebviewById('personer').reload();
+						alert('退出成功');
+						//						api.openWin({
+						//							name : 'personer_login',
+						//							url : './a_headbackindex.html',
+						//							pageParam : {
+						//								title : '登录',
+						//								url : 'personer_login'
+						//							}
+						//						});
+						api.execScript({
+    						name: 'root',
+    						script: "title_rename();"
+						});
+						api.execScript({
+    						name: 'root',
+    						frameName: 'win_home',
+    						script: "winreload();"
+						});
+						setTimeout("close_to_win()", 300);
+			
+			
+			
+			
+		}
+		
+		function close_to_win(){
+			api.closeToWin({
+							name : 'root'
+						});
+		}
+
+		function sign_in() {
+			bMap.getLocation({
+				accuracy : '100m',
+				autoStop : true,
+				filter : 1
+			}, function(ret, err) {
+				if (ret.status) {
+					//					alert(JSON.stringify(ret));
+					api.toast({
+						msg : ret.lat + ',' + ret.lon
+					});
+					$api.setStorage('personer_sign_in_lat', ret.lat);
+					$api.setStorage('personer_sign_in_lon', ret.lon);
+					//					alert($api.getStorage('personer_sign_in_lat'));
+					setTimeout("sign_in_submit()", 1000);
+				} else {
+					alert(err.code);
+				}
+			});
+		}
+
+		function sign_in_submit() {
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/personer_sign_in.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						uuid : api.deviceId,
+						lat : $api.getStorage('personer_sign_in_lat'),
+						lon : $api.getStorage('personer_sign_in_lon'),
+						boss_id : $api.getStorage('boss_id'),
+//						service_id : $api.getStorage('service_id')
+						is_pid : $api.getStorage('is_pid')
+						//						picname : ret2.picname
+					}
+				}
+			}, function(ret3, err3) {
+				$api.setStorage('personer_sign_in_lat', '');
+				$api.setStorage('personer_sign_in_lon', '');
+//				alert(ret3.code);
+				
+				if (ret3.code == 200800) {
+					alert('打卡成功');
+				} 
+				
+				
+				else if (ret3.code == 200806) {
+					alert('不是工作设备');
+				} 
+				
+				
+				else if (ret3.code == 200808) {
+					alert('位置不正确');
+				} 
+				
+				else {
+					alert('网络错误，请重试');
+				}
+				
+			});
+		}
+
+		
+		function personer_setting() {
+			api.openWin({
+				name : 'personer_setting',
+				url : './a_headback.html',
+				pageParam : {
+					title : '个人设置',
+					url : 'personer_setting'
+				}
+			});
+		}
+
+		function personer_orderlist() {
+			api.openWin({
+				name : 'personer_orderlist',
+				url : './a_headback.html',
+				pageParam : {
+					title : '我的订单',
+					url : 'personer_orderlist'
+				}
+			});
+		}
+
+		function personer_caiwulist() {
+			api.openWin({
+				name : 'personer_caiwulist',
+				url : './a_headback.html',
+				pageParam : {
+					title : '财务明细',
+					url : 'personer_caiwulist'
+				}
+			});
+		}
+
+		function personer_messagelist() {
+			api.openWin({
+				name : 'personer_messagelist',
+				url : './a_headback.html',
+				pageParam : {
+					title : '消息列表',
+					url : 'personer_messagelist'
+				}
+			});
+		}
+
+		//意见反馈
+		function personer_feedback() {
+			api.openWin({
+				name : 'personer_feedback',
+				url : './a_headback.html',
+				pageParam : {
+					title : '意见反馈',
+					url : 'personer_feedback'
+				}
+			});
+		}
+
+		function dataupanddown() {
+			var updatatime = new Date().getTime();
+			if (updatatime - $api.getStorage('updatatime') > 30000) {
+				api.execScript({
+					name : 'root',
+					frameName : 'win_home',
+					script : 'funUploadDataPersoner();'
+				});
+				api.toast({
+					msg : '数据同步中'
+				});
+				$api.setStorage('updatatime', updatatime);
+				//				alert($api.getStorage($api.getStorage('mobile') + '_db_version'));
+				//				api.closeFrame({
+				//					name : 'personer_dataup'
+				//				});
+			} else {
+				//								var a = (180000-(updatatime - $api.getStorage('updatatime')))/1000;
+				api.toast({
+					//										msg : updatatime+$api.getStorage('updatatime')
+					msg : '数据同步中，请稍后再试'
+				});
+				//				api.toast({
+				//										msg : $api.getStorage('updatatime')
+				////					msg : '数据同步中，请稍后再试'
+				//				});
+				//				alert(updatatime+);
+			}
+		}
+
+		function personer_cache() {
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/personer_cache.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token')
+					}
+				}
+			}, function(data, err) {
+			//alert(JSON.stringify(data));
+				if (data) {
+					alert(data.code);
+					alert(data.data.end_date);
+//					alert(data.data.beilv_huiyuanjia);
+					$api.setStorage('alipay', data.data.alipay);
+					$api.setStorage('weixin', data.data.weixin);
+					$api.setStorage('realname', data.data.realname);
+					$api.setStorage('address', data.data.address);
+					$api.setStorage('caiwu', data.data.caiwu);
+					$api.setStorage('grade', data.data.grade);
+					$api.setStorage('end_date', data.data.end_date);
+					$api.setStorage('is_buy', data.data.is_buy);
+					$api.setStorage('is_inquiry', data.data.is_inquiry);
+					$api.setStorage('is_addproduct', data.data.is_addproduct);
+					$api.setStorage('is_checkoutscaner', data.data.is_checkoutscaner);
+					$api.setStorage('is_stock', data.data.is_stock);
+					$api.setStorage('is_map', data.data.is_map);
+					$api.setStorage('is_return', data.data.is_return);
+					$api.setStorage('is_checkout', data.data.is_checkout);
+					$api.setStorage('is_procat', data.data.is_procat);
+					$api.setStorage('is_sup', data.data.is_sup);
+					$api.setStorage('is_membercard', data.data.is_membercard);
+					$api.setStorage('is_stocktaking', data.data.is_stocktaking);
+					$api.setStorage('is_saleactiviy', data.data.is_saleactiviy);
+					$api.setStorage('is_o2oorder', data.data.is_o2oorder);
+					$api.setStorage('is_report', data.data.is_report);
+					$api.setStorage('role', data.data.role);
+					$api.setStorage('service_id', data.data.service_id);
+					$api.setStorage('boss_id', data.data.boss_id);
+					$api.setStorage('is_position', data.data.is_position);
+					$api.setStorage('shop_name', data.data.shop_name);
+					$api.setStorage('is_bossshop', data.data.is_bossshop);
+					$api.setStorage('is_zhiying', data.data.is_zhiying);
+//					$api.setStorage('beilv_pifajia', data.data.beilv_pifajia);
+//					$api.setStorage('beilv_huiyuanjia', data.data.beilv_huiyuanjia);
+//					$api.setStorage('beilv_lingshoujia', data.data.beilv_lingshoujia);
+				} else {
+				}
+			});
+		}
+	</script>
+</html>

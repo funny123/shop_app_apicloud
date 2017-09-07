@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/aui.2.0.css" />
+		<style>
+			body {
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aui-tab" id="tab" style="position: fixed; top: 0px;width: 100%">
+			<div class="aui-tab-item aui-active">
+				商品出库
+			</div>
+			<div class="aui-tab-item">
+				<a href="local_checkout_list.html">出库记录</a>
+			</div>
+		</div>
+		<div style="padding-top: 50px;">
+			<input type="number" class="mui-input-clear" placeholder="请输入条形码" id="barcode">
+			<div onclick="scaner();">
+				扫描
+			</div>
+			<div onclick="submit();">
+				提交
+			</div>
+			<div class="aui-content aui-margin-b-15">
+				<ul class="mui-table-view mui-table-view-chevron" id="list"></ul>
+			</div>
+			<div>
+				总价:<span id="total_price"></span>
+			</div>
+			<div onclick="clearstorage();">
+				清除本订单
+			</div>
+			<div onclick="alipay();">
+				确认收款
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var FNScanner;
+		var db;
+		var ordernum = $api.getStorage('ordernum');
+		var total = 0.0;
+		apiready = function() {
+			var table = document.body.querySelector('.mui-table-view');
+			var cells = document.body.querySelectorAll('.mui-table-view-cell');
+			FNScanner = api.require('FNScanner');
+			db = api.require('db');
+			//
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_CheckOut where OrderNum='" + $api.getStorage('ordernum') + "'"
+			}, function(ret, err) {
+				if (ret.status) {
+					//					str = JSON.stringify(ret);
+					for (var i = 0; i <= ret.data.length - 1; i++) {
+						//					total = new array()
+						//					    total[i] = ret.data[i].SubTotal;
+						var li = document.createElement('li');
+						li.className = 'mui-table-view-cell mui-media';
+						//					var str = '<div onclick="ProDetail(' + ret.data[i].BarCode + ');">'+ ret.data[i].ProName +'</div>';
+						var str = '<div>' + '商品名称:' + ret.data[i].ProName + '</div>';
+						var str = str + '条形码:' + ret.data[i].BarCode + '<br>';
+						var str = str + '商品数量:' + ret.data[i].Num + '<br>';
+						//						var str = str + '成本价:' + ret.data[i].CostPrice + '<br>';
+						var str = str + '销售价:' + ret.data[i].MarketPrice + '<br>';
+						var str = str + '小计:' + ret.data[i].SubTotal + '<br>';
+						var str = str + '添加时间:' + ret.data[i].CheckTime + '<br>';
+						//$api.setStorage('t',parseFloat(ret.data[i].SubTotal)+parseFloat($api.getStorage('t')));
+						li.innerHTML = str;
+						table.appendChild(li);
+						total += parseFloat(ret.data[i].SubTotal);
+					}
+					//					total=parseFloat(ret.data[0].SubTotal)+parseFloat(ret.data[1].SubTotal);
+					$api.byId('total_price').innerHTML = total;
+					$api.setStorage('total_price', total);
+				} else {
+					//					alert(JSON.stringify(err));
+				}
+			});
+		};
+		function scaner() {
+			FNScanner.openScanner({
+				autorotation : false
+			}, function(ret, err) {
+				if (ret.eventType == 'success') {
+					api.openFrame({
+						name : 'local_checkout_detail',
+						url : 'local_checkout_detail.html',
+						pageParam : {
+							barcode : ret.content
+						},
+					});
+				} else {
+					//					alert(JSON.stringify(err));
+				}
+			});
+		}
+
+		function submit() {
+		var barcode = $api.byId('barcode').value;
+
+		if (!(/^\d{5,18}$/.test(barcode))) {
+			alert('请输入正确的条码');
+			return false;
+		} 
+		
+			api.openFrame({
+				name : 'local_checkout_detail',
+				url : 'local_checkout_detail.html',
+				pageParam : {
+					barcode : $api.byId('barcode').value
+				},
+			});
+		}
+
+		function winreload() {
+			window.location.reload();
+		}
+
+		function clearstorage() {
+			db.executeSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "UPDATE T_CheckOut SET Status='3' where OrderNum= '" + $api.getStorage('ordernum') + "'"
+			}, function(ret, err) {
+				if (ret.status) {
+				} else {
+				}
+			});
+			$api.setStorage('ordernum', '');
+			$api.setStorage('total_price', '');
+			winreload();
+		}
+
+		function alipay() {
+			//        $api.setStorage('t','');
+			api.openWin({
+				name : 'gathering_alipay',
+				url : './a_headback.html',
+				pageParam : {
+					title : '支付宝收款',
+					url : 'gathering_alipay'
+				}
+			});
+			//        $api.setStorage('ordernum','');
+		}
+	</script>
+</html>

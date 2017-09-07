@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.2.0.css" />
+		<link rel="stylesheet" href="../css/new_file.css" />
+	</head>
+	<body>
+		<!--<input type="search" placeholder="请输入搜索内容" id="search-input">-->
+		<section>
+			<div onclick="cat();" class="aui-btn aui-btn-block">
+				<img src="../image/nav_left.png" />
+				<p>
+					类目
+				</p>
+			</div>
+			<div class="aui-select">
+				<select name="keyword_type" id="keyword_type" autocomplete="off">
+					<option value="1">品名</option>
+					<option value="2">条码</option>
+					<option value="3">编号</option>
+				</select>
+				<input type="text" placeholder="请输入关键词" id="search_word">
+				<div onclick="search();" class="aui-btn aui-btn-block aui-search">
+					搜索
+				</div>
+				<div onclick="scanner();" style="display: none" class="sec2"><img src="../image/nav_left.png" />
+				</div>
+			</div>
+		</section>
+		<ul class="aui-list aui-media-list" id="list"></ul>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script type="text/javascript" src="../script/jquery-1.7.1.min.js" ></script>
+	<script>
+		var FNScanner;
+
+		$api.setStorage("currentPage", 1);
+
+		apiready = function() {
+			FNScanner = api.require('FNScanner');
+			loadData();
+
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				_page = parseInt($api.getStorage("currentPage")) + 1;
+				$api.setStorage("currentPage", _page);
+				loadData();
+			});
+		}
+		
+		function loadData() {
+//		alert($api.getStorage("currentPage"));
+			//			currentPage = isReload ? 1 : currentPage;
+			var table = document.body.querySelector('.aui-list');
+			//var cells = document.body.querySelectorAll('.aui-list-item');
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/product_list_ghuog.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						page : $api.getStorage("currentPage"),
+						cat_num : $api.getStorage('cat_num'),
+						barcode : $api.getStorage('barcode'),
+						serial : $api.getStorage('serial'),
+						keyword : $api.getStorage('keyword')
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					//				alert(JSON.stringify(ret));
+					var data = ret.data;
+					//										alert(JSON.stringify(ret));
+					if (ret.data) {
+						for ( i = 0; i < data.length; i++) {
+							var li = document.createElement('li');
+							if (!data[i].fengongsijia) {
+								data[i].fengongsijia = 0;
+							}
+							li.className = 'aui-list-item aui-list-item-arrow';
+							var str = '<div class="aui-media-list-item-inner">';
+							var str = str + '<div onclick="proDetail(' + data[i].id + ');" class="aui-list-item-media">';
+							var str = str + '<img src="http://ririqiang.com/ghuog/upload_file/ghuog_product_img/' + data[i].barcode + '.jpg">';
+							var str = str + '</div>';
+							var str = str + '<div class="aui-list-item-inner">';
+							var str = str + '<div class="aui-list-item-text">';
+							var str = str + '<div onclick="proDetail(' + data[i].id + ');" class="aui-list-item-title"><input type="text" value="' + data[i].pro_name + '" id="proid' + data[i].id + '" readonly /></div>';
+							var str = str + '</div>';
+							var str = str + '<div onclick="proDetail(' + data[i].id + ');" class="aui-list-item-text aui-code">';
+							var str = str + '条码：' + data[i].barcode + '';
+							var str = str + '</div>';
+							var str = str + '<div class="aui-list-item-right">' + data[i].fengongsijia + '</div>';
+							var str = str + '<div onclick="cart(' + data[i].id + ',' + data[i].barcode + ',' + data[i].fengongsijia + ');" class="aui-cart">';
+							var str = str + '<img src="../image/cart.png">';
+							var str = str + '</div>';
+							var str = str + '</div>';
+							var str = str + '</div>';
+							li.innerHTML = str;
+							table.appendChild(li);
+						}
+						var new_page=parseInt($api.getStorage("currentPage"))+1;
+						$api.setStorage("currentPage",new_page);
+					} else {
+						api.toast({
+							msg : '暂无更多商品'
+						});
+					}
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+
+		
+		function proDetail(proid) {
+			$api.setStorage('proid', proid);
+			api.openWin({
+				name : 'product_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '详情页面',
+					url : 'product_detail'
+				}
+			});
+		}
+
+		function inquiry(proid, barcode) {
+			$api.setStorage('pro_inquiry_barcode', barcode);
+			$api.setStorage('pro_inquiry_name', $api.byId("proid" + proid).value);
+			api.openWin({
+				name : 'inquiry_index',
+				url : './a_headback.html',
+				pageParam : {
+					title : '询价',
+					url : 'inquiry_index'
+				}
+			});
+		}
+
+		function cart(proid, barcode, price) {
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/cart_add.php',
+				method : 'post',
+				data : {
+					values : {
+						token : $api.getStorage("token"),
+						mobile : $api.getStorage("mobile"),
+						proid : proid,
+						num : 1,
+						uuid : api.deviceId,
+						barcode : barcode,
+						pro_name : $api.byId("proid" + proid).value,
+						price : price,
+						boss_id : $api.getStorage("boss_id"),
+						service_id : $api.getStorage("service_id")
+					}
+				}
+			}, function(data, err) {
+				//			alert(data.code);
+				if (data.code == 200600 || data.code == 200700) {
+					api.toast({
+						msg : '添加购物车成功'
+					});
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		}
+
+		function search() {
+			$api.setStorage('cat_num', '');
+			$api.setStorage('keyword_type', $api.byId('keyword_type').value);
+			$api.setStorage('search_word', $api.byId('search_word').value);
+			if ($api.getStorage('keyword_type') == 1) {
+				$api.setStorage('barcode', '');
+				$api.setStorage('serial', '');
+				$api.setStorage('keyword', $api.byId('search_word').value);
+				$api.byId('list').innerHTML='';
+				$api.setStorage("currentPage", 1);
+				loadData();
+			} else if ($api.getStorage('keyword_type') == 2) {
+				$api.setStorage('barcode', $api.byId('search_word').value);
+				$api.setStorage('serial', '');
+				$api.setStorage('keyword', '');
+				$api.byId('list').innerHTML='';
+				$api.setStorage("currentPage", 1);
+				loadData();
+			} else if ($api.getStorage('keyword_type') == 3) {
+				$api.setStorage('barcode', '');
+				$api.setStorage('serial', $api.byId('search_word').value);
+				$api.setStorage('keyword', '');
+				$api.byId('list').innerHTML='';
+				$api.setStorage("currentPage", 1);
+				loadData();
+			}
+		}
+
+		function cat() {
+			api.openFrame({
+				name : 'product_list_cat_num',
+				url : './product_list_cat_num.html',
+				rect : {
+					x : 0,
+					y : 0
+				},
+				bounces : false,
+				bgColor : 'rgba(0,0,0,0.3)'
+			});
+		}
+
+		function winreload() {
+			window.location.reload();
+		}
+
+		function scanner() {
+			FNScanner.openScanner({
+				autorotation : false
+			}, function(ret, err) {
+				if (ret.eventType == 'success') {
+					$api.byId('search_word').value=ret.content;
+				} else {
+					//alert('111');
+				}
+			});
+		}
+
+
+		$(document).ready(function() {
+			$("#keyword_type").change(function() {
+				var val = $(this).find("option:selected").val();
+				if (val == 1 || val == 3) {
+					$(".sec2").hide();
+				} else if (val == 2) {
+					$(".sec2").show();
+				}
+			});
+		});
+	</script>
+</html>

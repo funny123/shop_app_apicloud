@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/stocktaking.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+			<div class="top_fixed">
+				<div class="top">
+					<a href="stocktaking_detail.html">盘点详情</a>
+					<div class="focus">
+						未盘点商品
+					</div>
+				</div>
+			</div>
+			<div class="wrap">
+				<div class="choose">
+					<label>盘点编号</label>
+					<input type="text" placeholder="盘点编号" id="orderNo" readonly/>
+				</div>
+				<div class="thread">未盘点商品</div>
+				<div class="list details whether" id="list"></div>
+			</div>
+		</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			$api.byId('orderNo').value = $api.getStorage('stocktaking_detail_id');
+			$api.setStorage("currentPage", 1);
+			loadData();
+			setTimeout("auto_load()", 1000);
+		};
+		function auto_load() {
+			window.setInterval(loadData(), 500);
+		}
+
+		function loadData() {
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/stocktaking_detail_no.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						orderNo : $api.getStorage('stocktaking_detail_id'),
+						page : $api.getStorage("currentPage")
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					if (!ret.data) {
+						return;
+					}
+					var data = ret.data;
+					for ( i = 0; i < data.length; i++) {
+						if (data[i].is_find == 0) {
+							var str = '<ul>';
+							var str = str + '<li><label>商品:</label><span>' + data[i].ProName + '</span></li>';
+							var str = str + '<li><label>条码:</label><span>' + data[i].BarCode + '</span></li>';
+							var str = str + '<li><label>记录数量:</label><span>' + data[i].Num + '</span></li>';
+							var str = str + '<li><label>是否盘点到:</label><span>未</span></li>';
+							var str = str + '</ul>';
+							$api.append($api.byId('list'), str);
+						}
+					}
+					_page = parseInt($api.getStorage("currentPage")) + 1;
+					$api.setStorage("currentPage", _page);
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+	</script>
+</html>

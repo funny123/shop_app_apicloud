@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/supplier.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+		<div class="top_fixed">
+			<div class="top four">
+				<a href="supplier_manage.html">新增供应商</a>
+				<div class="focus">供应商列表</div>
+				<a href="supplier_cat_add.html">新增分类</a>
+				<a href="supplier_cat_list.html">分类列表</a>
+			</div>
+		</div>
+
+<div class="wrap listing">
+<div class="choose">
+				<label>请选择供应商分类</label>
+			<select name="supplier" id="supplier">
+				<option value="0">请选择分类</option>
+
+			</select>
+		</div>
+<div class="list">
+			<ul id="supplierlistall"></ul>
+
+	
+</div>
+		</div>
+</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script type="text/javascript" src="../script/jquery-1.7.1.min.js" ></script>
+	<script>
+		apiready = function() {
+			db = api.require('db');
+			//			var table = document.body.querySelector('.aui-list');
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_SupplierCat"
+			}, function(ret, err) {
+				if (ret.data != '') {
+					//			alert(ret2.data.length);
+					for (var i = 0; i <= ret.data.length - 1; i++) {
+						var str = "<option value=" + ret.data[i].catid + ">" + ret.data[i].SupplierCatName + "</option>";
+						//						var str = '<div id="supplierlistall'+ret.data[i].catid+'">'+ret.data[i].SupplierCatName + '</div>';
+						$api.append($api.byId('supplier'), str);
+						//						$api.append($api.byId('supplierlistall'), str);
+					}
+				}
+			});
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_Supplier"
+			}, function(ret1, err1) {
+				if (ret1.data != '') {
+					//			alert(ret2.data.length);
+					for (var j = 0; j < ret1.data.length; j++) {
+						//						var str = "<option value=" + ret.data[i].catid + ">" + ret.data[i].SupplierCatName + "</option>";
+						var str1 = '<li><div onclick="supplierDetail(' + ret1.data[j].supid + ');">' + ret1.data[j].SupplierName + '</div><span>&gt;</span></li>';
+						//						$api.append($api.byId('supplier'), str);
+						$api.append($api.byId('supplierlistall'), str1);
+					}
+				}
+			});
+		}
+		function supplierDetail(supid) {
+			$api.setStorage('supplierid', supid);
+			api.openWin({
+				name : 'supplier_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '供应商详情',
+					url : 'supplier_detail'
+				}
+			});
+		}
+
+
+		$(document).ready(function() {
+			$("#supplier").change(function() {
+				var val = $(this).find("option:selected").val();
+
+				db.selectSql({
+					name : 'ghuog_db' + $api.getStorage('mobile'),
+					sql : "SELECT * FROM T_Supplier where pid= " + val
+				}, function(ret1, err1) {
+					if (ret1.data != '') {
+						//				$api.append($api.byId('supplierlistall'), '');
+						$api.byId('supplierlistall').innerHTML = '';
+						for (var i = 0; i < ret1.data.length; i++) {
+							//						var li = document.createElement('li');
+							//						li.className = 'mui-table-view-cell mui-media';
+							var str = '<li><div onclick="supplierDetail(' + ret1.data[i].supid + ');">' + ret1.data[i].SupplierName + '</div><span>&gt;</span></li>';
+							//						li.innerHTML = str;
+							//						table.appendChild(li);
+							$api.append($api.byId('supplierlistall'), str);
+						}
+					} else {
+					}
+				});
+			});
+		});
+	</script>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		.aui-content{padding:10px; font-size:16px;}
+		</style>
+	</head>
+	<body>
+	<div class="aui-content">
+首先，非常感谢大家一路以来的支持，是你们的支持，才让我们一起走的更好，更强。也非常感谢[APICloud](http://www.apicloud.com)这么好的平台，带给我们不同凡响的移动跨平台开发技术。
+
+![](http://box.kancloud.cn/2015-12-03_565f1be59a238.png)
+
+![](http://box.kancloud.cn/2015-12-03_565f1c215319b.png)
+
+- 公司：`中山赢友网络科技有限公司(http://www.winu.net/)`。
+
+- 赢友网络：`赢友`=>`赢得朋友`。
+
+- winu.net：`win`=>`赢`，`u`=>`you，友`，`net`=>`network，网络`
+
+- LOGO含义：
+
+```
+网、地球：代表我们是一家互联网公司，服务于全球。
+
+两个人：表示我们是一对一的服务
+
+心：表示我们诚信经营，合作共赢的意思
+
+手：表示我们用心呵护客户，保持长期合作的关系。
+
+```
+- 服务理念：`软件零缺陷，服务零距离，客户零抱怨。`
+
+- 服务宗旨：`合作共赢，战略伙伴。`
+
+- 企业目标：`力争两年内达到中山IT行业前三位。`
+
+- 目前状况：赢友网络一直在不断的提示自我技术，也吸入了很多优秀的开发团队，三年以来，一共服务过500多家企业，有多套自主研发管理系统和产品。
+
+- 承接业务范围：
+
+```
+手机、平板、智能手表APP（IOS/Android/WindowsPhone/Web APP）Native,Hybrid Web开发；
+
+手机、电脑、平板2D，3D游戏（IOS/Android/WindowsPhone/Web APP/PC）Native,Hybrid Web开发；
+
+.NET/PHP/Nodejs软件管理系统开发；
+
+微信公众平台系统开发；
+
+网站建设；网页设计；
+
+域名注册；主机空间租用等业务.
+</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript">
+	  apiready = function () {
+        api.parseTapmode();
+     }
+	</script>
+</html>

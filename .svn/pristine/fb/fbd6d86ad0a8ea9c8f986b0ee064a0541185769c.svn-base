@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			body {
+				background: url(../../image/ucenter_bg.png) no-repeat left top;
+				background-size: cover;
+				-webkit-background-size: cover;
+			}
+			#aui-header,.aui-bar,.aui-bar-nav {
+				background: rgba(255,152,0,0.0)!important;
+				color:#FF9800;
+			}
+		</style>
+	</head>
+	<body>
+		<header id='aui-header'></header>
+		<header class="aui-bar aui-bar-nav" id="aui-header">
+			<a class="aui-pull-left"> 
+				<span class="aui-iconfont aui-icon-roundclosefill" style="color:rgba(255,152,0,0.6)!important; font-size: 40px;"  tapmode onclick="api.closeWin();"></span> </a>
+			<div class="aui-title">
+				 
+			</div>
+		</header>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			api.parseTapmode();
+			var header = $api.byId('aui-header');
+	        $api.fixStatusBar(header); 
+	        api.openFrame({
+	            name: 'login_body',
+	            url: 'login_body.html',
+	            rect: {
+	                x: 0,
+	                y: 40,
+	                w: 'auto',
+	                h: 'auto'
+	            }
+	        });
+		}
+	</script>
+</html>

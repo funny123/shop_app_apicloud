@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>个人设置</title>
+		<link rel="stylesheet" type="text/css" href="../css/re_public.css" />
+		<link rel="stylesheet" type="text/css" href="../css/new_file.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.2.0.css" />
+		<style>
+			body {
+				background: #f1eef5;
+			}
+		</style>
+	</head>
+	<body>
+		<!--	<header class="border-b" >
+		<b tapmode="hover" onclick="api.closeWin();" class="ic-back"></b>
+		<div class="title">
+		个人设置
+		</div>
+		</header>-->
+		<div class="aui-input-row">
+			<label>手机号</label>
+			<input type="text" id="phone" readonly="readonly" />
+			<!--<input type="text" class="mui-input-clear" placeholder="请输入手机号" id="phone">-->
+		</div>
+		<!--<span id="realname" ></span>-->
+		<input type="text" id="realname" placeholder="请输入姓名" />
+		<input type="hidden" id="alipay" placeholder="请输入支付宝" />
+		<input type="hidden" id="weixin" placeholder="请输入微信" />
+		<!--<span id=""></span>-->
+		<input type="text" id="address" placeholder="请输入您的地址" />
+		<div id="printer_name" style="display: none">
+		<input type="text" id="printer_name" placeholder="请输入您的小票打印机名称" />
+		</div>
+		<div id="beilv" style="display: none">
+		<input type="number" id="beilv_pifajia" placeholder="批发价/成本价" />
+		<input type="number" id="beilv_huiyuanjia" placeholder="会员价/成本价" />
+		<input type="number" id="beilv_lingshoujia" placeholder="零售价/成本价" />
+		</div>
+		<div id="position_setting" style="display: none">
+			<!--<input type="text" id="shop_name" placeholder="请输入店名" />-->
+			<input type="text" id="shop_name" placeholder="请输入店名" />
+			<div id="position_set" onclick="position_set();">
+				绑定店铺位置
+			</div>
+			共享店铺信息
+			<input type="checkbox" class="aui-switch" id="is_position">
+		</div>
+		<div onclick="submit_setting();">
+			确定
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var is_position;
+		apiready = function() {
+			if (!$api.getStorage("printer_name")) {
+				$api.setStorage("printer_name", '');
+			}
+			$api.byId("phone").value = $api.getStorage("mobile");
+			$api.byId("shop_name").value = $api.getStorage("shop_name");
+			$api.byId("beilv_pifajia").value = $api.getStorage("beilv_pifajia");
+			$api.byId("beilv_huiyuanjia").value = $api.getStorage("beilv_huiyuanjia");
+			$api.byId("beilv_lingshoujia").value = $api.getStorage("beilv_lingshoujia");
+			$api.byId("realname").value = $api.getStorage("realname");
+			$api.byId("alipay").value = $api.getStorage("alipay");
+			$api.byId("weixin").value = $api.getStorage("weixin");
+			$api.byId("address").value = $api.getStorage("address");
+			$api.byId("printer_name").value = $api.getStorage("printer_name");
+			if ($api.getStorage('is_pid') == 1) {
+				$api.byId('position_setting').style.display = "";
+				$api.byId('is_position').checked = ($api.getStorage("is_position") == 1) ? true : false;
+			}
+			if ($api.getStorage('is_checkoutscaner') == 1) {
+				$api.byId('printer_name').style.display = "";
+			}
+			if ($api.getStorage('is_addproduct') == 1) {
+				$api.byId('beilv').style.display = "";
+			}
+		};
+		function position_set() {
+			api.openWin({
+				name : 'personer_map_index',
+				url : 'personer_map_index.html'
+			});
+		}
+
+		function submit_setting() {
+			if ($api.byId('is_position').checked) {
+				is_position = 1;
+			} else {
+				is_position = 2;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/personer_setting.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						is_pid : $api.getStorage('is_pid'),
+						shop_name : $api.byId('shop_name').value,
+						//beilv_pifajia : $api.byId('beilv_pifajia').value,
+						//beilv_huiyuanjia : $api.byId('beilv_huiyuanjia').value,
+						//beilv_lingshoujia : $api.byId('beilv_lingshoujia').value,
+						realname : $api.byId('realname').value,
+						alipay : $api.byId('alipay').value,
+						weixin : $api.byId('weixin').value,
+						address : $api.byId('address').value,
+						is_position : is_position
+					}
+				}
+			}, function(ret, err) {
+			//alert(JSON.stringify(ret));
+			//alert(JSON.stringify(err));
+				if (ret) {
+					if (ret.code == 200800) {
+						alert('设置成功');
+						$api.setStorage("shop_name", $api.byId("shop_name").value);
+						$api.setStorage("realname", $api.byId("realname").value);
+						$api.setStorage("alipay", $api.byId("alipay").value);
+						$api.setStorage("weixin", $api.byId("weixin").value);
+						$api.setStorage("address", $api.byId("address").value);
+						$api.setStorage("is_position", is_position);
+						$api.setStorage("printer_name", $api.byId("printer_name").value);
+						$api.setStorage("beilv_pifajia", $api.byId("beilv_pifajia").value);
+						$api.setStorage("beilv_huiyuanjia", $api.byId("beilv_huiyuanjia").value);
+						$api.setStorage("beilv_lingshoujia", $api.byId("beilv_lingshoujia").value);
+						api.execScript({
+							name : 'root',
+							script : "title_rename();"
+						});
+					} else if (ret.code == 200801) {
+						alert('已设置');
+						$api.setStorage("printer_name", $api.byId("printer_name").value);
+						$api.setStorage("beilv_pifajia", $api.byId("beilv_pifajia").value);
+						$api.setStorage("beilv_huiyuanjia", $api.byId("beilv_huiyuanjia").value);
+						$api.setStorage("beilv_lingshoujia", $api.byId("beilv_lingshoujia").value);
+						
+					} else {
+						alert('网络错误1');
+					}
+				}else{
+					alert('网络错误');
+				}
+			});
+		}
+
+		function winreload() {
+			window.location.reload();
+		}
+	</script>
+</html>

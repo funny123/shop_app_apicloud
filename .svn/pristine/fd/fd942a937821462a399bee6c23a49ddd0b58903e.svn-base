@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css"> 
+		*{margin:0;padding:0;list-style-type:none;}
+		/* star */
+		#star{position:relative;width:100%;height:40px;background:#fff;line-height:40px;padding:7px;}		
+		#star ul,#star span{float:left;display:inline;height:24px;line-height:24px;}
+		#star ul{margin:2px 10px 0 10px;}
+		#star li{float:left;width:20px;cursor:pointer;text-indent:-9999px;background:url(../../image/star.png) no-repeat;}
+		#star strong{color:#f60;padding-left:10px; font-weight: 100}
+		#star li.on{background-position:0 -28px;}
+		#star p{position:absolute;top:20px;width:159px;height:60px;display:none;background:url(../../image/pingk.gif) no-repeat;padding:7px 10px 0;}
+		#star p em{color:#f60;display:block;font-style:normal;}
+		textarea.ask-text{
+			width: 100%;
+			border: none;
+			height: 120px;
+			font-size: 14px;
+			margin-bottom: 0;
+		}
+		.aui-btn-ff9800{background:#ff9800;color:#fff;border:0;}
+		</style>
+	</head>
+	<body>
+		<div style="height: 8px;"></div>
+		<div id="star">
+			<span style="color:#333;line-height: 26px;font-size: 14px;padding-left: 10px;">总体评价</span>
+			<ul>
+				<li><a href="javascript:;">1</a></li>
+				<li><a href="javascript:;">2</a></li>
+				<li><a href="javascript:;">3</a></li>
+				<li><a href="javascript:;">4</a></li>
+				<li><a href="javascript:;">5</a></li>
+			</ul>
+			<span style="font-size: 14px;"></span>
+			<p></p>
+		</div><!--star end-->
+		<div class="aui-line-x"></div>
+	 	<div class="aui-form">
+	 		<textarea placeholder="长度在1-300个字之间,写下您的购买体验可以给其他朋友参考~" class="ask-text"></textarea>
+	 		<div class="aui-text-right aui-padded-10"><button class="aui-btn aui-btn-ff9800" tapmode onclick="loadAvatar()">添加图片</button></div>
+	 	</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript">		
+		function loadAvatar() {
+			//var user = $api.getStorage('user');
+			//var user_token = user.user_token;
+			api.actionSheet({
+				title : '选择图片来源',
+				cancelTitle : '取消',
+				buttons : ['照相机', '相册']
+			}, function(ret, err) {
+				if (3 == ret.buttonIndex) {
+					return;
+				}
+				var sourceType = 'album';
+				if (1 == ret.buttonIndex) {
+					sourceType = 'camera';
+				}
+				api.getPicture({
+					sourceType : sourceType,
+					encodingType : 'jpg',
+					mediaValue : 'pic',
+					destinationType : 'base64',
+					allowEdit : true,
+					quality : 100,
+					targetWidth : 500,
+					targetHeight : 300,
+					saveToPhotoAlbum : false
+				}, function(ret, err) {
+					if (ret) {
+						var systemType = api.systemType;
+					}
+				});
+			});
+		}
+		window.onload = function ()
+		{
+			var oStar = document.getElementById("star");
+			var aLi = oStar.getElementsByTagName("li");
+			var oUl = oStar.getElementsByTagName("ul")[0];
+			var oSpan = oStar.getElementsByTagName("span")[1];
+			var oP = oStar.getElementsByTagName("p")[0];
+			var i = iScore = iStar = 0;
+			var aMsg = [
+						"很不满意|不喜欢",
+						"不满意|效果不好",
+						"一般|一般",
+						"满意|不错",
+						"非常满意|很好"
+						]
+			
+			for (i = 1; i <= aLi.length; i++)
+			{
+				aLi[i - 1].index = i;
+				//鼠标移过显示分数
+				aLi[i - 1].onmouseover = function ()
+				{
+					fnPoint(this.index);
+					//浮动层显示
+					//oP.style.display = "block";
+					//计算浮动层位置
+					oP.style.left = oUl.offsetLeft + this.index * this.offsetWidth - 104 + "px";
+					//匹配浮动层文字内容
+					oP.innerHTML = "<em><b>" + this.index + "</b> 星 " + aMsg[this.index - 1].match(/(.+)\|/)[1] + "</em>" + aMsg[this.index - 1].match(/\|(.+)/)[1]
+				};
+				//鼠标离开后恢复上次评分
+				aLi[i - 1].onmouseout = function ()
+				{
+					fnPoint();
+					//关闭浮动层
+					oP.style.display = "none"
+				};
+				//点击后进行评分处理
+				aLi[i - 1].onclick = function ()
+				{
+					iStar = this.index;
+					oP.style.display = "none";
+					oSpan.innerHTML = "<strong>" + (this.index) + " 星</strong> (" + aMsg[this.index - 1].match(/\|(.+)/)[1] + ")"
+				}
+			}
+			//评分处理
+			function fnPoint(iArg)
+			{
+				//分数赋值
+				iScore = iArg || iStar;
+				for (i = 0; i < aLi.length; i++) aLi[i].className = i < iScore ? "on" : "";	
+			}
+		};
+	</script>
+</html>

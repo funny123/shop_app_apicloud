@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/local_product_cat.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+	<article class="article">
+		<div class="top_fixed">
+			<div class="top">
+				<div class="focus">新增商品分类</div>
+				<a href="local_product_cat_list.html">商品分类列表</a>
+			</div>
+		</div>
+		<form class="form">
+			<div class="list">
+				<div>
+					<label>选择商品分类</label>
+					<select id="bigcat">
+						<option value="0">请选择大类</option>
+						<option value="0">新增大类</option>
+					</select>
+				</div>
+				<div>
+					<label>输入分类名称</label>
+					<input type="text" placeholder="请输入分类名称" id="ProductCatName">
+				</div>
+			</div>
+
+			<button type="button" onclick="product_cat_add_submit();">提交</button>
+		</form>
+	</article>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var db;
+	//	var SupplierContact;
+	//	var SupplierTel;
+	apiready = function() {
+		db = api.require('db');
+		//			var table = document.body.querySelector('.aui-list');
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_ProductCat where pid=0 order by catid asc"
+		}, function(ret, err) {
+			if (ret.data.length > 0) {
+				//			alert(ret2.data.length);
+				for (var i = 0; i <= ret.data.length - 1; i++) {
+					var str = "<option value=" + ret.data[i].catid + ">" + ret.data[i].ProductCatName + "</option>";
+					$api.append($api.byId('bigcat'), str);
+				}
+			}
+		});
+	};
+	function product_cat_add_submit() {
+		if (!$api.byId('ProductCatName').value) {
+			alert('请输入商品分类名称');
+			return;
+		}
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/product_cat_add.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					boss_id : $api.getStorage('boss_id'),
+//					service_id : $api.getStorage('service_id'),
+					uuid : api.deviceId,
+					ProductCatName : $api.byId('ProductCatName').value,
+					pid : $api.byId('bigcat').value
+				}
+			}
+		}, function(data, err) {
+			if (data.code == 200902) {
+				//				var catid = data.catid;
+				//				//				alert(supid);
+				//				var ProductCatName = $api.byId('ProductCatName').value;
+				db.executeSql({
+					name : 'ghuog_db' + $api.getStorage('mobile'),
+					sql : "INSERT INTO T_ProductCat(catid,pid,ProductCatName,orderby)VALUES('" + data.catid + "','" + $api.byId('bigcat').value + "','" + $api.byId('ProductCatName').value + "','" + data.orderby + "')"
+				}, function(ret, err) {
+					if (ret.status) {
+//						alert(data.orderby);
+						alert('添加商品分类成功');
+						window.location.reload();
+					} else {
+						api.toast({
+							msg : '添加商品分类失败'
+						});
+						alert(JSON.stringify(err));
+					}
+				});
+			} else if (data.code == 200901) {
+				alert('添加商品分类失败，商品大类不存在');
+			} else {
+				api.alert({
+					msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+				});
+			}
+		});
+	}
+</script>

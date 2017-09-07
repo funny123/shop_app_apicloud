@@ -1,0 +1,454 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>编辑商品属性</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/local_product_type.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="property">
+			<div id="role1pic" style="display: none" class="photo">
+				<div class="shrink">
+					<div id='showpic'><div id='showpic1'></div></div>
+					<div>
+						<span onclick="camera();"></span>
+					</div>
+					<div>
+						<span onclick="library();"></span>
+					</div>
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>条形码</label>
+					<input type="number" class="input" placeholder="请输入条形码" id="barcode" readonly="readonly">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>商品名称</label>
+					<input type="text" placeholder="请输入商品名称" id="pro_name">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>供应商货号</label>
+					<input type="text" placeholder="请输入供应商货号" id="serial_number">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>品牌</label>
+					<input type="text" placeholder="请输入商品品牌" id="pro_brand">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>数量</label>
+					<input type="number" placeholder="请输入数量" id="pro_num">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>成本价</label>
+					<input type="number" placeholder="请输入成本价" id="cost_price">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>批发价</label>
+					<input type="number" placeholder="请输入批发价" id="wholesale_price">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>会员价</label>
+					<input type="number" placeholder="请输入会员价" id="member_price">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>零售价</label>
+					<input type="number" placeholder="请输入零售价" id="market_price">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>本店货号</label>
+					<input type="text" placeholder="请输入本店货号" id="position">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>规格</label>
+					<input type="text" placeholder="请输入规格" id="pro_spec">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>产地</label>
+					<input type="text" placeholder="请输入产地" id="pro_chandi">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>单位</label>
+					<input type="text" placeholder="请输入单位" id="pro_danwei">
+				</div>
+			</div>
+			<div class="meigege">
+				<div class="indent">
+					<label>商品分类</label>
+					<select name="product_cat" id="pro_cat_name">
+						<option value="0">请选择商品分类</option>
+					</select>
+				</div>
+			</div>
+			<div class="meigege meigege_tail">
+				<div class="indent">
+					<label>供应商</label>
+					<select name="supname" id="supname">
+						<option value="0">请选择供应商</option>
+					</select>
+				</div>
+			</div>
+			<div class="submit">
+				<div id="delpro" onclick="if(confirm('确实要删除吗?'))del_submit();">
+					删除
+				</div>
+				<div id="affirm" onclick="product_submit();">
+					确认
+				</div>
+			</div>
+		</article>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery.js"></script>
+<script type="text/javascript">
+	//	var FNScanner;
+	document.getElementById("delpro").style.width = '40%';
+	document.getElementById("affirm").style.width = '60%';
+	var db;
+	var barcode;
+	//	var pid;
+	var Proid;
+	apiready = function() {
+		if ($api.getStorage('is_bossshop') == 1) {
+			$api.byId('role1pic').style.display = "";
+		}
+		//		$api.fixStatusBar($api.dom('header'));
+		//		$api.dom('.title').innerHTML = '录入商品';
+		//		FNScanner = api.require('FNScanner');
+		db = api.require('db');
+		Proid = $api.getStorage('Proid');
+		//判断条形码是否存在
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_Product where Pid= '" + Proid + "'"
+		}, function(ret, err) {
+			if (ret.data.length > 0) {
+				//条形码存在只修改该商品信息
+				barcode = ret.data[0].BarCode;
+//				alert(ret.data[0].supId);
+				$api.byId('pro_name').value = ret.data[0].ProName;
+				$api.byId('barcode').value = barcode;
+				$api.byId('pro_num').value = ret.data[0].Num;
+				$api.byId('cost_price').value = ret.data[0].CostPrice;
+				$api.byId('market_price').value = ret.data[0].MarketPrice;
+				$api.byId('position').value = ret.data[0].ProPosition;
+				$api.byId('pro_spec').value = ret.data[0].ProSpec;
+				$api.byId('member_price').value = ret.data[0].MemberPrice;
+				$api.byId('wholesale_price').value = ret.data[0].WholesalePrice;
+				$api.byId('serial_number').value = ret.data[0].SerialNumber;
+				$api.byId('pro_brand').value = ret.data[0].Brand;
+				$api.byId('pro_chandi').value = ret.data[0].chandi;
+				$api.byId('pro_danwei').value = ret.data[0].danwei;
+				$api.setStorage('isdata', 1);
+//				$api.byId('showpic').innerHTML = "<img src='http:///propic/" + barcode + ".jpg' class='imagezt'>";
+				showpic();
+				if (ret.data[0].Status == 1) {
+					$api.setStorage('isstatus', 1);
+				} else if (ret.data[0].Status == 2) {
+					$api.setStorage('isstatus', 2);
+				} else if (ret.data[0].Status == 5) {
+					$api.setStorage('isstatus', 5);
+				}
+
+				db.selectSql({
+					name : 'ghuog_db' + $api.getStorage('mobile'),
+					sql : "SELECT * FROM T_Supplier"
+				}, function(ret2, err2) {
+					if (ret2.data != '') {
+						for (var k = 0; k <= ret2.data.length - 1; k++) {
+							if (ret2.data[k].supid == ret.data[0].supId) {
+								var str = "<option selected='selected' value=" + ret2.data[k].catid + ">" + ret2.data[k].SupplierName + "</option>";
+							} else {
+								var str = "<option value=" + ret2.data[k].supid + ">" + ret2.data[k].SupplierName + "</option>";
+							}
+							$api.append($api.byId('supname'), str);
+						}
+					}
+				});
+				//商品分类
+				db.selectSql({
+					name : 'ghuog_db' + $api.getStorage('mobile'),
+					sql : "SELECT * FROM T_ProductCat order by orderby asc"
+				}, function(ret3, err3) {
+					if (ret3.data != '') {
+						for (var k = 0; k <= ret3.data.length - 1; k++) {
+							if (ret3.data[k].pid > 0) {
+								var word = '___ ';
+							} else {
+								var word = '';
+							}
+							if (ret3.data[k].catid == ret.data[0].ProCat) {
+								var str = "<option selected='selected' value=" + ret3.data[k].catid + ">" + word + ret3.data[k].ProductCatName + "</option>";
+							} else {
+								var str = "<option value=" + ret3.data[k].catid + ">" + word + ret3.data[k].ProductCatName + "</option>";
+							}
+							$api.append($api.byId('pro_cat_name'), str);
+						}
+					}
+				});
+			} else {
+				alert('商品不存在或未同步');
+				api.closeWin({
+				});
+			}
+		});
+
+	};
+
+	
+	$(document).ready(function(){
+$("#cost_price").blur(function(){
+    //alert(11);
+    $api.byId('wholesale_price').value = ($api.byId('cost_price').value * $api.getStorage("beilv_pifajia")).toFixed(2);
+    $api.byId('member_price').value = ($api.byId('cost_price').value * $api.getStorage("beilv_huiyuanjia")).toFixed(2);
+    $api.byId('market_price').value = ($api.byId('cost_price').value * $api.getStorage("beilv_lingshoujia")).toFixed(2);
+  });
+$("#wholesale_price").blur(function(){
+    //alert(11);
+    $api.byId('member_price').value = ($api.byId('wholesale_price').value * ($api.getStorage("beilv_huiyuanjia")/$api.getStorage("beilv_pifajia"))).toFixed(2);
+    $api.byId('market_price').value = ($api.byId('wholesale_price').value * ($api.getStorage("beilv_lingshoujia")/$api.getStorage("beilv_pifajia"))).toFixed(2);
+});
+});
+	
+	function showpic() {
+		if ($api.getStorage('is_bossshop') == 1) {
+			$api.byId('showpic1').innerHTML = "<img src='http://ririqiang.com/ghuog/upload_file/product_img/" + $api.getStorage('boss_id') + '.' + barcode + ".jpg'>";
+		}
+	}
+
+	function camera() {
+		api.getPicture({
+			sourceType : 'camera',
+			encodingType : 'jpg',
+			mediaValue : 'pic',
+			destinationType : 'url',
+			allowEdit : true,
+			quality : 50,
+			targetWidth : 800,
+			targetHeight : 800,
+			saveToPhotoAlbum : false
+		}, function(ret, err) {
+			if (ret.data) {
+				//				alert(JSON.stringify(ret));
+				//				alert(ret.data);
+				api.toast({
+					msg : '图片上传中'
+				});
+				if (ret.data) {
+					api.ajax({
+						url : 'http://ririqiang.com/ghuog/api_shop/product_upload_pic.php',
+						method : 'post',
+						data : {
+							values : {
+								mobile : $api.getStorage('mobile'),
+								token : $api.getStorage('token'),
+								barcode : barcode,
+								boss_id:$api.getStorage('boss_id')
+							},
+							files : {
+								upfile : ret.data
+							}
+						}
+					}, function(ret, err) {
+						if (ret.code == 200800) {
+							//							window.location.reload();
+							
+							setTimeout("showpic()", 2000);
+							//							$api.byId('showpic').innerHTML = "<img src='http:///propic/" + barcode + ".jpg' width='100px' height='100px'>";
+						} else {
+							api.toast({
+								msg : '网络错误'
+							});
+						}
+					});
+				}
+			}
+		});
+	}
+
+	function library() {
+		api.getPicture({
+			sourceType : 'library',
+			encodingType : 'jpg',
+			mediaValue : 'pic',
+			destinationType : 'url',
+			allowEdit : true,
+			quality : 100,
+			targetWidth : 800,
+			targetHeight : 800,
+			saveToPhotoAlbum : false
+		}, function(ret, err) {
+			if (ret.data) {
+				//				alert(JSON.stringify(ret));
+				//				alert(ret.data);
+				api.toast({
+					msg : '图片上传中'
+				});
+				if (ret.data) {
+					api.ajax({
+						url : 'http://ririqiang.com/ghuog/api_shop/product_upload_pic.php',
+						method : 'post',
+						data : {
+							values : {
+								mobile : $api.getStorage('mobile'),
+								token : $api.getStorage('token'),
+								barcode : barcode,
+								boss_id:$api.getStorage('boss_id')
+//								is_bossshop:$api.getStorage('is_bossshop')
+								//								picdata : ret.base64Data
+							},
+							files : {
+								upfile : ret.data
+							}
+						}
+					}, function(ret, err) {
+						//						alert(ret.code);
+						if (ret.code == 200800) {
+							//							window.location.reload();
+							setTimeout("showpic()", 2000);
+							//							$api.byId('showpic').innerHTML = "<img src='http:///propic/" + barcode + ".jpg' width='100px' height='100px'>";
+						} else {
+							api.toast({
+								msg : '网络错误'
+							});
+							//							$api.byId('showpic').innerHTML = "<img src='http:///propic/" + $api.getStorage('barcode') + ".jpg' width='100px' height='100px'>";
+						}
+					});
+				}
+			} 
+		});
+	}
+
+	//插入商品
+	function product_submit() {
+		//	var status;
+		//if($api.getStorage('role')==1 && $api.getStorage('isdata') == 0 && $api.getStorage('is_upload_add_pro_pic')==0)
+		var ProCat = $api.byId('pro_cat_name').value;
+		var supId = $api.byId('supname').value;
+		var ProName = $api.byId('pro_name').value;
+		var Num = $api.byId('pro_num').value;
+		var CostPrice = $api.byId('cost_price').value;
+		var MarketPrice = $api.byId('market_price').value;
+		var ProPosition = $api.byId('position').value;
+		var ProSpec = $api.byId('pro_spec').value;
+		if (!ProName) {
+			alert('请输入商品名称');
+			return;
+		} else if (MarketPrice == 0) {
+			alert('请输入正确的销售价');
+			return false;
+		} else if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(MarketPrice))) {
+			alert('请输入正确的销售价');
+			return false;
+		} else if (ProCat == 0) {
+			alert('请选择商品分类');
+			return;
+		} 
+//		else if (supId == 0) {
+//			alert('请选择供应商');
+//			return;
+//		}
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_ProductCat where catid=" + ProCat
+		}, function(ret3, err3) {
+			if (ret3.data[0].pid == 0) {
+				alert('不能选择大类');
+			} else {
+				var d = new Date();
+				var AddTime = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+				if ($api.getStorage('isstatus') == 1) {
+					var status = 1;
+				} else if ($api.getStorage('isstatus') == 2) {
+					var status = 2;
+				} else if ($api.getStorage('isstatus') == 5) {
+					var status = 2;
+				}
+				db.executeSql({
+					name : 'ghuog_db' + $api.getStorage('mobile'),
+					sql : "UPDATE T_Product SET MemberPrice='" + $api.byId('member_price').value + "',WholesalePrice='" + $api.byId('wholesale_price').value + "',SerialNumber='" + $api.byId('serial_number').value + "',Brand='" + $api.byId('pro_brand').value + "',ProCat='" + ProCat + "',ProSpec='" + ProSpec + "',ProName='" + ProName + "',CostPrice='" + CostPrice + "',MarketPrice='" + MarketPrice + "',Status='" + status + "',ProPosition='" + ProPosition + "',supId='" + supId + "',chandi='" + $api.byId('pro_chandi').value + "',danwei='" + $api.byId('pro_danwei').value + "' where Pid= '" + Proid + "'"
+				}, function(ret, err) {
+					if (ret.status) {
+						//					api.toast({
+						//						msg : '商品更新成功'
+						//					});
+						alert('商品更新成功');
+						api.closeWin({
+						});
+					} else {
+						alert(err.msg);
+					}
+				});
+			}
+		});
+	}
+
+	function del_submit() {
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/upload_delete_info.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					uuid : api.deviceId,
+					tablename : 'T_Product',
+					idname : 'Pid',
+					idvalue : $api.getStorage('Proid'),
+					role : $api.getStorage('role')
+				}
+			}
+		}, function(data, err) {
+//			alert(data.code);
+			if (data.code == 200800) {
+				db.executeSql({
+					name : 'ghuog_db' + $api.getStorage('mobile'),
+					sql : "delete from T_Product where Pid=" + $api.getStorage('Proid')
+				}, function(ret, err) {
+					if (ret.status) {
+						alert('商品删除成功');
+						api.closeWin({
+						});
+					} else {
+					}
+				});
+			} else if (data.code == 200806) {
+				alert('此商品已删除');
+				api.closeWin({
+				});
+			} else {
+				alert(JSON.stringify(data));
+			}
+		});
+	}
+</script>

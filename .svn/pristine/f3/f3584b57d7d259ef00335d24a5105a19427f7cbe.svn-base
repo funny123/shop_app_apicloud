@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-tab-nav {
+				width: 100%;
+				display: box;
+				display: -webkit-box;
+				box-sizing: border-box;
+				font-size: 16px;
+				height: 40px;
+				background-color: #fff;
+				overflow: hidden;
+			}
+			.aui-tab-nav li {
+				height: 40px;
+				line-height: 40px;
+				box-flex: 1;
+				-webkit-box-flex: 1;
+				box-sizing: border-box;
+				text-align: center;
+				color: #666;
+				border-bottom: 2px solid transparent;
+				width: 100%;
+			}
+			.aui-counter-box {
+			    width: 100%;
+			    padding: 0;
+			    line-height: 26px;
+			    color:#848f94;
+			    font-size:14px;
+			}
+			.aui-list-view .aui-img-object {
+			    max-width: 60px;
+			    height: 60px;
+			    line-height: 60px;
+			    border:1px solid #ECF0F1;
+			    border-radius: 4px;
+			}
+			.aui-list-view {
+			    background-color:#F3F3F3;
+			}
+			.aui-list-view-cell {
+			    position: relative;
+			    padding: 12px 15px;
+			    overflow: hidden;
+			    -webkit-transform-style: preserve-3d;
+			    transform-style: preserve-3d;
+			    -webkit-touch-callout: none;
+			    background:#fff;
+			    margin-bottom:8px;
+			}
+			.aui-list-view-cell:after {
+			    border-bottom:0px solid #e2e2e2;
+			    display: block;
+			    content: '';
+			    position: absolute;
+			    top: 0;
+			    right: 0;
+			    bottom: 0;
+			    left: 0;
+			    -webkit-transform-origin: 0 0;
+			    -webkit-transform: scale(1);
+			    pointer-events: none;			    
+			}
+			.aui-list-view-cell:last-child:after {
+			    border-bottom: 0px solid #e2e2e2;
+			}
+			.aui-clearfix{height:5px;}
+		</style>
+	</head>
+	<body>
+		<div class="aui-tab aui-tab-warning aui-padded-5">
+            <ul class="aui-tab-nav aui-tab-border" id="demo2">
+                <li class="active">未完成</li>
+                <li>已完成</li>
+                <li>已取消</li>
+            </ul>
+        </div>
+        <div class="aui-content">
+	        <ul class="aui-list-view">
+	            <li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openWinto('order_detail_head','../goods/order_detail_head')">
+	            	<h5>订单编号:150625412684</h5>
+	            	<div class="aui-line-x" style="margin: 5px 0 8px 0;"></div>
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left">12个/盒</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            x 1
+	                        </div>
+	                    </div>	                    
+	                </div>
+	                <div class="aui-clearfix"></div><!--当这里显示多个商品的时候, 必须添加此div  用于控制浮动-->
+	                
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left">12个/盒</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            x 1
+	                        </div>
+	                    </div>	                    
+	                </div>
+	                <div class="aui-clearfix"></div><!--当这里显示多个商品的时候, 必须添加此div  用于控制浮动-->
+	                
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left">12个/盒</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            x 1
+	                        </div>
+	                    </div>	                    
+	                </div>
+	                
+	                <div class="aui-line-x" style="margin: 17px 0 8px 0;"></div>
+	                	<p class="aui-text-right">共一个商品 实付金额: <span class="aui-text-danger">￥50.50</span></p>
+	                <div class="aui-line-x" style="margin: 8px 0 5px 0;"></div>
+	                <div class="aui-text-right">
+	                	<div class="aui-btn aui-btn-outlined">取消订单</div>
+	                	<div class="aui-btn aui-btn-info" tapmode onclick="openWinto('comment_goods_head','../member/comment_goods_head');" >去评价</div>
+	                	<div class="aui-btn aui-btn-warning aui-btn-outlined" tapmode onclick="openWinto('order_status_head','../goods/order_status_head');">查看物流</div>
+	                </div>	                
+	            </li>
+	           
+	            <li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openWinto('order_detail_head','../goods/order_detail_head')">
+	            	<h5>订单编号:150625412684</h5>
+	            	<div class="aui-line-x" style="margin: 5px 0 8px 0;"></div>
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left">12个/盒</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            x 1
+	                        </div>
+	                    </div>	                    
+	                </div>
+	                <div class="aui-line-x" style="margin: 17px 0 8px 0;"></div>
+	                	<p class="aui-text-right">共一个商品 实付金额: <span class="aui-text-danger">￥50.50</span></p>
+	                <div class="aui-line-x" style="margin: 8px 0 5px 0;"></div>
+	                <div class="aui-text-right">
+	                	<div class="aui-btn aui-btn-outlined">取消订单</div>
+	                	<div class="aui-btn aui-btn-warning aui-btn-outlined">立即支付</div>
+	                </div>	                
+	            </li>
+	            
+	            <li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openWinto('order_detail_head','../goods/order_detail_head')">
+	            	<h5>订单编号:150625412684</h5>
+	            	<div class="aui-line-x" style="margin: 5px 0 8px 0;"></div>
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left">12个/盒</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            x 1
+	                        </div>
+	                    </div>	                    
+	                </div>
+	                <div class="aui-line-x" style="margin: 17px 0 8px 0;"></div>
+	                	<p class="aui-text-right">共一个商品 实付金额: <span class="aui-text-danger">￥50.50</span></p>
+	                <div class="aui-line-x" style="margin: 8px 0 5px 0;"></div>
+	                <div class="aui-text-right">
+	                	<div class="aui-btn aui-btn-outlined">取消订单</div>
+	                	<div class="aui-btn aui-btn-warning aui-btn-outlined">立即支付</div>
+	                </div>	                
+	            </li>
+	        </ul>
+	    </div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">		
+		apiready = function() {
+			api.parseTapmode();
+				
+		};
+	</script>
+</html>

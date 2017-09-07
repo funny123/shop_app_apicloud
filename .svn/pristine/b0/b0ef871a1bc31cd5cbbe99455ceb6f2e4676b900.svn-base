@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+		<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+		<title>Hello APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<style>
+			#con {
+				margin: 200px;
+				font-size: 24px;
+			}
+			ul {
+				margin-bottom: 1px;
+			}
+			ul li {
+				margin: 1px 2px;
+				padding: 1px;
+				color: #000;
+				word-wrap: break-word;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="con"></div>
+		<div id="main">
+			<div class="aui-content aui-margin-b-15">
+				<ul class="aui-list aui-media-list">
+					<li class="aui-list-item">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-title">
+								品类中心
+							</div>
+							<div class="aui-row aui-row-padded">
+								<div class="aui-col-xs-4">
+									<img src="../image/demo1.png"/>
+								</div>
+								<div class="aui-col-xs-4">
+									<img src="../image/demo2.png" />
+								</div>
+								<div class="aui-col-xs-4">
+									<img src="../image/demo3.png" />
+								</div>
+								<div class="aui-col-xs-4">
+									<img src="../image/demo1.png" />
+								</div>
+								<div class="aui-col-xs-4">
+									<img src="../image/demo2.png" />
+								</div>
+								<div class="aui-col-xs-4">
+									<img src="../image/demo3.png" />
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="aui-list-item-title">
+						好货推荐
+					</li>
+				</ul>
+				<div class="aui-content">
+					<ul class="aui-list aui-media-list" id="list"></ul>
+				</div>
+				<!--<li class="aui-list-item" >
+				<div class="aui-media-list-item-inner">
+				<div class="aui-list-item-media">
+				<img src="../image/demo1.png">
+				</div>
+				<div class="aui-list-item-inner">
+				<div class="aui-list-item-text">
+				<div class="aui-list-item-title">
+				带有媒体的列表二
+				</div>
+				<div class="aui-list-item-right">
+				08:00
+				</div>
+				</div>
+				<div class="aui-list-item-text">
+				在下方我们加入了aui-info信息条
+				</div>
+				</div>
+				</div>
+				<div class="aui-info" style="padding-top:0">
+				<div class="aui-info-item">
+				<img src="../image/liulangnan.png" style="width:1rem" class="aui-img-round" /><span class="aui-margin-l-5">流浪男</span>
+				</div>
+				<div class="aui-info-item">
+				2015-07-14 10:31
+				</div>
+				</div>
+				</li>-->
+				<!--</ul>-->
+			</div>
+		</div>
+		<!--<label id="con">Hello APP</label>
+		<div id='sys-info'></div>-->
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var UIScrollPicture;
+		apiready = function() {
+			UIScrollPicture = api.require('UIScrollPicture');
+			UIScrollPicture.open({
+				rect : {
+					x : 0,
+					y : 0,
+					w : api.winWidth,
+					h : api.winHeight / 3
+				},
+				data : {
+					paths : ['widget://res/img/banner-gonggong_RA.jpg', 'widget://res/img/banner-qingdaoyanzhou_WA.jpg', 'widget://res/img/gongyong2_RB.jpg'],
+					//					captions : ['apicloud', 'apicloud', 'apicloud', 'apicloud']
+				},
+				styles : {
+					//					caption : {
+					//						height : 35,
+					//						color : '#E0FFFF',
+					//						size : 13,
+					//						bgColor : '#696969',
+					//						position : 'bottom'
+					//					},
+					//					indicator : {
+					//						align : 'center',
+					//						color : '#FFFFFF',
+					//						activeColor : '#DA70D6'
+					//					}
+				},
+				placeholderImg : 'widget://res/slide1.jpg',
+				contentMode : 'scaleToFill',
+				interval : 3,
+				fixedOn : 'main',
+				loop : true,
+				fixed : false
+			}, function(ret, err) {
+				if (ret) {
+					//					alert(JSON.stringify(ret));
+				} else {
+					//					alert(JSON.stringify(err));
+				}
+			});
+			headList(1);
+		};
+		// 获取信息
+		function headList(page) {
+			api.showProgress({
+				title : '加载中',
+				modal : false
+			});
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=get_recommend_goods&branch_no=5',
+				method : 'post',
+				//			data: {
+				//				values: {
+				//					classid: classid,
+				//					page: _page
+				//				}
+				//			}
+			}, function(ret, err) {
+				if (ret) {
+					alert(JSON.stringify(ret.data));
+					for (var i = 0; i < ret.data.length - 1; i++) {
+						var str = '<li class="aui-list-item" tapmode onclick="fnOpenContent(\'' + ret.data[i].no + '\')">';
+						str = str + '<div class="aui-media-list-item-inner">';
+						str = str + '<div class="aui-list-item-media">';
+						str = str + '<img width= "150" height="130" src="' + ret.data[i].images + '">';
+						str = str + '</div>';
+						str = str + '<div class="aui-list-item-inner">';
+						str = str + '<div class="aui-list-item-text">';
+						str = str + '<div class="aui-list-item-title">' + ret.data[i].name + '</div>';
+						// str = str + '<div class="aui-list-item-right">08:00</div>';
+						str = str + '</div>';
+						str = str + '<div class="aui-list-item-text">';
+						str = str + ret.data[i].name;
+						str = str + '</div>';
+						str = str + '</div>';
+						str = str + '</div>';
+						str = str + '<div class="aui-info" style="padding-top:0">';
+						str = str + '</div>';
+						str = str + '</li>';
+						$api.append($api.byId('list'), str);
+						//
+						//					dataLoading = false;
+						//					fnCacheImage(ret, 0);
+					}
+					api.hideProgress();
+					api.refreshHeaderLoadDone();
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		}
+
+		// 下拉加载更多
+		function fnInitPushRefresh() {
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 200
+				}
+			}, function(ret, err) {
+				_page = parseInt($api.getStorage("currentPage")) + 1;
+				// alert(_page);
+				$api.setStorage("currentPage", _page);
+				headList(_page);
+			});
+		};
+	</script>
+</html>

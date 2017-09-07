@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/supplier.css" type="text/css" rel="stylesheet" />
+
+	</head>
+	<body>
+		<article class="article">
+			<div class="top_fixed">
+			<div class="top four">
+				<a href="supplier_manage.html">新增供应商</a>
+				<a href="supplier_list.html">供应商列表</a>
+				<div class="focus">新增分类</div>
+				<a href="supplier_cat_list.html">分类列表</a>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="add_classify choose">
+				<label>供应商分类</label>
+				<input type="text" placeholder="请输入名称" id="SupplierCatName">
+			</div>
+			<button type="button" id="reg" onclick="supplier_cat_add_submit();">提交</button>
+		</div>
+		
+					</article>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var db;
+	//	var SupplierContact;
+	//	var SupplierTel;
+	apiready = function() {
+		db = api.require('db');
+	};
+	function supplier_cat_add_submit() {
+		if (!$api.byId('SupplierCatName').value) {
+			alert('请输入供应商分类名称');
+			return;
+		}
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/supplier_cat_add.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					boss_id : $api.getStorage('boss_id'),
+//					service_id : $api.getStorage('service_id'),
+					uuid : api.deviceId,
+					SupplierCatName : $api.byId('SupplierCatName').value
+				}
+			}
+		}, function(data, err) {
+			if (data.code == 200902) {
+				var catid = data.catid;
+//								alert(catid);
+				var SupplierCatName = $api.byId('SupplierCatName').value;
+				db.executeSql({
+					name : 'ghuog_db' + $api.getStorage('mobile'),
+					sql : "INSERT INTO T_SupplierCat(catid,SupplierCatName)VALUES('" + catid + "','" + SupplierCatName + "')"
+				}, function(ret, err) {
+					if (ret.status) {
+						api.toast({
+							msg : '添加供应商分类成功'
+						});
+						window.location.reload();
+					} else {
+						api.toast({
+							msg : '添加供应商分类失败'
+						});
+						alert(JSON.stringify(err));
+					}
+				});
+			} else {
+				api.alert({
+					msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+				});
+			}
+		});
+	}
+</script>

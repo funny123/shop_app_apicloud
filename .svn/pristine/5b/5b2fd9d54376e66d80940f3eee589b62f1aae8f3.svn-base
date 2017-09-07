@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/member_card.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+			<div class="top_fixed">
+				<div class="top supplier">
+					<a href="member_card.html">会员卡充值</a>
+					<a href="member_card_create.html">会员卡创建</a>
+					<div class="focus">会员卡查询</div>
+				</div>
+			</div>
+			<div class="wrap">
+				<div class="choose inquiry">
+					<label>会员卡号</label>
+					<input type="text" id="card_num" placeholder="会员卡号" onkeypress="if(event.keyCode==13) {submit_card_num();return false;}" />
+					<span onclick="submit_card_num();">查询</span>
+				</div>
+				<div class="choose inquiry">
+					<label>会员手机号</label>
+					<input type="number" id="mobile" placeholder="会员手机号" />
+					<span onclick="submit_mobile();">查询</span>
+				</div>
+				<div class="choose">
+					<label>类型</label>
+					<select id="type">
+						<option value="1">普通会员</option>
+						<option value="8">批发会员</option>
+					</select>
+				</div>
+				<div class="choose">
+					<label>姓名</label>
+					<input type="text" id="realname" readonly="readonly"/>
+				</div>
+				<div class="choose">
+					<label>余额</label>
+					<input type="text" id="balance" readonly="readonly"/>
+				</div>
+				<div class="choose">
+					<label>身份证</label>
+					<input type="text" id="id_card" readonly="readonly"/>
+				</div>
+				<div class="thread">会员卡明细</div>
+				<div class="list" id="list">
+					
+				</div>
+				<button onclick="localMemberModify();">
+					修改
+				</button>
+			</div>
+		</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var local_member_id;
+		apiready = function() {
+		};
+		function submit_mobile() {
+			var sMobile = $api.byId('mobile').value;
+			if (!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(sMobile))) {
+				alert("请输入正确的手机号");
+				return false;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/member_card_search.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						search_mobile : $api.byId('mobile').value
+					}
+				}
+			}, function(data) {
+				if (data) {
+					if (data.code == 800500) {
+						//登录成功
+						local_member_id = data.data.id;
+						$api.byId('mobile').value = data.data.mobile;
+						$api.byId('realname').value = data.data.realname;
+						$api.byId('balance').value = data.data.balance;
+						$api.byId('id_card').value = data.data.id_card;
+						$api.byId('card_num').value = data.data.card_num;
+						$api.byId('type').value = data.data.type;
+						$api.byId("mobile").readOnly = true;
+						
+						if (data.cash_data) {
+							for (var i = 0; i < data.cash_data.length; i++) {
+								
+								var str = '<ul>';
+								var str = str + '<li><span>' + data.cash_data[i].time + '</span></li>';
+								var str = str + '<li><label>金额:</label><span>' + data.cash_data[i].account + '</span></li>';
+								var str = str + '<li><label>余额:</label><span>' + data.cash_data[i].balance + '</span></li>';
+								var str = str + '<li><label>事件:</label><span>' + data.cash_data[i].note + '</span></li>';
+								var str = str + '</ul>';
+								$api.append($api.byId('list'), str);
+							}
+						}
+					} else if (data.code == 800501) {
+						//登录失败
+						alert('没有此会员');
+					}
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+
+		function submit_card_num() {
+			var sMobile = $api.byId('card_num').value;
+			if (!(/^\w{6,15}$/.test(sMobile))) {
+				alert("请输入正确的会员卡号");
+				return false;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/member_card_num_search.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						search_mobile : $api.byId('card_num').value
+					}
+				}
+			}, function(data) {
+				if (data) {
+					if (data.code == 800500) {
+						//登录成功
+						local_member_id = data.data.id;
+						$api.byId('mobile').value = data.data.mobile;
+						$api.byId('realname').value = data.data.realname;
+						$api.byId('balance').value = data.data.balance;
+						$api.byId('id_card').value = data.data.id_card;
+						$api.byId('card_num').value = data.data.card_num;
+						$api.byId('type').value = data.data.type;
+						$api.byId("mobile").readOnly = true;
+						
+						if (data.cash_data) {
+							for (var i = 0; i < data.cash_data.length; i++) {
+								var str = '<ul>';
+								var str = str + '<li><span>' + data.cash_data[i].time + '</span></li>';
+								var str = str + '<li><label>金额:</label><span>' + data.cash_data[i].account + '</span></li>';
+								var str = str + '<li><label>余额:</label><span>' + data.cash_data[i].balance + '</span></li>';
+								var str = str + '<li><label>事件:</label><span>' + data.cash_data[i].note + '</span></li>';
+								var str = str + '</ul>';
+								$api.append($api.byId('list'), str);
+							}
+						}
+					} else if (data.code == 800501) {
+						//登录失败
+						alert('没有此会员');
+					}
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+
+		function localMemberModify() {
+			var sCard_num = $api.byId('card_num').value;
+			if (!(/^\w{6,15}$/.test(sCard_num))) {
+				alert("请输入正确会员卡号");
+				return false;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/member_card_modify.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						local_member_id : local_member_id,
+						card_num : $api.byId('card_num').value,
+						type : $api.byId('type').value,
+						realname : $api.byId('realname').value,
+						id_card : $api.byId('id_card').value
+					}
+				}
+			}, function(data) {
+				if (data) {
+					if (data.code == 800500) {
+						alert('修改成功');
+					} else if (data.code == 800501) {
+						alert('修改失败');
+					} else if (data.code == 410) {
+						alert('会员卡号已存在');
+					}
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+
+		function winreload() {
+			window.location.reload();
+		}
+	</script>
+</html>

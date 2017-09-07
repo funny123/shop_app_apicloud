@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/employee.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+			<div class="top_fixed">
+				<div class="top">
+					<a href="employee_manage.html">新增员工</a>
+					<div class="focus">
+						员工列表
+					</div>
+				</div>
+			</div>
+			<div class="list" id="list"></div>
+		</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script>
+		$api.setStorage("currentPage", 1);
+		apiready = function() {
+			loadData();
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				loadData();
+			});
+		}
+		function loadData() {
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/employee_list.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						page : $api.getStorage("currentPage")
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					if (!ret.data) {
+						api.toast({
+							msg : '没有更多了'
+						});
+						return;
+					}
+					var data = ret.data;
+					for ( i = 0; i < data.length; i++) {
+						var str = '<ul onclick="employeeDetail(' + data[i].id + ');">';
+						var str = str + '<li><label>姓名:</label><span>' + data[i].realname + '</span></li>';
+						var str = str + '<li><label>手机号:</label><span>' + data[i].phone + '</span></li>';
+						var str = str + '<li>&gt;</li>';
+						var str = str + '</ul>';
+						$api.append($api.byId('list'), str);
+					}
+					var new_page = parseInt($api.getStorage("currentPage")) + 1;
+					$api.setStorage("currentPage", new_page);
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+
+		function employeeDetail(id) {
+			$api.setStorage('eid', id);
+			api.openWin({
+				name : 'employee_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '员工信息',
+					url : 'employee_detail'
+				}
+			});
+		}
+
+		function winreload() {
+			window.location.reload();
+		}
+	</script>
+</html>

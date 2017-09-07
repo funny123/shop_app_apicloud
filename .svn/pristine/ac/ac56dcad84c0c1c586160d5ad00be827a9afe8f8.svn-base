@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-list-view .aui-img-object {
+				max-width: 80px;
+				height: 80px;
+				line-height: 80px;
+			}
+			.aui-list-view i.aui-iconfont {
+				padding: 5px;
+				border-radius: 4px;
+				margin-right: 10px;
+				color: #999;
+				font-size: 1.125em;
+			}
+			.aui-font12 {
+				font-size: 12px;
+				color: #848f94;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+			<ul class="aui-list-view" id="goods_list"></ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<!--<script type="text/javascript" src="../../script/zepto.min.js"></script>-->
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript">
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		var _page = 1, db;
+		$api.setStorage("currentPage", 1);
+		apiready = function() {
+			db = api.require('db');
+			//			alert(api.pageParam.clsno);
+			fnInitPull();
+			headList(1);
+			fnInitPushRefresh();
+			api.parseTapmode();
+		};
+		// 刷新
+		function fnInitPull() {
+			api.setRefreshHeaderInfo({
+				visible : true,
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#f0f0f0',
+				textColor : '#888',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...',
+				showTime : true
+			}, function(ret, err) {
+				api.refreshHeaderLoadDone();
+				headList(1);
+			});
+		};
+		// 获取信息
+		function headList(page) {
+			api.showProgress({
+				title : '加载中',
+				modal : false
+			});
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=test&parent=' + api.pageParam.clsno + '&page=' + page + '&loginname=' + $api.getStorage('loginname') + '&branch_no=' + $api.getStorage('branch_no') + '',
+				method : 'get',
+				data : {
+					values : {
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					//					alert(JSON.stringify(ret));
+					if (ret.data.length <= 0) {
+						api.toast({
+							msg : '没有了',
+							location : 'middle'
+						});
+						api.hideProgress();
+						api.refreshHeaderLoadDone();
+					}
+					for (var i = 0; i <= ret.data.length - 1; i++) {
+						//						var html = '<li class="aui-list-view-cell aui-img aui-counter-list">';
+						//						html = html + '<img class="aui-img-object aui-pull-left" src="' + ret.data[i].images + '" data-echo="' + ret.data[i].images + '" tapmode onclick="openGoods(\'./goods_content\',\'' + ret.data[i].no + '\')">';
+						//						html = html + '<div class="aui-img-body">';
+						//						html = html + '<div class="aui-text-default aui-ellipsis-1" tapmode onclick="openGoods(\'./goods_content\',\'' + ret.data[i].no + '\')">' + ret.data[i].name + '</div>';
+						//						html = html + '<span class="aui-carfont aui-ellipsis-1">' + ret.data[i].no + '</span>';
+						//						html = html + '<div class="aui-counter-box">';
+						//						html = html + '<div class="aui-pull-left aui-text-danger">' + ret.data[i].price + '</div>';
+						//						html = html + '<i class="aui-iconfont aui-icon-cart aui-pull-right">2</i>';
+						//						html = html + '</div>';
+						//						html = html + '</div>';
+						//						html = html + '</li>';
+						var html = '<li class="aui-list-view-cell aui-img aui-counter-list">';
+						html = html + '<img class="aui-img-object aui-pull-left" tapmode onclick="openGoods(\'../goods/goods_content\',\'' + ret.data[i].no + '\')" src="' + ret.data[i].images + '" data-echo="' + ret.data[i].images + '">';
+						html = html + '<div class="aui-img-body">';
+						html = html + '<div class="aui-text-default aui-ellipsis-1" tapmode onclick="openGoods(\'../goods/goods_content\',\'' + ret.data[i].no + '\')">' + ret.data[i].name + '</div>';
+						html = html + '<span class="aui-carfont aui-ellipsis-1">' + ret.data[i].no + '</span>';
+						html = html + '<div class="aui-counter-box">';
+						html = html + '<div class="aui-pull-left aui-text-danger">' + ret.data[i].price + '</div>';
+						html = html + '<div class="aui-text-default aui-pull-right" onclick="addCart(\'' + ret.data[i].no + '\',\'' + ret.data[i].name + '\',\'' + ret.data[i].price + '\',\'' + ret.data[i].images + '\');"><i class="aui-iconfont aui-icon-cart"></i></div>';
+						html = html + '</div>';
+						html = html + '</div>';
+						html = html + '</li>';
+						$api.append($api.byId('goods_list'), html);
+						api.hideProgress();
+						api.refreshHeaderLoadDone();
+						//					dataLoading = false;
+						//					fnCacheImage(ret, 0);
+					}
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		}
+
+		// 下拉加载更多
+		function fnInitPushRefresh() {
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 200
+				}
+			}, function(ret, err) {
+				_page = parseInt($api.getStorage("currentPage")) + 1;
+				// alert(_page);
+				$api.setStorage("currentPage", _page);
+				headList(_page);
+			});
+		};
+		function addCart(no,name,price,img) {
+//			alert(no);
+			db.selectSql({
+				name : 'cart',
+				sql : "SELECT * FROM Cart WHERE No='" + no + "'"
+			}, function(ret, err) {
+				if (ret.status) {
+//				alert(JSON.stringify(ret));
+					if (ret.data.length >= 1) {
+						db.executeSql({
+							name : 'cart',
+							sql : "UPDATE Cart SET Num=(select max(Num)+1 from Cart) WHERE no='" + no + "'"
+							//				sql : "INSERT INTO Cart(Id)VALUES(1)"
+						}, function(ret, err) {
+							if (ret.status) {
+								//					alert(JSON.stringify(ret));
+								if (ret.status == true) {
+									api.toast({
+										msg : '添加购物车成功'
+									});
+								}
+							} else {
+								alert(JSON.stringify(err));
+							}
+						});
+					} else {
+						db.executeSql({
+							name : 'cart',
+							sql : "INSERT INTO Cart(Id,No,Name,Num,Price,Img,status,sum_price)VALUES(null,'" + no + "','" + name + "',1,'" + price + "','" + img + "',1,'" + price + "*1')"
+							//				sql : "INSERT INTO Cart(Id)VALUES(1)"
+						}, function(ret, err) {
+							if (ret.status) {
+								//					alert(JSON.stringify(ret));
+								if (ret.status == true) {
+									api.toast({
+										msg : '添加购物车成功'
+									});
+								}
+							} else {
+								alert(JSON.stringify(err));
+							}
+						});
+					}
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+			var jsfun = 'window.location.reload();';
+						api.execScript({
+							name : 'root',
+							frameName : 'footer_tab_3',
+							script : jsfun
+						});
+		}
+	</script>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/supplier.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+		<div class="wrap edit">
+			<div class="choose">
+				<label>分类名称</label>
+				<input type="text" placeholder="供应商分类名称" id="SupplierCatName">
+			</div>
+			<div class="submit">
+				<div onclick="if(confirm('确实要删除吗?'))del_submit();">删除</div>
+				<div onclick="modify_submit();">修改</div>
+			</div>
+		</div>
+	</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var db;
+		apiready = function() {
+			db = api.require('db');
+			catid = $api.getStorage('suppliercatid');
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_SupplierCat where catid= '" + catid + "'"
+			}, function(ret, err) {
+				if (ret.data.length > 0) {
+					//					alert(JSON.stringify(ret));
+					$api.byId('SupplierCatName').value = ret.data[0].SupplierCatName;
+				} else {
+					alert('供应商分类不存在，请刷新列表页');
+					api.closeWin({
+					});
+				}
+			});
+		};
+		function modify_submit() {
+			if (!$api.byId('SupplierCatName').value) {
+				alert('请输入供应商分类名称');
+				return;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/supplier_cat_modify.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						//						cartid : 36,
+						uuid : api.deviceId,
+						SupplierCatName : $api.byId('SupplierCatName').value,
+						catid : $api.getStorage('suppliercatid')
+					}
+				}
+			}, function(data, err) {
+//				alert(data.code);
+				if (data.code == 200902) {
+					var SupplierCatName = $api.byId('SupplierCatName').value;
+					var catid = $api.getStorage('suppliercatid');
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						//						sql : "UPDATE T_SupplierCat SET SupplierCatName='" + SupplierCatName + "' where catid='" + $api.getStorage('suppliercatid') + "')"
+						sql : "UPDATE T_SupplierCat SET SupplierCatName='" + SupplierCatName + "' where catid='" + catid + "'"
+					}, function(ret, err) {
+						if (ret.status) {
+							api.toast({
+								msg : '修改供应商分类成功'
+							});
+//							alert(JSON.stringify(ret));
+						} else {
+							api.toast({
+								msg : '修改供应商分类失败'
+							});
+							alert(JSON.stringify(err));
+						}
+					});
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		}
+
+		function del_submit() {
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/upload_delete_info.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						uuid : api.deviceId,
+						tablename : 'T_SupplierCat',
+						idname : 'catid',
+						idvalue : $api.getStorage('suppliercatid')
+					}
+				}
+			}, function(data, err) {
+				alert(data.code);
+				if (data.code == 200800) {
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "delete from T_SupplierCat where catid=" + $api.getStorage('suppliercatid')
+					}, function(ret, err) {
+						if (ret.status) {
+							alert('供应商分类删除成功');
+							api.closeWin({
+							});
+						} else {
+						}
+					});
+				} else if (data.code == 200806) {
+					alert('此供应商分类已删除');
+					api.closeWin({
+					});
+				} else if (data.code == 200808) {
+					alert('请先删除此分类下的供应商');
+				} else {
+					alert(JSON.stringify(data));
+				}
+			});
+		}
+	</script>
+</html>

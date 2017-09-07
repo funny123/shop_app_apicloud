@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		    <style type="text/css">
+		   .aui-checkbox {
+			    width: 20px;
+			    height: 20px;
+			    position: relative;
+			    margin: 8px 15px;
+			    background: #ffffff;
+			    border: solid 1px #dddddd;
+			    border-radius: 4px;
+			    display: table;
+			    float: left;
+			    -webkit-appearance: none;
+			    transition: background-color ease 0.1s;
+			}
+			.aui-counter-box {
+			    width: 100%;
+			    padding: 0;
+			    line-height: 26px;
+			}
+			.aui-list-view .aui-img-object {
+		    max-width: 70px;
+		    height: 70px;
+		    line-height: 70px;
+			}
+			
+			.aui-list-view-cell:last-child:after {
+			  	left:0;
+			}
+			.aui-list-view-cell:after {
+				left: 15px;
+			}
+			.aui-list-view-cell:active{
+	background: #fff;
+}
+.aui-nav .aui-bar-tab {
+        background: #34495E;
+    }
+    .aui-nav .aui-bar-tab li .aui-iconfont,
+    .aui-nav .aui-bar-tab li p {
+        color: #fff;
+    }
+    .aui-nav .aui-bar-tab li.active .aui-iconfont,
+    .aui-nav .aui-bar-tab li.active p {
+        color: #14bd7c;
+    }
+    .aui-nav {
+        background: #ff9900;
+        font-size: 18px;
+        color: #fff;
+        text-align: center;
+    }
+    .aui-nav  div {
+        height: 55px;
+    }
+    .aui-nav .buy {
+        line-height: 55px;
+    }
+    .blue {
+        background: #fff;
+    }
+    .blue .aui-iconfont,
+    .blue p {
+        color: #999;
+    }
+    .buy{background:#FF9800;}
+.aui-input-row:first-child:after {
+    border-top: 0px solid #c8c7cc;}
+    .aui-input-row .aui-input-addon{width:auto;}
+    .aui-input-row:last-child:after {
+    border-bottom: 0px solid #000;
+}
+    .heji{font-size:14px; vertical-align: middle;white-space: nowrap; line-height:55px;}
+		  </style>
+	</head>
+	<body>	
+		<div class="aui-tips aui-tips-warning">
+	        <div class="aui-tips-content aui-arrow-right aui-ellipsis-1 aui-text-777776">
+	            <i class="aui-iconfont aui-icon-notificationfill"></i>
+	            消息提示条消息提示条消息提示条消息提示条消息提示条
+	        </div>
+	    </div>
+		<div class="aui-content">
+        <ul class="aui-list-view">
+            <li class="aui-list-view-cell aui-img aui-counter-list">
+                <input class="aui-pull-left aui-checkbox aui-checkbox-danger" type="checkbox">
+                <img class="aui-img-object aui-pull-left" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+                <div class="aui-img-body">
+                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+                   <span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>
+                    <div class="aui-counter-box">
+                        <div class="aui-pull-left aui-text-danger">￥ 88元</div>
+                        <div class="aui-text-default aui-pull-right">
+                            x 1
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img aui-counter-list">
+                <input class="aui-pull-left aui-checkbox aui-checkbox-danger" type="checkbox">
+                <img class="aui-img-object aui-pull-left" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+                <div class="aui-img-body">
+                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+                   <span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>
+                    <div class="aui-counter-box">
+                        <div class="aui-pull-left aui-text-danger">￥ 88元</div>
+                        <div class="aui-counter aui-pull-right">
+                            <div class="aui-counter-minus aui-disabled"></div>
+                            <input class="aui-counter-input" type="text" value="1" readOnly>
+                            <div class="aui-counter-plus"></div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img aui-counter-list">
+                <input class="aui-pull-left aui-checkbox aui-checkbox-danger" type="checkbox">
+                <img class="aui-img-object aui-pull-left" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+                <div class="aui-img-body">
+                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+                   <span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>
+                    <div class="aui-counter-box">
+                        <div class="aui-pull-left aui-text-danger">￥ 88元</div>
+                        <div class="aui-counter aui-pull-right">
+                            <div class="aui-counter-minus aui-disabled"></div>
+                            <input class="aui-counter-input" type="text" value="1" readOnly>
+                            <div class="aui-counter-plus"></div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img aui-counter-list">
+                <input class="aui-pull-left aui-checkbox aui-checkbox-danger" type="checkbox">
+                <img class="aui-img-object aui-pull-left" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+                <div class="aui-img-body">
+                   <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+                   <span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>
+                    <div class="aui-counter-box">
+                        <div class="aui-pull-left aui-text-danger">￥ 88元</div>
+                        <div class="aui-counter aui-pull-right">
+                            <div class="aui-counter-minus aui-disabled"></div>
+                            <input class="aui-counter-input" type="text" value="1" readOnly>
+                            <div class="aui-counter-plus"></div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+	<footer class="aui-nav" id="aui-footer">        
+        <div class="aui-col-xs-12">
+            <div class="aui-col-xs-4 blue" id="collection-btn" tapmode="">
+                <div class="aui-input-row">
+	                <input class="aui-radio aui-radio-warning" type="radio" name="demo">
+	                <label class="aui-input-addon">全选</label>
+	            </div>
+            </div>  
+            <div class="aui-col-xs-4 blue aui-text-danger heji" id="collection-btn" tapmode="">
+	            合计:￥ 88元
+	        </div>         
+            <div class="aui-col-xs-4 buy" id="main" tapmode="">
+	            结算（5）
+	        </div>
+        </div>
+    </footer>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/echo.min.js"></script>
+	<script type="text/javascript">	
+	
+		apiready = function() {
+			api.parseTapmode();
+		}
+	</script>
+</html>

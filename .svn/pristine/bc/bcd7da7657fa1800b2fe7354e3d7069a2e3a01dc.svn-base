@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/good_return.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+			<div class="top_fixed">
+				<div class="top">
+					<a href="good_return.html">退货录入</a>
+					<div class="focus">
+						退货记录
+					</div>
+				</div>
+			</div>
+			<div class="list" id="list"></div>
+		</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script>
+		$api.setStorage("currentPage", 1);
+		// 结合下拉刷新
+		apiready = function() {
+			loadData();
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				loadData();
+			});
+		}
+		function loadData(currentPage) {
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/return_list.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						//						pageSize : pageSize,
+						page : $api.getStorage("currentPage")
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					if (!ret.data) {
+						return;
+					}
+					var data = ret.data;
+					for ( i = 0; i < data.length; i++) {
+						var str = '<ul>';
+						var str = str + '<li><label>条码:</label><span>' + data[i].barcode + '</span></li>';
+						var str = str + '<li><label>商品:</label><span>' + data[i].pro_name + '</span></li>';
+						var str = str + '<li>' + data[i].time + '</li>';
+						var str = str + '</ul>';
+						$api.append($api.byId('list'), str);
+					}
+					var new_page = parseInt($api.getStorage("currentPage")) + 1;
+					$api.setStorage("currentPage", new_page);
+				} else {
+					alert('网络错误');
+					
+				}
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/inquiry.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+	<article class="article">
+		<div class="top_fixed">
+			<div class="top">
+				<a href="inquiry_index.html">提交询价</a>
+				<div class="focus">我的询价</div>
+			</div>
+		</div>
+
+		<div class="list" id="list">
+			
+		</div>
+		
+		</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script>
+
+		$api.setStorage("currentPage", 1);
+
+		apiready = function() {
+			loadData();
+
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 0
+				}
+			}, function(ret, err) {
+				loadData();
+			});
+		}
+		
+		function loadData() {
+
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/inquiry_list.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						page : $api.getStorage("currentPage")
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+				if(!ret.data){return;}
+					var data = ret.data;
+					
+					
+					
+						
+						
+					for ( i = 0; i < data.length; i++) {
+	
+
+						
+						var str = '<ul onclick="inquiryDetail(' + data[i].id + ');">';
+						var str = str + '<li>' + data[i].time + '</li>';
+						var str = str + '<li><label>状态:</label><span>' + data[i].status + '</span></li>';
+						var str = str + '<li><label>商品名:</label><span>' + data[i].pro_name + '</span></li>';
+						var str = str + '<li><label>数量:</label><span>' + data[i].pro_num + '</span></li>';
+						
+						var str = str + '</ul>';
+						
+						
+						$api.append($api.byId('list'), str);
+					}
+					var new_page = parseInt($api.getStorage("currentPage")) + 1;
+					$api.setStorage("currentPage", new_page);
+				} else {
+					alert('网络错误');
+	
+				}
+			});
+		}
+
+		
+		function inquiryDetail(id) {
+			$api.setStorage('iid',id);
+			api.openWin({
+				name : 'inquiry_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '询价详情',
+					url : 'inquiry_detail'
+				}
+			});
+		}
+		
+	</script>
+</html>

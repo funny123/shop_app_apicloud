@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.2.0.css" />
+	</head>
+	<body>
+		<div id="main" class="flex-con" >
+			<!--<div class="mui-input-row">
+			<textarea name="feedback" id="feedback" cols="30" rows="10" placeholder="请输入意见建议"></textarea>
+			</div>-->
+			<div>
+				<label>金额</label>
+				<input type="number" placeholder="请输入金额" id="money" value="">
+			</div>
+			<br>
+			<div>
+				<input type="text" id="note" placeholder="备注" />
+			</div>
+			<!--			<div onclick="scaner();">
+			扫码支付宝条码收款
+			</div>
+			<br>
+			<br>
+			<br>-->
+			<div>
+				<label>支付宝条码</label>
+				<!--<form action="#" onsubmit="inputcode();">-->
+				<input type="text" placeholder="请输入支付宝条码" id="auth_code" onkeypress="if(event.keyCode==13) {inputcode();return false;}">
+				<!--</form>-->
+			</div>
+			<div onclick="inputcode();">
+				确定
+			</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	//	var FNScanner;
+	var db;
+	apiready = function() {
+		$api.byId('auth_code').focus();
+		db = api.require('db');
+		//		FNScanner = api.require('FNScanner');
+		if ($api.getStorage('total_price') != 0) {
+			$api.byId('money').value = $api.getStorage('total_price');
+		} else {
+			$api.byId('money').value = '';
+		}
+	};
+	//	function scaner() {
+	//		FNScanner.openScanner({
+	//			autorotation : false
+	//		}, function(ret, err) {
+	//			if (ret.eventType == 'success') {
+	//				api.ajax({
+	//					url : 'http:///paypay/testpay.php',
+	//					method : 'post',
+	//					data : {
+	//						values : {
+	//							auth_code : ret.content,
+	//							money : $api.byId('money').value,
+	//							sellerid : '2088221949709740'
+	//						}
+	//					}
+	//				}, function(data, err) {
+	//					//					alert(data.code);
+	//					if (data.code == 600600) {
+	//						//						$api.setStorage('total_price', '');
+	//						//						$api.setStorage('ordernum', '');
+	//						alert('收款成功');
+	//						updatestatus();
+	//						printOrder();
+	//					} else {
+	//						alert('收款未成功！');
+	//					}
+	//				});
+	//			} else if (ret.eventType == 'cancel') {
+	//				//			$api.setStorage('total_price','');
+	//				alert('扫码取消');
+	//				updatestatus();
+	//				if ($api.getStorage('ordernum') > 100) {
+	//					printOrder();
+	//				} else if ($api.getStorage('ordernum') == 1) {
+	//					$api.setStorage('ordernum', '');
+	//					$api.setStorage('total_price', '');
+	//					$api.setStorage('order_type', '');
+	//					api.execScript({
+	//						name : 'member_card',
+	//						frameName : 'member_card',
+	//						script : 'update_member_money();'
+	//					});
+	//					setTimeout("api.closeWin({});", 1000);
+	//				}
+	//			}
+	//		});
+	//	}
+	function inputcode() {
+		var money = $api.byId('money').value;
+		var sAuth_code = $api.byId('auth_code').value;
+		if (money == 0) {
+			alert('请输入正确的金额');
+			return false;
+		}
+		else if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(money))) {
+			alert('请输入正确的金额');
+			return false;
+		}
+		
+		
+		else if (!(/^\d{15,20}$/.test(sAuth_code))) {
+			alert("请输入正确的付款码");
+			return false;
+		} 
+		api.ajax({
+			url : 'http://huodong1.ghuog.com/paypay/testpay.php',
+			method : 'post',
+			data : {
+				values : {
+					auth_code : $api.byId('auth_code').value,
+					money : $api.byId('money').value,
+					sellerid : '2088221949709740'
+				}
+			}
+		}, function(data, err) {
+			//alert(data.code+$api.byId('auth_code').value+$api.byId('money').value+data.data.sub_msg);
+			if (data.code == 600600) {
+				//				$api.setStorage('total_price', '');
+				//				$api.setStorage('ordernum', '');
+				alert('收款成功');
+				updatestatus();
+				printOrder();
+				api.execScript({
+					name : 'local_checkout_scaner',
+					script : 'winreload();'
+				});
+				setTimeout("api.closeWin({});", 1000);
+			} else {
+				alert('付款失败');
+			}
+		});
+	}
+
+	function updatestatus() {
+		db.executeSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "UPDATE T_CheckOut SET Status='1',Total='" + $api.byId('money').value + "' where OrderNum= '" + $api.getStorage('ordernum') + "'"
+		}, function(ret, err) {
+			if (ret.status) {
+			} else {
+			}
+		});
+		//时间
+		var d = new Date();
+		var m = (d.getMonth() + 1);
+		if (m < 10) {
+			m = "0" + m;
+		}
+		var r = d.getDate();
+		if (r < 10) {
+			r = "0" + r;
+		}
+		var h = d.getHours();
+		if (h < 10) {
+			h = "0" + h;
+		}
+		var mi = d.getMinutes();
+		if (mi < 10) {
+			mi = "0" + mi;
+		}
+		var se = d.getSeconds();
+		if (se < 10) {
+			se = "0" + se;
+		}
+		var TimeNow = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "INSERT INTO T_CashList(orderNo,time,sum,gathering,change,note,cashType,status)VALUES('" + $api.getStorage('ordernum') + "','" + TimeNow + "','" + $api.byId('money').value + "','0','0','" + $api.byId('note').value + "',3,1)"
+		}, function(ret, err) {
+		});
+	}
+
+	function printOrder() {
+		var printModule = api.require('posPrinter');
+		var param = {
+			'status' : 'bonded'
+		};
+		printModule.getBluetoothPrinters(param, function(ret, err) {
+			alert(JSON.stringify(ret));
+		});
+		//
+		var param = {
+			'address' : 'DC:0D:30:02:91:8F',
+			'pin' : '0000'
+		};
+		printModule.createBondToPrinter(param, function(ret, err) {
+			alert(JSON.stringify(ret));
+		});
+		//打印
+		//		var orderInfo;
+		var total = 0.0;
+		var d = new Date();
+		var m = (d.getMonth() + 1);
+		if (m < 10) {
+			m = "0" + m;
+		}
+		var r = d.getDate();
+		if (r < 10) {
+			r = "0" + r;
+		}
+		var h = d.getHours();
+		if (h < 10) {
+			h = "0" + h;
+		}
+		var mi = d.getMinutes();
+		if (mi < 10) {
+			mi = "0" + mi;
+		}
+		var se = d.getSeconds();
+		if (se < 10) {
+			se = "0" + se;
+		}
+		var CheckTime = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_CheckOut where OrderNum='" + $api.getStorage('ordernum') + "' order by id desc"
+		}, function(ret, err) {
+			if (ret.status) {
+				var str = "<CA>订单详情</CA><BR>";
+				var str = str + "商品　　　　　　数量　单价　小计<BR>";
+				var str = str + "-------------------------------<BR>";
+				for (var i = 0; i <= ret.data.length - 1; i++) {
+					var str = str + ret.data[i].ProName.substr(0, 7) + " ";
+					var str = str + ret.data[i].Num + "  ";
+					var str = str + ret.data[i].MarketPrice + ".00 ";
+					var str = str + ret.data[i].SubTotal + ".00 ";
+					var str = str + "<BR>";
+					total += parseFloat(ret.data[i].SubTotal);
+				}
+				var str = str + "-------------------------------<BR>";
+				var str = str + '总价:' + total + '<BR>';
+				var str = str + '收款方式：支付宝<BR>';
+				var str = str + '时间:' + CheckTime + '<BR>';
+				var str = str + " <BR> <BR> <BR>";
+				var printModule = api.require('posPrinter');
+				var param = {
+					'content' : str,
+					'copyNum' : 1
+				};
+				printModule.printOnBondedPrinter(param);
+			} else {
+				//					alert(JSON.stringify(err));
+			}
+		});
+		//		orderInfo = "<CA>测试打印</CA><BR>";
+		//		orderInfo += "名称　　　　　 单价  数量 金额<BR>";
+		//		orderInfo += "--------------------------------<BR>";
+		//		orderInfo += "番　　　　　　 1.0    1   1.0<BR>";
+		//		orderInfo += "番茄　　　　　 10.0   10  10.0<BR>";
+		//		orderInfo += "番茄炒　　　　 10.0   100 100.0<BR>";
+		//		orderInfo += "番茄炒粉　　　 100.0  100 100.0<BR>";
+		//		orderInfo += "番茄炒粉粉　　 1000.0 1   100.0<BR>";
+		//		orderInfo += "番茄炒粉粉粉粉 100.0  100 100.0<BR>";
+		//		orderInfo += "番茄炒粉粉粉粉 15.0   1   15.0<BR>";
+		//		orderInfo += "备注：快点送到<BR>";
+		//		orderInfo += "--------------------------------<BR>";
+		//		orderInfo += "合计：xx.0元<BR>";
+		//		orderInfo += "送货地点：xxxxxxxxxxxxxxxxx<BR>";
+		//		orderInfo += "联系电话：138000000000<BR>";
+		//		orderInfo += "订餐时间：2011-01-06 19:30:10<BR>";
+		//		orderInfo += " <BR> <BR>";
+		$api.setStorage('ordernum', '');
+		$api.setStorage('total_price', '');
+		$api.setStorage('order_type', '');
+		$api.setStorage('ordder', '');
+	}
+</script>

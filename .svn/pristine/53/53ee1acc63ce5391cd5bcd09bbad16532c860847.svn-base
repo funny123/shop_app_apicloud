@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+    .aui-content,
+    .aui-content-padded {
+        background: #ffffff;
+
+    }
+    .display-none{display:none}
+    .thumb {
+        position: relative;
+        max-height: 280px;
+        overflow: hidden;
+        margin-bottom: 0;
+    }
+    .thumb > img {
+        width: 100%;
+    }
+    .price-info {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: rgba(255,153,0,0.6);
+        height: 55px;
+        
+    }
+    .price {
+        margin-left: 15px;
+        color: #ffffff;
+        font-size: 16px;
+        line-height: 55px;
+    }
+    .price strong {
+        font-size: 26px;
+        margin: 0 5px;
+        font-weight: 400;
+    }
+    .price-info .aui-pull-right {
+        height: 55px;
+        width: 35%;
+        background: rgba(255,204,0,0.6);
+        padding-top: 10px;
+        text-align: center;
+    }
+    .price-info .aui-pull-right p {
+        color: #ff6600;
+        font-size: 12px;
+        margin-bottom: 0px;
+    }
+    .goods-basic-info {
+        padding: 10px;
+        overflow: hidden;
+    }
+    .goods-title {
+        margin-bottom: 5px;
+    }
+    .aui-tab-nav li.active {
+        color: #ff9900;
+        border-bottom: 2px #ff9900 solid;
+    }
+    .info {
+        padding: 10px;
+        overflow: hidden;
+        margin-bottom: 0;
+    }
+    .info img {
+        width: 100%;
+    }
+    .info p {
+        color: #666;
+    }
+    .aui-btn{margin:5px;font-size:12px;padding:4px 6px;}
+    .aui-guige{display: -webkit-box;padding:6px;}
+    .aui-avatar{ border-radius: 50%; }
+    .aui-list-view i.aui-iconfont {
+	    padding: 0px;
+	    top:-2px;
+	    border-radius:0px;
+	    margin:0;
+	    color: #e74c3c;
+	    font-size: 14px;
+	}
+	.aui-list-view-cell {
+    position: relative;
+    padding: 12px 2px;
+    overflow: hidden;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-touch-callout: none;
+}
+.aui-label{display: inline-block}
+    </style>
+</head>
+<body>
+    <section class="aui-content thumb">
+        <img src="../../image/pic.jpg">
+        <div class="price-info">
+            <span class="price">￥<strong>88.88</strong>元</span>
+            <div class="aui-pull-right">
+                <p style="text-decoration:line-through">原价：66.66 元</p>
+                <p>2016件已售</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="aui-content goods-basic-info">
+        <div class="goods-title">商品测试名称商品测试名称商品测试名称商品测试名称商品测试名称商品测试名称</div>
+        <h5 class="goods-title">商品测试名称商品测试名称商品测试名称商品测试名称商品测试名称商品测试名称</h5>
+        <p>
+            <label class="aui-label aui-label-danger">快递包邮</label> 
+            <label class="aui-label aui-label-success">你猜</label>
+        </p>
+    </section>
+    <div class="aui-content aui-col-xs-12 aui-guige">
+       	<p class="aui-col-xs-4 aui-text-center" style="padding:8px 5px;">选择规格</p>
+       	<div class="aui-col-xs-8">
+			<button class="aui-btn aui-btn-success aui-btn-outlined">200g/盒</button>
+			<button class="aui-btn aui-btn-success aui-btn-outlined">200g/盒</button>
+			<button class="aui-btn aui-btn-success aui-btn-outlined">200g/盒</button>
+			<button class="aui-btn aui-btn-success aui-btn-outlined">200g/盒</button>
+			<button class="aui-btn aui-btn-success aui-btn-outlined">200g/盒</button>
+			<button class="aui-btn aui-btn-success aui-btn-outlined">200g/盒</button>
+			<button class="aui-btn aui-btn-success aui-btn-outlined">200g/盒</button>
+		</div>
+    </div>
+    <section class="aui-tab">
+        <ul class="aui-tab-nav" id="demo1">
+            <li class="active">产品详情</li>
+            <li>用户评价(199)</li>
+        </ul>
+    </section>
+    <!--这个是商品描述-->
+    <section class="aui-content info con-pl ">
+        <p>商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述沙拉汁不够的，可联系客服购买~新鲜非洲冰草3斤装顺丰包邮，偏远地区除外。亲们：现在发货会加冰袋的哦 保证新鲜的哦。</p>
+        <img class="aui-img-object aui-pull-left" src="../../image/pic2.jpg" data-echo="../../image/pic2.jpg">
+    </section>
+    <!--这个是评价-->
+    <section class="aui-content info con-pl display-none">
+        <ul class="aui-list-view">
+            <li class="aui-list-view-cell aui-img">
+                <img class="aui-img-object aui-pull-left aui-avatar" src="../../image/pic2.jpg" data-echo="../../image/pic2.jpg">
+                <div class="aui-img-body">
+                    <div class="name">
+                    		<span class="" style="width:120px;display:inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">wo的名字wo的名字wo的名字</span>
+                    		<span class="name-icon" style="float: right">
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    		</span>
+                    	<p class="aui-ellipsis-2">图文列表缩略图在左边的样式，默认大小为80PX，文字介绍内容可以为一行也可以为两行，超出部分自动省略</p>	
+                    	</div>
+                    
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img">
+                <img class="aui-img-object aui-pull-left aui-avatar" src="../../image/pic2.jpg" data-echo="../../image/pic2.jpg">
+                <div class="aui-img-body">
+                    <div class="name">
+                    		<span class="" style="width:120px;display:inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">wo的名字wo的名字wo的名字</span>
+                    		<span class="name-icon" style="float: right">
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    		</span>
+                    	<p class="aui-ellipsis-2">图文列表缩略图在左边的样式，默认大小为80PX，文字介绍内容可以为一行也可以为两行，超出部分自动省略</p>	
+                    	</div>
+                    
+                </div>
+            </li>
+            <li class="aui-list-view-cell aui-img">
+                <img class="aui-img-object aui-pull-left aui-avatar" src="../../image/pic2.jpg" data-echo="../../image/pic2.jpg">
+                <div class="aui-img-body">
+                    <div class="name">
+                    		<span class="" style="width:120px;display:inline-block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">wo的名字wo的名字wo的名字</span>
+                    		<span class="name-icon" style="float: right">
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    			<i class="aui-iconfont aui-icon-favorfill"></i>
+                    		</span>
+                    	<p class="aui-ellipsis-2">图文列表缩略图在左边的样式，默认大小为80PX，文字介绍内容可以为一行也可以为两行，超出部分自动省略</p>	
+                    	</div>
+                    
+                </div>
+            </li>
+            <p class="aui-text-center aui-padded-10" tapmode onclick="openWinto('comment_list_goods_head','comment_list_goods_head')">查看更多</p>
+        </ul>
+    </section>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/echo.min.js"></script>
+<script type="text/javascript" src="../../script/zepto.min.js"></script>
+<script type="text/javascript">
+	echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		Zepto(function() {
+			$(".aui-tab-nav").on("tap", "li", function() {			
+				 $('.aui-tab-nav li').removeClass('active');
+				 $(this).addClass('active');
+				 var $ul = $('.con-pl');                 
+                 var $t = $(this).index();
+                 $ul.css('display','none');
+				 $ul.eq($t).css('display','block');					
+			});
+		});
+    apiready = function(){
+		api.parseTapmode();
+    }
+</script>
+</html>

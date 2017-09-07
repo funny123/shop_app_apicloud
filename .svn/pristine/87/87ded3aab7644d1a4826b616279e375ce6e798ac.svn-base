@@ -1,0 +1,58 @@
+
+.focus_vary:focus{
+	transition:border linear .1s,box-shadow linear .3s !important;
+	-moz-transition:border linear .1s,-moz-box-shadow linear .3s !important;
+	-webkit-transition:border linear .1s,-webkit-box-shadow linear .3s !important;
+	outline:none !important;
+	border: 0.1rem solid #0b973d !important;
+	box-shadow: 0 0 0.1rem 0.1rem #a7fcc5 !important;
+	-moz-box-shadow: 0 0 0.1rem 0.1rem #a7fcc5 !important;
+	-webkit-box-shadow: 0 0 0.1rem 0.1rem #a7fcc5 !important;
+}
+
+
+/** 头部 */
+.top_fixed {
+	margin: 0rem;
+	width: 100%;
+	height: 5.6rem;
+	position: fixed;
+	z-index: 20;
+	font-size: 1.3rem;
+	background-color: #ffffff;
+}
+.top_fixed .top {
+	margin: 1rem 0rem 0rem -13.7rem;
+	width: 27.0rem;
+	height: 3.6rem;
+	line-height: 3.4rem;
+	position: relative;
+	left: 50%;
+	border: 0.1rem solid #0b923b;
+	border-radius: 0.4rem;
+}
+.top_fixed .top div{
+	padding-top: 0.2rem;
+	width: 13.45rem;
+	height: 3.4rem;
+	text-align: center;
+	float: left;
+	color: #ffffff;
+	background-color: #0b923b;
+}
+.top_fixed .top a {
+	padding-top: 0.2rem;
+	width: 13.45rem;
+	height: 3.4rem;
+	text-align: center;
+	color: #0b923b;
+	float: left;
+	border-right: 0.1rem solid #0b923b;
+}
+.top_fixed .top .focus{
+
+}
+
+.top_fixed .top a:nth-last-child(1) {
+	border-right: 0rem;
+}

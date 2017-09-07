@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<style>
+			/*body {
+			 background: #6AB495;
+			 }*/
+		</style>
+	</head>
+	<body>
+		<!--map-->
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var personer_lon;
+		var personer_lat;
+		apiready = function() {
+			var map = api.require('bMap');
+			map.getLocation({
+				accuracy : '100m',
+				autoStop : true,
+				filter : 1
+			}, function(ret, err) {
+				if (ret.status) {
+					map.open({
+						rect : {
+							x : 0,
+							y : 0,
+							w : 'auto',
+							h : api.pageParam.height
+						},
+						center : {
+							lon : ret.lon,
+							lat : ret.lat
+						},
+						zoomLevel : 16,
+						showUserLocation : true,
+						fixedOn : api.frameName,
+						fixed : true
+					}, function(ret1) {
+						if (ret1.status) {
+						}
+					});
+					personer_lon = ret.lon;
+					personer_lat = ret.lat;
+				} else {
+					alert(err.code + 'qq');
+				}
+			});
+		};
+		function showUserLocation() {
+			api.toast({
+				msg : '定位中',
+				duration : 1500,
+				location : 'top'
+			});
+			var map = api.require('bMap');
+			map.showUserLocation({
+				isShow : true,
+				trackingMode : 'none'
+			});
+		}
+
+		function position_setting() {
+//			alert(personer_lon + personer_lat);
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/personer_position_setting.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						personer_lon : personer_lon,
+						personer_lat : personer_lat
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					if (ret.code == 200800) {
+						alert('绑定店铺位置成功');
+					} else if (ret.code == 200801) {
+						alert('绑定店铺位置失败');
+					} else {
+						alert('网络错误');
+					}
+				}
+			});
+		}
+	</script>
+</html>

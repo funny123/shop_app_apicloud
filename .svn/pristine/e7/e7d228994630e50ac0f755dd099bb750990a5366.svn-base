@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/member_card.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+
+		<article class="article">
+		<div class="top_fixed">
+			<div class="top supplier">
+				<a href="member_card.html">会员卡充值</a>
+				<div class="focus">会员卡创建</div>
+				<a href="member_card_search.html">会员卡查询</a>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="choose">
+				<label>会员卡号</label>
+				<input type="text" id="card_num" placeholder="会员卡号"/>
+			</div>
+			<div class="choose">
+				<label>会员类型</label>
+				<select id="type">
+					<option value="1">普通会员</option>
+					<option value="8">批发会员</option>
+				</select>
+			</div>
+			<div class="choose">
+				<label>姓名</label>
+				<input type="text" id="realname" placeholder="姓名" />
+			</div>
+			<div class="choose">
+				<label>身份证号</label>
+				<input type="text" id="id_card" placeholder="身份证号" />
+			</div>
+			<div class="choose">
+				<label>手机号码</label>
+				<input type="text" id="mobile" placeholder="手机号码" />
+			</div>
+			<div class="choose card_boutton">
+				<label>密码</label>
+				<input type="text" id="password" placeholder="密码" />
+			</div>
+			<button onclick="create();">创建</button>
+		</div>
+	</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+		};
+		function create() {
+			var sCard_num = $api.byId('card_num').value;
+			var sMobile = $api.byId('mobile').value;
+			var sPassword = $api.byId('password').value;
+			//			if ($api.byId('need_password').checked) {
+			//				need_password = 1;
+			//			} else {
+			//				need_password = 0;
+			//			}
+			if (!(/^\w{6,15}$/.test(sCard_num))) {
+				alert('请输入正确会员卡号');
+				return;
+			} else if (!$api.byId('realname').value) {
+				alert('请输入姓名');
+				return;
+			} else if (!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(sMobile))) {
+				alert("请输入正确的手机号");
+				return false;
+			} else if (!(/^\d{6,11}$/.test(sPassword))) {
+				alert('密码为6-12位数字');
+				return false;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/member_card_create.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+//						service_id : $api.getStorage('service_id'),
+						uuid : api.deviceId,
+						card_num : $api.byId('card_num').value,
+						type : $api.byId('type').value,
+						realname : $api.byId('realname').value,
+						id_card : $api.byId('id_card').value,
+						local_mobile : $api.byId('mobile').value,
+						password : $api.byId('password').value
+					}
+				}
+			}, function(data) {
+				if (data) {
+					if (data.code == 800200) {
+						//登录成功
+						alert('添加会员卡成功');
+						window.location.reload();
+					} else if (data.code == 509) {
+						//登录失败
+						alert('添加会员卡失败，请先开启连锁店功能');
+					} else if (data.code == 405) {
+						//登录失败
+						alert('添加会员卡失败');
+					} else if (data.code == 407) {
+						//登录失败
+						alert('会员手机号已存在');
+					} else if (data.code == 410) {
+						//登录失败
+						alert('会员卡号已存在');
+					}
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+	</script>
+</html>

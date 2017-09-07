@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.2.0.css" />
+	</head>
+	<body>
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-mobile"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="number" placeholder="手机号" id="mobile">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-lock"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="password" placeholder="密码" id="password">
+						</div>
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-display"></i>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="mui-content-padded" align="center">
+			<button type="button" class="mui-btn mui-btn-blue" id="login" onclick="login();">
+				登陆
+			</button>
+			<button type="button" class="mui-btn mui-btn-green" id="reg" onclick="user_reg();">
+				注册
+			</button>
+			<button type="button" class="mui-btn mui-btn-green" id="reset_password" onclick="reset_password();">
+				忘记密码
+			</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var db;
+		apiready = function() {
+			db = api.require('db');
+		};
+		function login() {
+			var sMobile = $api.byId('mobile').value;
+			var sPassword = $api.byId('password').value;
+			if (!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(sMobile))) {
+				alert("请输入正确的手机号");
+				return false;
+			} else if (!(/^\w{6,15}$/.test(sPassword))) {
+				alert('密码长度6-15位');
+				return false;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/user_login.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.byId("mobile").value,
+						password : $api.byId("password").value,
+						uuid : api.deviceId,
+						kehuduan:1
+					}
+				}
+			}, function(data) {
+			//alert(JSON.stringify(data));
+				if (data) {
+					if (data.code == 200) {
+						//登录成功
+						api.toast({
+							msg : '登录成功'
+						});
+						$api.setStorage("token", data.token);
+						$api.setStorage('mobile', data.data.phone);
+						$api.setStorage('uid', data.data.id);
+						$api.setStorage('alipay', data.data.alipay);
+						$api.setStorage('weixin', data.data.weixin);
+						$api.setStorage('realname', data.data.realname);
+						$api.setStorage('address', data.data.address);
+						$api.setStorage('caiwu', data.data.caiwu);
+						$api.setStorage('grade', data.data.grade);
+						$api.setStorage('end_date', data.data.end_date);
+						$api.setStorage('is_buy', data.data.is_buy);
+						$api.setStorage('is_inquiry', data.data.is_inquiry);
+						$api.setStorage('is_addproduct', data.data.is_addproduct);
+						$api.setStorage('is_checkoutscaner', data.data.is_checkoutscaner);
+						$api.setStorage('is_stock', data.data.is_stock);
+						$api.setStorage('is_map', data.data.is_map);
+						$api.setStorage('is_return', data.data.is_return);
+						$api.setStorage('is_checkout', data.data.is_checkout);
+						$api.setStorage('is_procat', data.data.is_procat);
+						$api.setStorage('is_sup', data.data.is_sup);
+						$api.setStorage('is_membercard', data.data.is_membercard);
+						$api.setStorage('is_stocktaking', data.data.is_stocktaking);
+						$api.setStorage('is_saleactiviy', data.data.is_saleactiviy);
+						$api.setStorage('is_o2oorder', data.data.is_o2oorder);
+						$api.setStorage('is_report', data.data.is_report);
+						$api.setStorage('service_id', data.data.service_id);
+						$api.setStorage('boss_id', data.data.boss_id);
+						$api.setStorage('role', data.data.role);
+						$api.setStorage('is_position', data.data.is_position);
+						$api.setStorage('shop_name', data.data.shop_name);
+						$api.setStorage('is_bossshop', data.data.is_bossshop);
+						$api.setStorage('is_zhiying', data.data.is_zhiying);
+//						$api.setStorage('beilv_pifajia', data.data.beilv_pifajia);
+//						$api.setStorage('beilv_huiyuanjia', data.data.beilv_huiyuanjia);
+//						$api.setStorage('beilv_lingshoujia', data.data.beilv_lingshoujia);
+						if (data.data.pid > 0) {
+							$api.setStorage('is_pid', 2);
+						} else {
+							$api.setStorage('is_pid', 1);
+						}
+						if (!$api.getStorage($api.getStorage('mobile') + '_db_version')) {
+							create_db();
+							//							$api.setStorage($api.getStorage('mobile') + '_db_version', 1);
+						} else {
+							open_db();
+							//							create_db();
+						}
+						api.execScript({
+    						name: 'root',
+    						script: "title_rename();"
+						});
+						api.execScript({
+    						name: 'root',
+    						frameName: 'win_home',
+    						script: "winreload();"
+						});
+						
+						setTimeout("close_to_win()", 300);
+					} else if (data.code == 402) {
+						//登录失败
+						alert('密码错误');
+					} else if (data.code == 403) {
+						//登录失败
+						alert('账号错误');
+					}
+				} else {
+					alert('111');
+				}
+			});
+		}
+		
+		function close_to_win() {
+			api.openWin({
+							name : 'personer_index',
+							url : './a_headbackindex.html',
+							pageParam : {
+								title : '个人中心',
+								url : 'personer_index'
+							}
+			});
+		}
+		//用户注册
+		function user_reg() {
+			api.openWin({
+				name : 'personer_reg',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '注册',
+					url : 'personer_reg'
+				}
+			});
+		}
+
+		//重置密码
+		function reset_password() {
+			api.openWin({
+				name : 'personer_resetpassword',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '重置密码',
+					url : 'personer_resetpassword'
+				}
+			});
+		}
+
+		//创建数据库
+		function create_db() {
+			db.openDatabase({
+				name : 'ghuog_db' + $api.getStorage('mobile')
+			}, function(ret, err) {
+				if (ret.status) {
+					api.ajax({
+						url : 'http://ririqiang.com/ghuog/api_shop/db_create.php',
+						method : 'post',
+						data : {
+							values : {
+								mobile : $api.getStorage('mobile'),
+								token : $api.getStorage('token')
+							}
+						}
+					}, function(ret1) {
+						//				alert(JSON.stringify(ret1.sqlword.length));
+						if (ret1.sqlword.length > 0) {
+							for (var i = 0; i < ret1.sqlword.length; i++) {
+								db.executeSql({
+									name : 'ghuog_db' + $api.getStorage('mobile'),
+									sql : ret1.sqlword[i]
+								}, function(ret2, err2) {
+									if (ret.status) {
+										//				alert([i]+'表创建成功');
+									}
+								});
+							}
+							api.toast({
+	                            msg:'数据库创建成功'
+                            });
+							var d10 = new Date().getTime() - 600000;
+							var d = new Date(d10);
+							var m = (d.getMonth() + 1);
+							if (m < 10) {
+								m = "0" + m;
+							}
+							var r = d.getDate();
+							if (r < 10) {
+								r = "0" + r;
+							}
+							var h = d.getHours();
+							if (h < 10) {
+								h = "0" + h;
+							}
+							var mi = d.getMinutes();
+							if (mi < 10) {
+								mi = "0" + mi;
+							}
+							var se = d.getSeconds();
+							if (se < 10) {
+								se = "0" + se;
+							}
+							var DbTime = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+							$api.setStorage($api.getStorage('mobile') + '_db_version', DbTime);
+							//							alert('dbv: '+$api.getStorage($api.getStorage('mobile') + '_db_version'));
+						}
+					});
+					//					db.executeSql({
+					//						name : 'ghuog_db' + $api.getStorage('mobile'),
+					//						sql : "create table T_Product(id integer primary key autoincrement,BarCode varchar(255) unique,Pid int(11) unique,ProName varchar(255),SerialNumber varchar(100),Brand varchar(100),Num int(11),AddTime datetime,CostPrice float,MarketPrice float,MemberPrice float,WholesalePrice float,ProPosition varchar(25),Status tinyint(1),supId int(10),ProSpec varchar(255),ProCat int(10))"
+					//					}, function(ret, err) {
+					//						if (ret.status) {
+					//							alert('商品表创建成功');
+					//						} else {
+					//						}
+					//					});
+					//					db.executeSql({
+					//						name : 'ghuog_db' + $api.getStorage('mobile'),
+					//						sql : "create table T_Stock(id integer primary key autoincrement,BarCode varchar(255),Num int(11),StockTime datetime,Note varchar(255),Status tinyint(1))"
+					//					}, function(ret, err) {
+					//						if (ret.status) {
+					//							alert('库存表创建成功');
+					//						} else {
+					//						}
+					//					});
+					//					db.executeSql({
+					//						name : 'ghuog_db' + $api.getStorage('mobile'),
+					//						sql : "create table T_CheckOut(id integer primary key autoincrement,ProName varchar(255),MarketPrice float,BarCode varchar(255),Num int(11),CheckTime datetime,OrderNum varchar(255),SubTotal float,Total float,Status tinyint(1),OrderType tinyint(1),ordder varchar(255))"
+					//					}, function(ret, err) {
+					//						if (ret.status) {
+					//							alert('出库表创建成功');
+					//						} else {
+					//						}
+					//					});
+					//					db.executeSql({
+					//						name : 'ghuog_db' + $api.getStorage('mobile'),
+					//						sql : "create table T_Supplier(id integer primary key autoincrement,pid integer not null,supid integer unique,SupplierName varchar(255),SupplierTel varchar(60),SupplierContact varchar(25),Status integer)"
+					//					}, function(ret, err) {
+					//						if (ret.status) {
+					//							alert('供应商表创建成功');
+					//						} else {
+					//						}
+					//					});
+					//					//供应商分类表
+					//					db.executeSql({
+					//						name : 'ghuog_db' + $api.getStorage('mobile'),
+					//						sql : "create table T_SupplierCat(id integer primary key autoincrement,pid integer,catid integer UNIQUE,SupplierCatName varchar(255))"
+					//					}, function(ret, err) {
+					//						if (ret.status) {
+					//							alert('供应商分类表创建成功');
+					//						} else {
+					//						}
+					//					});
+					//					//商品分类表
+					//					db.executeSql({
+					//						name : 'ghuog_db' + $api.getStorage('mobile'),
+					//						sql : "create table T_ProductCat(id integer primary key autoincrement,pid integer,catid integer UNIQUE,ProductCatName varchar(255),orderby float)"
+					//					}, function(ret, err) {
+					//						if (ret.status) {
+					//							alert('商品分类表创建成功');
+					//						} else {
+					//						}
+					//					});
+					//					//商品退货表
+					//					db.executeSql({
+					//						name : 'ghuog_db' + $api.getStorage('mobile'),
+					//						sql : "create table T_ProductReturn(id integer primary key autoincrement,barcode varchar(60),num integer,is_sell tinyint,time datetime,note varchar(255),reason varchar(255),status tinyint)"
+					//					}, function(ret, err) {
+					//						if (ret.status) {
+					//							alert('商品退货表创建成功');
+					//						} else {
+					//						}
+					//					});
+					//					//收款记录表
+					//					db.executeSql({
+					//						name : 'ghuog_db' + $api.getStorage('mobile'),
+					//						sql : "create table T_CashList(id integer primary key autoincrement,orderNo varchar(60),time datetime,note varchar(255),sum float,cashType tinyint,gathering float,change float,status tinyint)"
+					//					}, function(ret, err) {
+					//						if (ret.status) {
+					//							alert('收款记录表创建成功');
+					//						} else {
+					//						}
+					//					});
+				}
+			});
+		}
+
+		function open_db() {
+			db.openDatabase({
+				name : 'ghuog_db' + $api.getStorage('mobile')
+			}, function(ret, err) {
+				if (ret.status) {
+				}
+			});
+		}
+	</script>
+</html>

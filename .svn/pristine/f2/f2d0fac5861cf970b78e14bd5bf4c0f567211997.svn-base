@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<style>
+			body {
+			}
+		</style>
+	</head>
+	<body>
+		<div id="pro_name"></div>
+		<div id="barcode"></div>
+		<div id="market_price"></div>
+		<input type="number" id="pro_num" value="1"/>
+		<div onclick="submit();">
+			提交
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var db;
+		var BarCode;
+		var market_price;
+		var Num;
+		var ProName;
+		//		var StockNum;
+		var d = new Date();
+		var CheckTime = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+		//		var OrderNum = String(d.getFullYear()) + String((d.getMonth() + 1)) + String(d.getDate()) + String(d.getHours()) + String(d.getMinutes()) + String(d.getSeconds());
+		var SubTotal;
+		if (!$api.getStorage('ordernum')) {
+			var OrderNum = String(d.getFullYear()) + String((d.getMonth() + 1)) + String(d.getDate()) + String(d.getHours()) + String(d.getMinutes()) + String(d.getSeconds());
+			$api.setStorage('ordernum', OrderNum);
+		} else {
+			var OrderNum = $api.getStorage('ordernum');
+		}
+		apiready = function() {
+			db = api.require('db');
+			BarCode = api.pageParam.barcode;
+			Num = $api.byId('pro_num').value;
+			//判断条形码是否存在
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_Product where Barcode= '" + BarCode + "'"
+			}, function(ret, err) {
+				//条形码存在只修改该商品信息
+				if (ret.data.length > 0) {
+					$api.byId('pro_name').innerHTML = ret.data[0].ProName;
+					$api.byId('barcode').innerHTML = ret.data[0].BarCode;
+					$api.byId('market_price').innerHTML = ret.data[0].MarketPrice;
+					market_price = ret.data[0].MarketPrice;
+					ProName = ret.data[0].ProName;
+				} else {
+					alert("商品不存在");
+					api.closeFrame({
+					});
+				}
+			});
+		}
+		function submit() {
+			Num = $api.byId('pro_num').value;
+			if (!(/(^[1-9]\d*$)/.test(Num))) {
+				alert('请输入正确的数量');
+				return false;
+			}
+			SubTotal = parseInt(Num) * parseFloat(market_price);
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "INSERT INTO T_CheckOut(ProName,MarketPrice,BarCode,Num,CheckTime,OrderNum,SubTotal,status)VALUES('" + ProName + "','" + market_price + "','" + BarCode + "','" + Num + "','" + CheckTime + "','" + OrderNum + "','" + SubTotal + "',2)"
+			}, function(ret, err) {
+
+				api.execScript({
+					//							name : 'local_checkout',
+					frameName : 'local_checkout',
+					script : 'winreload();'
+				});
+				api.closeFrame({
+					name : 'local_checkout_detail'
+				});
+			});
+		}
+	</script>
+</html>

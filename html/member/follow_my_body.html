@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-list-view .aui-img-object {
+				max-width: 100px;
+				height: 100px;
+				line-height: 100px;
+			}
+			.aui-list-view i.aui-iconfont {
+				padding: 5px;
+				border-radius: 4px;
+				margin-right: 10px;
+				color: #999;
+				font-size: 1.125em;
+			}
+			.aui-font12 {
+				font-size: 12px;
+				color: #848f94;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+			<ul class="aui-list-view" id="goods_list">
+				<!--<li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openWinto('goods_show_win','../goods/goods_show_win');" v-for="res in result">
+				<img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+				<div class="aui-img-body">
+				<div class="aui-text-default aui-ellipsis-1">
+				茅山榴莲王 越南进口越南进口越南进口
+				</div>
+				<span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>
+				<div class="aui-counter-box">
+				<div class="aui-pull-left aui-font12">
+				关注时间: 2015-06-20
+				</div>
+				<div class="aui-text-default aui-pull-right">
+				<i class="aui-iconfont aui-icon-delete aui-text-FF9800n"></i>
+				</div>
+				</div>
+				</div>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript">
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		var _page = 1;
+		$api.setStorage("currentPage", 1);
+		apiready = function() {
+			//			alert(api.pageParam.clsno);
+			//			fnInitPull();
+			headList(1);
+			//			fnInitPushRefresh();
+			api.parseTapmode();
+		};
+		// 刷新
+		function fnInitPull() {
+			api.setRefreshHeaderInfo({
+				visible : true,
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#f0f0f0',
+				textColor : '#888',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...',
+				showTime : true
+			}, function(ret, err) {
+				api.refreshHeaderLoadDone();
+				headList(1);
+			});
+		};
+		// 获取信息
+		function headList(page) {
+			api.showProgress({
+				title : '加载中',
+				modal : false
+			});
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=collect&loginname=' + $api.getStorage('loginname') + '',
+				method : 'get',
+				data : {
+					values : {
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					//					alert(JSON.stringify(ret));
+					if (ret.data.length <= 0) {
+						api.toast({
+							msg : '没有收藏商品',
+							location : 'middle'
+						});
+						$api.append($api.byId('goods_list'), '没有收藏商品');
+						api.hideProgress();
+						api.refreshHeaderLoadDone();
+					}
+					for (var i = 0; i <= ret.data.length - 1; i++) {
+						var html = '<li class="aui-list-view-cell aui-img aui-counter-list">';
+						html = html + '<img class="aui-img-object aui-pull-left" tapmode onclick="openGoods(\'../goods/goods_content\',\'' + ret.data[i].no + '\')" src="' + ret.data[i].images + '" data-echo="' + ret.data[i].images + '">';
+						html = html + '<div class="aui-img-body">';
+						html = html + '<div class="aui-text-default aui-ellipsis-1" tapmode onclick="openGoods(\'../goods/goods_content\',\'' + ret.data[i].no + '\')">' + ret.data[i].name + '</div>';
+						html = html + '<span class="aui-carfont aui-ellipsis-1">' + ret.data[i].no + '</span>';
+						html = html + '<div class="aui-counter-box">';
+						html = html + '<div class="aui-pull-left aui-text-danger">' + ret.data[i].price + '</div>';
+						html = html + '<div class="aui-text-default aui-pull-right" onclick="delCollect(\'' + ret.data[i].no + '\');"><i class="aui-iconfont aui-icon-delete aui-text-FF9800n"></i></div>';
+						html = html + '</div>';
+						html = html + '</div>';
+						html = html + '</li>';
+						$api.append($api.byId('goods_list'), html);
+						api.hideProgress();
+						api.refreshHeaderLoadDone();
+						//					dataLoading = false;
+						//					fnCacheImage(ret, 0);
+					}
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		}
+
+		// 下拉加载更多
+		function fnInitPushRefresh() {
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 200
+				}
+			}, function(ret, err) {
+				_page = parseInt($api.getStorage("currentPage")) + 1;
+				// alert(_page);
+				$api.setStorage("currentPage", _page);
+				headList(_page);
+			});
+		};
+		function delCollect(no) {
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=collect_add&loginname=' + $api.getStorage('loginname') + '&no=' + no + '',
+				method : 'get',
+				data : {
+					values : {
+						//						name : 'haha'
+					},
+					files : {
+						//						file : 'fs://a.gif'
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					if (ret.code == 1) {
+						api.toast({
+							msg : '加入收藏成功',
+							location : 'middle'
+						});
+					} else if (ret.code == -1) {
+						api.toast({
+							msg : '加入收藏失败',
+							location : 'middle'
+						});
+					} else if (ret.code == -2) {
+						api.toast({
+							msg : '取消收藏失败',
+							location : 'middle'
+						});
+					} else if (ret.code == 2) {
+						api.toast({
+							msg : '取消收藏成功',
+							location : 'middle'
+						});
+					}
+					var jsfun = 'window.location.reload();';
+					api.execScript({
+						name : 'follow_my_head',
+						frameName : 'follow_my_body',
+						script : jsfun
+					});
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		}
+	</script>
+</html>

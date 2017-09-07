@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/good_return.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+	<article class="article">
+		<div class="top_fixed">
+			<div class="top">
+				<div class="focus">退货录入</div>
+				<a href="good_return_list.html">退货记录</a>
+			</div>
+		</div>
+
+		<div class="wrap">
+			<div class="operate">
+				<input type="number" placeholder="请输入条码或扫描" id="barcode" class="focus_vary" />
+				<span onclick="scaner();"></span>
+			</div>
+			<div class="good_list">
+				<div class="choose">
+					<label>数量</label>
+					<input type="number" placeholder="请输入退货数量" id="num">
+				</div>
+				<div class="choose">
+					<label>退货原因</label>
+					<input type="text" placeholder="请输入退货原因" id="reason">
+				</div>
+				<div class="choose">
+					<label>备注</label>
+					<input type="text" placeholder="请输入备注" id="note">
+				</div>
+				<div class="choose">
+					<label>销售方式</label>
+					<select name="is_sell" id="is_sell">
+						<option value="0">不可二次销售</option>
+						<option value="1">可二次销售</option>
+					</select>
+				</div>
+			</div>
+			<button type="button" id="reg" onclick="return_submit();">提交</button>
+		</div>
+	</article>
+	
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var FNScanner;
+	var db;
+	apiready = function() {
+		db = api.require('db');
+		FNScanner = api.require('FNScanner');
+		//		if (!$api.getStorage('token')) {
+		//			alert('请先登录');
+		//			$api.setStorage('from', 'inquiry');
+		//			api.openWin({
+		//				name : 'personer_login',
+		//				url : './a_headbackindex.html',
+		//				pageParam : {
+		//					title : '登录',
+		//					url : 'personer_login'
+		//				}
+		//			});
+		//		}
+	};
+	function return_submit() {
+		var barcode = $api.byId('barcode').value;
+		var num = $api.byId('num').value;
+		var reason = $api.byId('reason').value;
+		if (!(/^\d{5,18}$/.test(barcode))) {
+			alert('请输入正确的条码');
+			return false;
+		} else if (!(/(^[1-9]\d*$)/.test(num))) {
+			alert('请输入正确的数量');
+			return false;
+		} else if (!reason) {
+			alert('请输入退货原因');
+			return false;
+		}
+		var note = $api.byId('note').value;
+		var is_sell = $api.byId('is_sell').value;
+		var d = new Date();
+		var m = (d.getMonth() + 1);
+		if (m < 10) {
+			m = "0" + m;
+		}
+		var r = d.getDate();
+		if (r < 10) {
+			r = "0" + r;
+		}
+		var h = d.getHours();
+		if (h < 10) {
+			h = "0" + h;
+		}
+		var mi = d.getMinutes();
+		if (mi < 10) {
+			mi = "0" + mi;
+		}
+		var se = d.getSeconds();
+		if (se < 10) {
+			se = "0" + se;
+		}
+		var datetime = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+		var uidtimestamp=$api.getStorage('uid')+new Date().getTime();
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_Product where BarCode='" + barcode + "'"
+		}, function(ret, err) {
+			//coding...
+			if (ret.data.length > 0) {
+				db.executeSql({
+					name : 'ghuog_db' + $api.getStorage('mobile'),
+					sql : "INSERT INTO T_ProductReturn(barcode,pro_name,num,is_sell,time,note,reason,status,uidtimestamp)VALUES('" + barcode + "','" + ret.data[0].ProName + "','" + num + "','" + is_sell + "','" + datetime + "','" + note + "','" + reason + "',1,'" + uidtimestamp + "')"
+				}, function(ret, err) {
+					if (ret) {
+						alert('退货录入成功');
+					}
+					window.location.reload();
+					//coding...
+					//					alert(JSON.stringify(ret));
+					//					api.openWin({
+					//						name : 'good_return_ok',
+					//						url : './a_headback.html',
+					//						pageParam : {
+					//							title : '商品退货',
+					//							url : 'good_return_ok'
+					//						}
+					//					});
+					//					$api.setStorage('storage_barcode', barcode);
+					//					(is_sell == 0) ? $api.setStorage('return_num', 0) : $api.setStorage('return_num', num);
+				});
+			} else {
+				api.toast({
+					msg : '没有此商品'
+				});
+			}
+		});
+		//
+	}
+
+	function scaner() {
+		FNScanner.openScanner({
+			autorotation : false
+		}, function(ret, err) {
+			if (ret.eventType = 'success') {
+				$api.byId('barcode').value = ret.content;
+				//				alert(JSON.stringify(ret));
+			} else {
+				//				alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	function winreload() {
+		window.location.reload();
+	}
+</script>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		html,body{background:#fff;}
+		.aui-input-row .aui-input{text-align:right;}
+		::-webkit-input-placeholder {color:#ff9800;}
+		 .display-none{display:none}
+		 .aui-input-row:first-child:after {
+    border-top: 0px solid #e2e2e2;
+}
+.aui-btn-ff9800{background:#FF9800;padding:10px 60px;border:0;color:#fff;}
+		</style>
+	</head>
+	<body>
+		<div class="aui-tab aui-tab-warning">
+	        <ul class="aui-tab-nav">
+	            <li class="active">在线充值</li>
+	            <li>券卡充值</li>
+	        </ul>
+	    </div>
+	    <div class="aui-line-x"></div>
+	    <div class="con-pl">
+	    	 <div class="aui-form" style="margin-top: 5px;">
+	            <div class="aui-input-row">
+	                <span class="aui-input-addon">充值金额</span>
+	                <input type="text" class="aui-input" placeholder="请输入充值金额" style="color:#ff9800">
+	            </div>
+	            <div class="aui-btn-row aui-text-right" style="padding:10px;border:0;">
+	                <div class="aui-btn aui-btn-info" tapmode onclick="openWinto('paycheck_go_head','paycheck_go_head')">立即充值</div>
+	            </div>
+	        </div>
+	        <p class="aui-padded-10">        	
+	        	用户须知:<br>
+	        	1.账户余额不能购买券卡,使用充值卡充值
+	        </p>
+	    </div>
+	    <div class="con-pl display-none">
+	    	 <div class="" style="margin: 50px 50px 10px 50px;">
+	    	 	<div class="aui-input-row" style="padding:0;">
+	                <i class="aui-input-addon aui-iconfont aui-icon-vipcard aui-text-default"></i>
+	                <input type="text" class="aui-input" placeholder="请输入充值卡密码" style="color:#ff9800;text-align:left;">
+	            </div>
+	            <div class="aui-text-center aui-padded-15"><button class="aui-btn aui-btn-ff9800">充值</button></div>
+	         </div>
+	         
+	    </div> 	   
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		Zepto(function() {
+			$(".aui-tab").on("tap", "li", function() {
+                $('.aui-tab li').removeClass('active');
+                $(this).addClass('active');
+                var $ul = $('.con-pl');                 
+				var $t = $(this).index();
+				$ul.css('display','none');
+				$ul.eq($t).css('display','block');		
+			});
+		});
+		 apiready = function () {
+	        api.parseTapmode();
+	     }
+	</script>
+</html>

@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-nav .aui-bar-tab li .aui-iconfont, .aui-nav .aui-bar-tab li p {
+				color: #fff;
+			}
+			.aui-nav .aui-bar-tab li.active .aui-iconfont, .aui-nav .aui-bar-tab li.active p {
+				color: #14bd7c;
+			}
+			.aui-nav {
+				background: #ff9900;
+				font-size: 16px;
+				color: #fff;
+				text-align: center;
+			}
+			.aui-nav  div {
+				height: 55px;
+			}
+			.aui-nav .buy {
+				line-height: 55px;
+			}
+			.aui-nav p {
+				color: #fff;
+			}
+			.aui-nav .aui-iconfont {
+				font-size: 20px;
+				color: #ffffff;
+			}
+			.blue {
+				background: #eee;
+			}
+			.blues {
+				background: #FFC74E;
+				font-size: 16px;
+				line-height: 55px;
+			}
+			.blue .aui-iconfont, .blue p {
+				color: #999;
+			}
+			.service {
+				background: #eec363;
+			}
+			.buy {
+				background: #ff9800;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="aui-bar aui-bar-nav aui-bar-warning" id="aui-header">
+			<a class="aui-pull-left" tapmode onclick="api.closeWin();"> <span class="aui-iconfont aui-icon-left"></span>返回 </a>
+			<div class="aui-title">
+				商品详情
+			</div>
+			<a class="aui-pull-right" tapmode onclick="openFrame('share_body', '../share_body')"> <span class="aui-iconfont aui-icon-cart"></span></a>
+		</header>
+		<footer class="aui-nav aui-col-xs-12" id="aui-footer">
+			<!--<div class="aui-col-xs-2 blue" id="collection-btn" tapmode onclick="openFrame('share_body', '../share_body')" >-->
+			<div class="aui-col-xs-2 blue" id="collection-btn" tapmode onclick="openShare();" >
+				<span class="iconfont icon-fenxiang1" style="color:#999;"></span>
+				<p id="collection-title">
+					分享
+				</p>
+			</div>
+			<div class="aui-col-xs-2 blue" id="collection-btn" tapmode onclick="collect();">
+				<span class="aui-iconfont aui-icon-favor"></span>
+				<p id="collection-title">
+					收藏
+				</p>
+			</div>
+			<div class="aui-col-xs-4 blues" tapmode onclick="addCart('' + api.pageParam.goods_no + '','' + api.pageParam.goods_name + '','' + api.pageParam.goods_price + '','' + api.pageParam.goods_images + '');">
+				加入购物车
+			</div>
+			<!--<div class="aui-col-xs-4 buy" id="main" tapmode onclick="openWin('enter_order_detail_head','enter_order_detail_head',true)">-->
+			<div class="aui-col-xs-4 buy" id="main" tapmode onclick="openBuy();">
+				立即购买
+			</div>
+		</footer>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript">
+		var db;
+		apiready = function() {
+			db = api.require('db');
+			api.parseTapmode();
+			var header = $api.byId('aui-header');
+			$api.fixStatusBar(header);
+			var headerPos = $api.offset(header);
+			var body_h = $api.offset($api.dom('body')).h;
+			var footer_h = $api.offset($api.byId("aui-footer")).h;
+			api.openFrame({
+				name : 'goods_show_frm',
+				url : 'goods_show_frm.html',
+				rect : {
+					x : 0,
+					y : headerPos.h,
+					w : 'auto',
+					h : body_h - headerPos.h - footer_h
+				},
+				pageParam : {
+					no : api.pageParam.goods_no
+				}
+			});
+		}
+		function openBuy() {
+			var user = $api.getStorage('user');
+			if (!user) {
+				api.alert({
+					title : '提示',
+					msg : '请先登录',
+					buttons : ['确定']
+				});
+				return;
+			} else {
+				api.openWin({
+					name : 'enter_order_detail_head',
+					url : './enter_order_detail_head.html',
+					//					delay : times,
+					slidBackType : 'edge',
+					pageParam : {
+						item_no : api.pageParam.goods_no,
+						item_num : 2
+					}
+				});
+			}
+		}
+
+		function addCart(no, name, price, img) {
+			//						alert(no);
+			db.selectSql({
+				name : 'cart',
+				sql : "SELECT * FROM Cart WHERE No='" + no + "'"
+			}, function(ret, err) {
+				if (ret.status) {
+					//					alert(JSON.stringify(ret));
+					if (ret.data.length >= 1) {
+						db.executeSql({
+							name : 'cart',
+							sql : "UPDATE Cart SET Num=(select max(Num)+1 from Cart) WHERE no='" + no + "'"
+							//				sql : "INSERT INTO Cart(Id)VALUES(1)"
+						}, function(ret, err) {
+							if (ret.status) {
+								//					alert(JSON.stringify(ret));
+								if (ret.status == true) {
+									api.toast({
+										msg : '添加购物车成功'
+									});
+								}
+							} else {
+								alert(JSON.stringify(err));
+							}
+						});
+					} else {
+						db.executeSql({
+							name : 'cart',
+							//							sql : "INSERT INTO Cart(Id,No,Name,Num,Price,Img)VALUES(null,'" + no + "','" + name + "',1,'" + price + "','" + img + "')"
+							sql : "INSERT INTO Cart(Id,No,Name,Num,Price,Img,status,sum_price)VALUES(null,'" + no + "','" + name + "',1,'" + price + "','" + img + "',1,'" + price + "*1')"
+							//				sql : "INSERT INTO Cart(Id)VALUES(1)"
+						}, function(ret, err) {
+							if (ret.status) {
+								//					alert(JSON.stringify(ret));
+								if (ret.status == true) {
+									api.toast({
+										msg : '添加购物车成功'
+									});
+								}
+							} else {
+								alert(JSON.stringify(err));
+							}
+						});
+					}
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+			var jsfun = 'window.location.reload();';
+			api.execScript({
+				name : 'root',
+				frameName : 'footer_tab_3',
+				script : jsfun
+			});
+		}
+
+		function collect() {
+			var user = $api.getStorage('user');
+			if (user) {
+				api.ajax({
+					url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=collect_add&loginname=' + $api.getStorage('loginname') + '&no=' + api.pageParam.goods_no + '',
+					method : 'get',
+					data : {
+						values : {
+							//						name : 'haha'
+						},
+						files : {
+							//						file : 'fs://a.gif'
+						}
+					}
+				}, function(ret, err) {
+					if (ret) {
+						if (ret.code == 1) {
+							api.toast({
+								msg : '加入收藏成功',
+								location : 'bottom'
+							});
+						} else if (ret.code == -1) {
+							api.toast({
+								msg : '加入收藏失败',
+								location : 'bottom'
+							});
+						} else if (ret.code == -2) {
+							api.toast({
+								msg : '取消收藏失败',
+								location : 'bottom'
+							});
+						} else if (ret.code == 2) {
+							api.toast({
+								msg : '取消收藏成功',
+								location : 'bottom'
+							});
+						}
+					} else {
+						api.alert({
+							msg : JSON.stringify(err)
+						});
+					}
+				});
+			} else {
+				api.toast({
+					msg : '请先登录'
+				});
+			}
+		}
+
+		function openShare() {
+			api.openFrame({
+				name : 'share',
+				url : '../share_body.html',
+				rect : {
+					x : 0,
+					y : 60,
+					w : 'auto',
+					h : 'auto'
+				},
+				pageParam : {
+					item_no : api.pageParam.goods_no,
+					name : api.pageParam.goods_name
+				}
+			});
+		}
+	</script>
+</html>

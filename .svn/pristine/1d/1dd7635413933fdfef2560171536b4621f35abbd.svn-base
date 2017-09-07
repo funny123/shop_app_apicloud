@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+	
+			html, body {
+				background: rgba(0,0,0,0);
+			}
+			body {
+			}
+			.top-area {
+			}
+			.logo {
+				height: 170px;
+				display: -webkit-box;
+				-webkit-box-orient: horizontal;
+				-webkit-box-pack: center;
+				-webkit-box-align: center;
+				display: box;
+				box-orient: horizontal;
+				box-pack: center;
+				box-align: center;
+			}
+			.login-area {
+				text-align: center;
+			}
+			.login-area img {
+				width: 75px;
+				height: 75px;
+				border-radius: 8px;
+				-webkit-border-radius: 8px;
+			}
+			.login-area p {
+				padding: 5px 0 0 0;
+				font-size: 16px;
+				color: #999;
+			}
+			.form {
+				padding: 0 30px;
+			}
+			.form-row {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-orient: horizontal;
+				-webkit-flex-flow: row;
+				flex-flow: row;
+				width: 100%;
+				padding: 15px;
+				position: relative;
+			}
+			.form-row:after {
+				content: "";
+				position: absolute;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+				border-bottom: 1px solid #e0e0e0;
+				-webkit-transform: scaleY(.5);
+				-webkit-transform-origin: 0 0;
+			}
+			.form-row span {
+				display: block;
+				width: 50px;
+				color: #959595;
+			}
+			.form-row span {
+				font-size: 22px;
+			}
+			.form-row .input-box {
+				-webkit-box-flex: 1;
+				-webkit-flex: 1;
+				flex: 1;
+				padding-top: 2px;
+			}
+			.form-row .input-box input {
+				background: rgba(0,0,0,0);
+				border: none;
+				outline: none;
+				color:#999;
+				padding: 4px;
+				margin: 0;
+			}
+			.form-btn {
+				padding: 30px 30px 15px 30px;
+			}
+			.aui-btn-ff9800 {
+				background: #FF9800 !important;
+				color: #fff !important;
+				border: none;
+				outline: none;
+			}
+			.form-btn button:active {
+				background: rgba(255,152,0,0.8) !important;
+			}
+			.form-o {
+				padding: 0 30px;
+			}
+			.form-o span {
+				float: left;
+				color: #FF9800;
+			}
+			.form-o span:last-child {
+				float: right;
+			}
+			.form-otherlogin {
+				clear: both;
+				padding: 0 30px;
+				height: 150px;
+			}
+			.sdk-list {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-orient: horizontal;
+				-webkit-flex-flow: row;
+				flex-flow: row;
+			}
+			.sdk-list  p {
+				-webkit-box-flex: 1;
+				-webkit-flex: 1;
+				flex: 1;
+			}
+
+			.sdk-list p span i {
+				font-size: 50px;
+			}
+			.sdk-list p:nth-child(2) {
+				display: -webkit-box;
+				-webkit-box-orient: horizontal;
+				-webkit-box-pack: center;
+				display: box;
+				box-orient: horizontal;
+				box-pack: center;
+			}
+			.float-left {
+				float: left;
+			}
+			.float-right {
+				float: right;
+			}
+			.sdk-txt {
+				color: #a6b5c0;
+				text-align: center;
+				padding: 5px 0 5px 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="top-area">
+			<div class="logo">
+				<div class="login-area">
+					<img src="../../image/pic.jpg" alt="" title="" />
+					<p>
+						点点例
+					</p>
+				</div>
+			</div>
+			<div class="form">
+				<div class="form-area">
+					<div class="form-row">
+						<span class="aui-iconfont aui-icon-mobilefill">&nbsp;|</span>
+						<div class="input-box">
+							<input type="text" name="phone" value="" placeholder="请输入手机号" />
+						</div>
+					</div>
+					<div class="form-row">
+						<span class="aui-iconfont aui-icon-lock">&nbsp;|</span>
+						<div class="input-box">
+							<input type="password" name="phone" value="" placeholder="请输入密码" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-btn">
+				<button class="aui-btn aui-btn-ff9800 aui-btn-block" id="login-btn" tapmode onclick="login()">
+					登 录
+				</button>
+			</div>
+			<div class="form-o">
+				<span tapmode onclick="openWinto('reg_head','reg_head');">注册账号</span>
+				<span tapmode  onclick="openWinto('forgetPwd_head','forgetPwd_head');">忘记密码？</span>
+			</div>
+		</div>
+		<div class="form-otherlogin">
+			<p class="sdk-txt">
+				其他方式登录
+			</p>
+			<div class="sdk-list">
+				<p>
+					<span class="float-left" onclick=""><i class="iconfont icon-qq"></i></span>
+				</p>
+				<p>
+					<span><i class="iconfont icon-weixin" onclick=""></i></span>
+				</p>
+				<p>
+					<span class="float-right" onclick=""><i class="iconfont icon-weibo"></i></span>
+				</p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		login = function(){
+			$api.setStorage('user','1');
+		}
+		Zepto(function($) {
+			var bodyH = $("body").height();
+			$(".top-area").css("height", (bodyH - 150) + "px");
+			$("#login-btn").on("tap", function() {
+				//点击登录codding...
+				
+//				H.$setPrefs(function(ret, err) {
+//					H.$execScript('index', 'launch', 'closeFrame();');
+//					H.$closeCurrentToWin("index");
+//				}, 'user_info', {
+//					name : '点点多',
+//					id : 1
+//				});
+			});
+		});
+		
+		apiready = function() {
+			api.parseTapmode();
+		};
+	</script>
+</html>

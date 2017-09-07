@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/minmax.css"/>
+		<style>
+			.bottom {
+				position: fixed;
+				bottom: 0;
+				background: #D8C09D;
+				width: 100%;
+				height: 4.3rem;
+			}
+			.bottom-left {
+				float: left;
+				padding-left: 2.0rem;
+				line-height: 4.3rem;
+			}
+			.bottom-right {
+				float: right;
+				width: 10.0rem;
+				line-height: 4.3rem;
+				background: #E66961;
+				text-align: center;
+			}
+			.proname {
+				margin-left: 1.0rem;
+				margin-top: 1.2rem;
+			}
+			.price {
+				margin-left: 1.0rem;
+				float: left;
+			}
+			.sub_total {
+				margin-left: 12.5rem;
+			}
+			.cartdata {
+				padding-bottom: 5.5rem;
+			}
+			.input-row-warp {
+				margin-top: 1.0rem;
+				margin-bottom: 2.0rem;
+			}
+			.input-row {
+				margin-left: 1.0rem;
+			}
+			.input-row-left {
+				width: 6.8rem;
+				height: 2.6rem;
+			}
+			.input-row-right {
+				width: 20.0rem;
+				height: 2.6rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="input-row-warp">
+			<div class="input-row">
+				<span class="input-row-left">收货地址</span>
+				<input type="text" class="" placeholder="请输入收货地址" id="address">
+			</div>
+			<div class="input-row">
+				<span class="input-row-left">收货人</span>
+				<input type="text" class="" placeholder="请输入收货人" id="realname">
+			</div>
+			<div class="input-row">
+				<span class="input-row-left">联系电话</span>
+				<input type="number" class="" placeholder="请输入手机号" id="phone">
+			</div>
+		</div>
+		<div class="cartdata">
+			<!--数据列表-->
+			<ul class="table-view" id="list"></ul>
+		</div>
+		<div class="bottom">
+			<div class="bottom-left">
+				总价：<span id="total"></span>元
+			</div>
+			<div class="bottom-right" onclick="cart_submit();">
+				提交订单
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			var grade = $api.getStorage("grade");
+			if (!grade) {
+				grade = 1;
+			}
+			$api.byId('realname').value = $api.getStorage("realname");
+			$api.byId('address').value = $api.getStorage("address");
+			$api.byId('phone').value = $api.getStorage("mobile");
+			var table = document.body.querySelector('.table-view');
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/cart_detail.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						uuid : api.deviceId
+					}
+				}
+			}, function(data, err) {
+				if (data.code == 200601) {
+					for ( i = 0; i <data.data.length; i++) {
+						var li = document.createElement('li');
+						var str = '<div class="proname">商品:' + data.data[i].pro_name + ' x ' + data.data[i].num + '</div>';
+						var str = str + '<div class="price">单价:' + data.data[i].price + '</div>';
+						var str = str + '<div class="sub_total">小计:' + data.data[i].sub_total + '</div>';
+						li.innerHTML = str;
+						table.appendChild(li);
+					}
+					$api.byId('total').innerHTML = data.total;
+				} else if (data.code == 200603) {
+					api.toast({
+						msg : '购物车为空'
+					});
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		};
+		function winreload() {
+			window.location.reload();
+		}
+
+		function cart_submit() {
+			if (!$api.byId('address').value) {
+				alert('请输入地址');
+				return;
+			} else if (!$api.byId('realname').value) {
+				alert('请输入联系人');
+				return;
+			} else if (!$api.byId('phone').value) {
+				alert('请输入电话');
+				return;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/cart_submit.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						uuid : api.deviceId,
+						address : $api.byId('address').value,
+						boss_id : $api.getStorage('boss_id'),
+						realname : $api.byId('realname').value,
+						phone : $api.byId('phone').value
+					}
+				}
+			}, function(data, err) {
+				if (data.code == 200900) {
+					alert('订单提交成功');
+					api.closeToWin({
+						name : 'root'
+					});
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		}
+	</script>
+</html>

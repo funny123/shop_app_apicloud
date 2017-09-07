@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>详情页面</title>
+		<link rel="stylesheet" href="../css/re_public.css" />
+		<link rel="stylesheet" href="../css/new_file.css" />
+		<style>
+			body {
+			}
+		</style>
+	</head>
+	<body>
+		<div class="detail_img">
+			<img id="pic" class='mui-media-object mui-pull-left' src='../image/l2.png'/>
+			<!--<img id="pic" class='mui-media-object mui-pull-left' src='http:///pic/' + data[i].serial_number + '.jpg"'/>-->
+		</div>
+		<div class="detail_con">
+			<div id="pro_name"></div>
+			<div class="detail_code">
+				条码:<span id="barcode">123</span> 编号:<span id="serial_number">123</span>
+			</div>
+			<div id="yiwu_price"></div>
+			<ul>
+				<li><img src='../image/yiwu_price01.png'/>全场正品
+				</li>
+				<li id="is_tax" style="display: none"><img src='../image/yiwu_price02.png'/>正规发票
+				</li>
+				<li><img src='../image/yiwu_price03.png'/>快捷售后
+				</li>
+				<li><img src='../image/yiwu_price04.png'/>闪电发货
+				</li>
+			</ul>
+			<div onclick="open_local_product_add();">加入本店商品库</div>
+		</div>
+		<div class="detail_btn">
+			<p>
+				<span onclick="numDec()" class="dec">-</span>
+				<input type="number" name="cartNum" id="cartNum" value="1" />
+				<span onclick="numAdd()">+</span>
+			</p>
+			<button class="mui-btn mui-btn-danger mui-btn-outlined" onclick="opencart();">
+				查看订货单
+			</button>
+			<button class="mui-btn mui-btn-danger mui-btn-outlined" onclick="cart(proid,cartNum);">
+				加入订货单
+			</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/jquery-1.7.1.min.js" ></script>
+	<script type="text/javascript">
+		var proid;
+		apiready = function() {
+			proid = $api.getStorage('proid');
+			//			alert($api.getStorage('token'));
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/product_detail.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						service_id : $api.getStorage('service_id'),
+						proid : proid
+					}
+				}
+			}, function(data, err) {
+				if (data) {
+					//					var data = ret.data;
+					if(!data.data.fengongsijia){
+						data.data.fengongsijia=0;
+					}
+					$api.setStorage('cart_barcode', data.data.barcode);
+					$api.setStorage('local_product_add_barcode', data.data.barcode);
+					$api.setStorage('cart_pro_name', data.data.pro_name);
+					$api.setStorage('cart_price', data.data.fengongsijia);
+					$api.setStorage('cart_serial_number', data.data.serial_number);
+					if(data.data.is_tax==1){
+						$api.byId('is_tax').style.display = "";
+					}
+					$api.byId("pro_name").innerHTML = data.data.pro_name;
+					$api.byId("barcode").innerHTML = data.data.barcode;
+					$api.byId("serial_number").innerHTML = data.data.serial_number;
+					$api.byId("yiwu_price").innerHTML = data.data.fengongsijia;
+					//	                document.getElementById("dimension").innerHTML = data.data.dimension;
+					$api.byId("pic").setAttribute("src", 'http://ririqiang.com/ghuog/upload_file/ghuog_product_img/' + data.data.barcode + '.jpg');
+				} else {
+//					api.alert({
+//						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+//					});
+					alert('网络错误');
+				}
+			});
+		};
+		function cart(proid, num) {
+			var num = $api.byId("cartNum").value;
+			if (!(/(^[1-9]\d*$)/.test(num))) {
+				alert('请输入正确的数量');
+				return false;
+			}
+			// proid = api.pageParam.proid;
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/cart_add.php',
+				method : 'post',
+				data : {
+					values : {
+						token : $api.getStorage("token"),
+						mobile : $api.getStorage("mobile"),
+						barcode : $api.getStorage("cart_barcode"),
+						pro_name : $api.getStorage("cart_pro_name"),
+						price : $api.getStorage("cart_price"),
+						proid : proid,
+						boss_id : $api.getStorage("boss_id"),
+						service_id : $api.getStorage("service_id"),
+						num : num,
+						uuid : api.deviceId
+					}
+				}
+			}, function(data, err) {
+				if (data.code == 200600) {
+					api.toast({
+						msg : '添加购物车成功'
+					});
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		}
+		
+		function open_local_product_add(){
+		if($api.getStorage('is_buy') == 1){
+			$api.setStorage('local_product_add_from','pro_detail');
+			api.openWin({
+				name : 'local_product_list_add_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '添加商品',
+					url : 'local_product_list_add_detail'
+				}
+			});
+			}else{
+				api.toast({
+	                msg:'没有权限'
+                });
+			}
+		}
+
+		/*商品数量+1*/
+		function numAdd() {
+			var num_add = parseInt($("#cartNum").val()) + 1;
+			if ($("#cartNum").val() == "") {
+				num_add = 1;
+			}
+			$("#cartNum").val(num_add);
+		}
+
+		/*商品数量-1*/
+		function numDec() {
+			var num_dec = parseInt($("#cartNum").val()) - 1;
+			if (num_dec < 0) {
+				//购买数量必须大于或等于1
+				alert("购买数量必须大于或等于1");
+			} else {
+				$("#cartNum").val(num_dec);
+			}
+		}
+
+		function opencart() {
+			api.openWin({
+				name : 'cart_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '订货单',
+					url : 'cart_detail'
+				}
+			});
+		}
+
+		function winreload() {
+			window.location.reload();
+		}
+	</script>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+			.aui-checkbox {
+				width: 20px;
+				height: 20px;
+				position: relative;
+				margin: 8px 15px;
+				background: #ffffff;
+				border: solid 1px #dddddd;
+				border-radius: 4px;
+				display: table;
+				float: left;
+				-webkit-appearance: none;
+				transition: background-color ease 0.1s;
+			}
+			.aui-counter-box {
+				width: 100%;
+				padding: 0;
+				line-height: 26px;
+			}
+			.aui-list-view .aui-img-object {
+				max-width: 60px;
+				height: 60px;
+				line-height: 60px;
+			}
+			.aui-list-view-cell:last-child:after {
+				left: 0;
+			}
+			.aui-list-view-cell:after {
+				left: 15px;
+			}
+			.aui-list-view-cell:active {
+				background: #fff;
+			}
+			.aui-nav .aui-bar-tab {
+				background: #34495E;
+			}
+			.aui-nav .aui-bar-tab li .aui-iconfont, .aui-nav .aui-bar-tab li p {
+				color: #fff;
+			}
+			.aui-nav .aui-bar-tab li.active .aui-iconfont, .aui-nav .aui-bar-tab li.active p {
+				color: #14bd7c;
+			}
+			.aui-nav {
+				background: #ff9900;
+				font-size: 18px;
+				color: #fff;
+				text-align: center;
+			}
+			.aui-nav  div {
+				height: 55px;
+			}
+			.aui-nav .buy {
+				line-height: 55px;
+			}
+			.blue {
+				background: #fff;
+			}
+			.blue .aui-iconfont, .blue p {
+				color: #999;
+			}
+			.buy {
+				background: #FF9800;
+			}
+			.aui-input-row:first-child:after {
+				border-top: 0px solid #c8c7cc;
+			}
+			.aui-input-row .aui-input-addon {
+				width: auto;
+			}
+			.aui-input-row:last-child:after {
+				border-bottom: 0px solid #000;
+			}
+			.heji {
+				font-size: 14px;
+				vertical-align: middle;
+				white-space: nowrap;
+				line-height: 55px;
+			}
+		</style>
+	</head>
+	<body>
+		<!--<div class="aui-tips aui-tips-warning">
+		<div class="aui-tips-content aui-arrow-right aui-ellipsis-1 aui-text-777776">
+		<i class="aui-iconfont aui-icon-notificationfill"></i>
+		消息提示条消息提示条消息提示条消息提示条消息提示条
+		</div>
+		</div>-->
+		<div id="app">
+		<div class="aui-content">
+			<ul class="aui-list-view">
+				<li class="aui-list-view-cell aui-img aui-counter-list" v-for="(cart,index) in carts" v-bind:key="index">
+					<input class="aui-pull-left aui-checkbox aui-checkbox-danger" type="checkbox" v-model="cart.status" v-on:click="single_check(index)">
+					<img class="aui-img-object aui-pull-left" :src="cart.Img" :data-echo="cart.Img">
+					<div class="aui-img-body">
+						<div class="aui-text-default aui-ellipsis-1">
+							{{cart.Name}}
+						</div>
+						<!--<span class="aui-carfont aui-ellipsis-1"> 茅山榴莲王 越南进口</span>-->
+						<div class="aui-counter-box">
+							<div class="aui-pull-left aui-text-danger">
+								￥ {{cart.Price}}元
+							</div>
+							<div class="aui-counter aui-pull-right">
+								<div class="aui-counter-minus aui-disabled" v-on:click="cut(index)"></div>
+								<!--<input class="aui-counter-input" type="text" value="{{cart.Num}}" readOnly>-->
+								<input class="aui-counter-input" type="text" v-model="cart.Num">
+								<div class="aui-counter-plus" v-on:click="plus(index)"></div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<footer class="aui-nav" id="aui-footer">
+			<div class="aui-col-xs-12">
+				<div class="aui-col-xs-4 blue" id="collection-btn" tapmode="">
+					<div class="aui-input-row">
+						<input class="aui-radio aui-radio-warning" type="radio" name="demo">
+						<label class="aui-input-addon">全选</label>
+					</div>
+				</div>
+				<div class="aui-col-xs-4 blue aui-text-danger heji" id="collection-btn" tapmode="">
+					合计:￥ {{total_price}}元
+				</div>
+				<div class="aui-col-xs-4 buy" id="main" tapmode="">
+					结算（5）
+				</div>
+			</div>
+		</footer>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/echo.min.js"></script>
+	<script type="text/javascript" src="../script/vue.js"></script>
+	<script type="text/javascript">
+		var db;
+		apiready = function() {
+			db = api.require('db');
+			db.selectSql({
+				name : 'cart',
+				sql : 'SELECT * FROM Cart'
+			}, function(ret, err) {
+				if (ret.status) {
+					//					alert(JSON.stringify(ret));
+					var vm = new Vue({
+						el : "#app",
+						data : {
+							total_price : 0, //总价是ajax换返回数据计算所得，代码有体现
+							all_checked_val : true,
+							carts : ret.data
+						},
+						methods : {
+							plus : function(index) {
+								vm.carts[index].Num += 1;
+								vm.carts[index].sum_price = Number(vm.list[index].Price) * Number(vm.list[index].Num);
+								if (vm.carts[index].status == 1) {
+									vm.total_price = Number(vm.total_price) + Number(vm.list[index].Price);
+								}
+								//								alert(index);
+							},
+							cut : function(index) {
+								vm.carts[index].Num -= 1;
+								//								alert(index);
+							}
+						}
+					})
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+			api.parseTapmode();
+		}
+	</script>
+</html>

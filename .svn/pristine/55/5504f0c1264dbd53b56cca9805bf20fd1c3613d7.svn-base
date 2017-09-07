@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.2.0.css" />
+		<link rel="stylesheet" href="../css/new_file.css" />
+	</head>
+	<body>
+		<!--<input type="search" placeholder="请输入搜索内容" id="search-input">-->
+		<div style="position: fixed; top: 0px;width: 100%;height:80;z-index: 100;">
+		<div onclick="closefrm();">关闭</div>
+		<div id="shopDetail">
+		老板名：<span id="boss_name"></span><br>
+		地址：<span id="boss_address"></span><br>
+		老板电话：<span id="boss_tel"></span> <span id="o2o_fenpei" onclick="o2o_fenpei();" style="display: none">分配到此店</span>
+		</div>
+		</div>
+		<ul class="aui-list aui-media-list" style="z-index: 1;" id="list">
+			
+		</ul>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script type="text/javascript" src="../script/jquery-1.7.1.min.js" ></script>
+	<script>
+		var _page = 1;
+		//$api.setStorage("currentPage", 1);
+		
+				// 结合下拉刷新
+		apiready = function() {
+		if(api.winName=="map_o2o"){
+			$api.byId('o2o_fenpei').style.display = "";
+		}
+			loadData(_page);
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				_page = _page + 1;
+				//$api.setStorage("currentPage", _page);
+				loadData(_page);
+			
+			});
+		};
+
+		function loadData(currentPage) {
+			//			currentPage = isReload ? 1 : currentPage;
+			var table = document.body.querySelector('.aui-list');
+			//var cells = document.body.querySelectorAll('.aui-list-item');
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/map_shop_detail.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						page : _page,
+						UserId:api.pageParam.UserId
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+				if(!ret.data){return;}
+					var data = ret.data;
+					$api.byId('boss_name').innerHTML=ret.Userdata.realname;
+					$api.byId('boss_address').innerHTML=ret.Userdata.address;
+					$api.byId('boss_tel').innerHTML=ret.Userdata.phone;
+					for ( i = 0; i <= data.length - 1; i++) {
+						var li = document.createElement('li');
+						li.className = 'aui-list-item aui-list-item-arrow';
+						var str = ' <div class="aui-media-list-item-inner">';
+						var str = str + '<div class="aui-list-item-inner">';
+						var str = str + '<div class="aui-list-item-text">';
+						var str = str + '<div  class="aui-list-item-title">' + data[i].ProName + '</div>';
+						var str = str + '</div>';
+						var str = str + '<div class="aui-list-item-text aui-code">';
+						var str = str + '条码：'+ data[i].BarCode +'';
+						var str = str + '</div>';
+						var str = str + '</div>';
+						var str = str + '</div>';
+						li.innerHTML = str;
+						table.appendChild(li);
+					}
+				} else {
+					alert('网络错误');
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		}
+
+
+		function closefrm() {
+			api.closeFrame({
+				name : 'map_shop_detail'
+			});
+		}
+		
+		function o2o_fenpei(){
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/o2o_order_fenpei.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						UserId:api.pageParam.UserId,
+						order_id : $api.getStorage('o2o_order_detail_order_id')
+					}
+				}
+			}, function(data, err) {
+				if (data.code==200) {
+					alert('分配成功');
+//					api.execScript({
+//							name : 'o2o_order_detail',
+//							frameName : 'o2o_order_detail',
+//							script : 'winreload();'
+//					});
+					api.closeToWin({
+    					name: 'o2o_order_index'
+					});
+				} else if (data.code==404) {
+					alert('状态不正确');
+//					api.execScript({
+//							name : 'o2o_order_detail',
+//							frameName : 'o2o_order_detail',
+//							script : 'winreload();'
+//					});
+					api.closeToWin({
+    					name: 'o2o_order_index'
+					});
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+	</script>
+</html>

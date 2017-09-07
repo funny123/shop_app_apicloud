@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		html,body{background:#EEEDF4;}		
+    	.coupon-bg_t{width:100%;height:90px;background: #EEEDF4 url(../../image/coupon_bg_white.png) no-repeat center center;
+    background-size: 100% 100%;}
+    	.coupon-bg_b{width:100%;height:40px;background: #EEEDF4 url(../../image/coupon_bg_yellow.png) no-repeat center center;
+    background-size: 100% 100%;color:#fff;font-size:14px;line-height:39px;padding-left:20px;}		
+   		 .m-ordercoupon-list>li{
+   		 	 height: 130px;background: #EEEDF4;margin-bottom:10px;
+   		 }
+   		.m-ordercoupon-list>li>div>div>span {
+		    float: left;
+		    position: relative;
+		    display: inline-block;
+		    width: 35%;
+		    height: 100%;
+		    font-size: 54px;
+		    line-height: 65px;
+		    text-align: center;
+		    padding-left:35px;
+		    color:#FF7304;
+		}
+		.m-ordercoupon-list>li>div>div>span>i {
+		    position: absolute;
+		    top: 10px;
+		    left: 5px;
+		    font-style: normal;
+		    font-size: 24px;
+		    padding-left:10px;
+		}
+		.datatime{font-weight:300;font-size:14px;padding-right:20px;color:#B1B1B3;margin-top:15px;}
+		.montime{height: 63px;}
+		.aui-tipa{font-size:12px;padding-left:20px;}		
+   		 .m-ordercoupon-list>li[data-style='2']>.coupon-bg_b{
+		    width:100%;height:40px;background: #EEEDF4 url(../../image/coupon_bg_green.png) no-repeat center center;
+		    background-size: 100% 100%;color:#fff;font-size:14px;line-height:39px;padding-left:20px;
+		}
+   		 .m-ordercoupon-list>li[data-style='2']>div>div>span {color:#23C58F;}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content" style="padding:10px 15px;">
+			<ul class="m-ordercoupon-list">
+				<li>
+					<div class="coupon-bg_t">
+						<div class="montime"><span><i>￥</i>30</span><b class="datatime aui-pull-right">有效期至: 2016-06-31 </b></div>
+						<div class="aui-tipa">全站通用(个别商品除外)满158.00使用</div>
+					</div>
+    				<div class="coupon-bg_b">全站通用(个别商品除外)满158.00使用</div>
+				</li>
+				<li data-style="2">
+					<div class="coupon-bg_t">
+						<div class="montime"><span><i>￥</i>30</span><b class="datatime aui-pull-right">有效期至: 2016-06-31 </b></div>
+						<div class="aui-tipa">全站通用(个别商品除外)满158.00使用</div>
+					</div>
+    				<div class="coupon-bg_b">全站通用(个别商品除外)满158.00使用</div>
+				</li>
+				<li data-style="3">
+					<div class="coupon-bg_t">
+						<div class="montime"><span><i>￥</i>30</span><b class="datatime aui-pull-right">有效期至: 2016-06-31 </b></div>
+						<div class="aui-tipa">全站通用(个别商品除外)满158.00使用</div>
+					</div>
+    				<div class="coupon-bg_b">全站通用(个别商品除外)满158.00使用</div>
+				</li>
+				<li>
+					<div class="coupon-bg_t">
+						<div class="montime"><span><i>￥</i>30</span><b class="datatime aui-pull-right">有效期至: 2016-06-31 </b></div>
+						<div class="aui-tipa">全站通用(个别商品除外)满158.00使用</div>
+					</div>
+    				<div class="coupon-bg_b">全站通用(个别商品除外)满158.00使用</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		
+		apiready = function() {
+			api.parseTapmode();
+		}
+	</script>
+</html>

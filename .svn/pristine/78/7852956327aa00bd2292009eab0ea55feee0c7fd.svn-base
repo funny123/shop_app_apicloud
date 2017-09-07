@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-tips-content {
+				line-height: 45px;
+				height: 45px;
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+			.aui-list-view {
+				line-height: 30px;
+			}
+			.aui-list-view i.iconfont {
+				padding: 5px;
+				border-radius: 4px;
+				margin-right: 10px;
+				color: #ffffff;
+				font-size: 1.125em;
+			}
+			.aui-list-view .aui-img-object {
+				max-width: 30px;
+				height: 30px;
+				line-height: 30px;
+			}
+			.aui-radio {
+				margin: 0;
+			}
+			.aui-btn-ff9800 {
+				background: #ff9800;
+				color: #fff;
+				padding: 8px 40px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aui-tips aui-tips-danger">
+			<div class="aui-tips-content">
+				<i class="aui-iconfont aui-icon-warnfill"></i>30分钟内完成支付,否则订单将被取消.
+			</div>
+		</div>
+		<div class="aui-content">
+			<ul class="aui-list-view aui-in">
+				<li class="aui-list-view-cell">
+					<div>
+						订单金额: <a class="aui-text-FF9800n" id="price"></a>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content">
+			<ul class="aui-list-view aui-in">
+				<li class="aui-list-view-cell">
+					还需支付 <span class="aui-pull-right aui-text-FF9800n" id="price2"></span>
+				</li>
+				<li class="aui-list-view-cell aui-img">
+					<img class="aui-img-object aui-pull-left" src="../../image/wechat_pay.png">
+					微信支付
+					<div class="aui-pull-right">
+						<input class="aui-radio aui-radio-warning" type="radio" name="pay" value="wxpay">
+					</div>
+				</li>
+				<li class="aui-list-view-cell">
+					<img class="aui-img-object aui-pull-left" src="../../image/alipay_pay.png">
+					支付宝支付
+					<div class="aui-pull-right">
+						<input class="aui-radio aui-radio-warning" type="radio" name="pay" value="alipay" checked>
+					</div>
+				</li>
+				<li class="aui-list-view-cell">
+					<img class="aui-img-object aui-pull-left" src="../../image/union_pay.png">
+					银联支付
+					<div class="aui-pull-right">
+						<input class="aui-radio aui-radio-warning" type="radio" name="pay" value="ylpay">
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content aui-text-center">
+			<button class="aui-btn aui-btn-ff9800" onclick="pay();">
+				立即支付
+			</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript">
+		var aliPayPlus;
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		apiready = function() {
+		aliPayPlus = api.require('aliPayPlus');
+			$api.byId('price').innerHTML = '￥' + api.pageParam.price;
+			$api.byId('price2').innerHTML = '￥' + api.pageParam.price;
+			api.parseTapmode();
+		};
+		function pay() {
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=order_notpay_topay&ordername=2017082815039006961',
+				method : 'get',
+				data : {
+					values : {
+						//						name : 'haha'
+					},
+					files : {
+						//						file : 'fs://a.gif'
+					}
+				}
+			}, function(ret1, err1) {
+				if (ret1) {
+//					api.alert({
+//						msg : JSON.stringify(ret1)
+//					});
+					aliPayPlus.payOrder({
+						orderInfo : ret1.app_str
+					}, function(ret, err) {
+						api.alert({
+							title : '支付结果',
+							msg : ret.code,
+							buttons : ['确定']
+						});
+					});
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		.aui-list-view-cell:active {
+		    background: #FFFFFF;
+		}
+		.aui-right{color:#999; font-size:14px;margin-right:18px; line-height:26px}
+		.aui-input-row .aui-input-addon {
+		    font-size: 16px;
+		    font-weight: 400;
+		    line-height: 1;
+		    color: #000;
+		    text-align: center;
+		    display: table-cell;
+		    width: 1%;
+		    white-space: nowrap;
+		    vertical-align: middle;
+		    padding: 0px;
+		}
+		.aui-input{text-align:right;margin-right:15px;}
+		.aui-input-row:first-child:after {
+    		border-top: 0px solid #e2e2e2;
+    	}
+		</style>
+	</head>
+	<body>	
+		<div class="step1" style="margin-top:10px" tapmode onclick="openWinto('address_head','../member/address_head')">		
+			<!--<div>收货地址</div>	-->
+			<b class="s1-borderT"></b>				
+			<div>
+				<div style="font-size: 16px;">周杰伦 <span class="" style="margin-left: 25px;">18663767656</span></div>
+				<div>山东省济南市历下区华强电子世界B栋2308</div>
+			</div>
+			<b class="s1-borderB"></b>
+			<span class="s-point"></span>
+		</div>
+		
+		<div class="aui-content">
+	        <ul class="aui-list-view aui-in">
+	            <li class="aui-list-view-cell">
+	                配送时间<span class="aui-text-danger">*</span>
+	                <div class="aui-pull-right aui-text-danger">￥49.90</div>
+	            </li>
+	        </ul>
+	    </div>
+	    
+		<div class="aui-content">
+			<ul class="aui-list-view">
+				<li class="aui-list-view-cell aui-img aui-counter-list" >
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                    <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left">￥48.00</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            x 1
+	                        </div>
+	                    </div>	                    
+	                </div>               
+	           	</li>
+	        </ul>
+		</div>			
+	    
+		<div class="aui-content">
+	        <ul class="aui-list-view aui-in">
+	            <li class="aui-list-view-cell">
+	            	<a class="aui-arrow-right">
+	            		优惠券
+	                	<div class="aui-pull-right aui-right">请选择优惠券</div>
+	                </a>
+	                
+	            </li>
+	            <li class="aui-list-view-cell">
+	            	<a class="aui-arrow-right">
+	            		积分
+	                	<div class="aui-pull-right aui-right">请选择优惠券</div>
+	                </a>	                
+	            </li>
+	            <li class="aui-list-view-cell" style="padding:0 0 0 15px;">
+	                <div class="aui-input-row">
+		                <span class="aui-input-addon">备注</span>
+		                <input type="text" class="aui-input" placeholder="填写留言备注">
+		            </div>
+	            </li>
+	        </ul>
+	    </div>
+	    
+	    <div class="aui-content">
+	        <ul class="aui-list-view aui-in">
+	            <li class="aui-list-view-cell">
+	                商品总价
+	                <div class="aui-pull-right aui-text-FF9800">￥49.90</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                运费
+	                <div class="aui-pull-right aui-text-FF9800">￥0.00</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                优惠券抵扣
+	                 <div class="aui-pull-right aui-text-default">-￥0.00</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                积分抵扣
+	                 <div class="aui-pull-right aui-text-default">-￥0.00</div>
+	            </li>
+	        </ul>
+	    </div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript">
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		apiready = function() {
+			api.parseTapmode();
+		};
+	</script>
+</html>

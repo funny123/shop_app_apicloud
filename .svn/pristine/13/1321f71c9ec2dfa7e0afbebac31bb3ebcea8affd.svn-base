@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		.aui-tab-nav {
+    width: 100%;
+    display: box;
+    display: -webkit-box;
+    box-sizing: border-box;
+    font-size: 14px;
+    height: 40px;
+    background-color: #fff;
+    overflow: hidden;
+}
+		.aui-tab-nav li {
+    height: 40px;
+    line-height: 40px;
+    box-flex: 1;
+    -webkit-box-flex: 1;
+    box-sizing: border-box;
+    text-align: center;
+    color: #666;
+    border-bottom: 2px solid transparent;
+    width: 100%;
+}
+		</style>
+	</head>
+	<body>
+		<header class="aui-bar aui-bar-nav aui-bar-warning" id='aui-header'>
+			<a class="aui-pull-left" tapmode onclick="api.closeWin();"> <span class="aui-iconfont aui-icon-left"></span>返回 </a>
+			<div class="aui-title">
+				分类名称
+			</div>
+			<a class="aui-pull-right" tapmode > <span class="aui-iconfont aui-icon-cart"></span></a>
+		</header>
+		<div class="aui-tab aui-tab-warning aui-text-FF9800" id="aui-tab">
+	        <ul class="aui-tab-nav">
+	            <li class="active">新品</li>
+	            <li>热卖</li>
+	            <li>价格 <i class="aui-iconfont aui-icon-unfold aui-text-warning"></i></li>
+	        </ul>
+	    </div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+	Zepto(function() {
+			$(".aui-tab").on("tap", "li", function() {
+                $('.aui-tab li').removeClass('active');
+                $(this).addClass('active');
+			});
+		});
+	apiready = function() {
+			api.parseTapmode();
+			var header = $api.byId('aui-header');
+	        $api.fixStatusBar(header); 
+	        var headerPos = $api.offset(header);
+        		var body_h = $api.offset($api.dom('body')).h;
+        		var tab_h = $api.offset($api.byId('aui-tab')).h;
+	        api.openFrame({
+	            name: 'goods_list_body',
+	            url: 'goods_list_body.html',
+	            rect: {
+	                x: 0,
+	                y: headerPos.h + tab_h,
+	                w: 'auto',
+	                h: 'auto'
+	            }
+	        });
+		}
+	
+	</script>
+</html>

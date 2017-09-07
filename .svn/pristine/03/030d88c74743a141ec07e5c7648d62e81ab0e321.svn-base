@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <style type="text/css">
+    .aui-nav .aui-bar-tab li .aui-iconfont,
+    .aui-nav .aui-bar-tab li p {
+        color: #fff;
+    }
+    .aui-nav .aui-bar-tab li.active .aui-iconfont,
+    .aui-nav .aui-bar-tab li.active p {
+        color: #14bd7c;
+    }
+    .aui-nav {
+        background: #ff9900;
+        font-size: 16px;
+        color: #fff;
+        text-align: center;
+    }
+    .aui-nav  div {
+        height: 55px;
+    }
+    .aui-nav .buy {
+        line-height: 55px;
+    }
+    .aui-nav p {
+        color: #fff;
+    }
+    .aui-nav .aui-iconfont {
+        font-size: 20px;
+        color: #ffffff;
+    }
+    .blue {
+        background: #eee;
+    }
+    .blues {
+        background: #FFC74E;
+        font-size:16px;
+        line-height: 55px;
+    }
+    .blue .aui-iconfont,
+    .blue p {
+        color: #999;
+    }
+    .service {
+        background: #eec363;
+    }
+  	.buy{background:#ff9800;}
+    </style>
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav aui-bar-warning" id="aui-header">
+        	<a class="aui-pull-left" tapmode onclick="api.closeWin();"> <span class="aui-iconfont aui-icon-left"></span>返回 </a>
+        <div class="aui-title">商品详情</div>
+        <a class="aui-pull-right" tapmode onclick="openFrame('share_body', '../share_body')"> <span class="aui-iconfont aui-icon-cart"></span></a>       
+    </header>
+    <footer class="aui-nav aui-col-xs-12" id="aui-footer">
+    			<div class="aui-col-xs-2 blue" id="collection-btn" tapmode onclick="openFrame('share_body', '../share_body')" >
+                <span class="iconfont icon-fenxiang1" style="color:#999;"></span>
+                <p id="collection-title">分享</p>
+            </div>       		
+            <div class="aui-col-xs-2 blue" id="collection-btn" tapmode >
+                <span class="aui-iconfont aui-icon-favor"></span>
+                <p id="collection-title">收藏</p>
+            </div>  
+            <div class="aui-col-xs-4 blues" tapmode >
+                加入购物车
+            </div>     
+	 		<div class="aui-col-xs-4 buy" id="main" tapmode onclick="openWin('enter_order_detail_head','enter_order_detail_head',true)">
+	            立即购买 
+	        </div>
+    </footer>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+		api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        var footer_h = $api.offset($api.byId("aui-footer")).h;
+        api.openFrame({
+            name: 'goods_show_frm',
+            url: 'goods_show_frm.html',
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: 'auto',
+                h: body_h - headerPos.h - footer_h
+            }
+        });
+    }
+</script>
+</html>

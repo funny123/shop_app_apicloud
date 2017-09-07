@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>消息列表</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.2.0.css" />
+		<link rel="stylesheet" type="text/css" href="../css/new_file.css" />
+		<style>
+		body{background:#f1eef5; }
+		</style>
+	</head>
+	<body>
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-table-view mui-table-view-chevron" id="list">
+			
+				
+			
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script>
+		var pageSize = 10;
+		// 页容量
+		var totalData = 0;
+		//定义一个变量存储第一次加载返回来的总记录数
+		var totalPages = 0;
+		// 定义一个变量存储第一次加载返回来的总页数
+		var _page = 1;
+		$api.setStorage("currentPage", 1);
+		// 默认设置为第一页
+		// 加载数据
+		// @currentPage:当前页码
+		// @isReload：是否为刷新操作
+		function loadData(currentPage) {
+			//			currentPage = isReload ? 1 : currentPage;
+			var table = document.body.querySelector('.aui-table-view');
+//			var cells = document.body.querySelectorAll('.mui-table-view-cell');
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/personer_message_list.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						//						pageSize : pageSize,
+						page : _page
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					var data = ret.data;
+					for ( i = 0; i <= data.length - 1; i++) {
+						var li = document.createElement('li');
+						li.className = 'mui-table-view-cell mui-media';
+						//li.innerHTML = '<a data-id="' + i + '" href="javascript:;" class="mui-navigate-right1"><img class="mui-media-object mui-pull-left" src="http:///pic/' + data.data[i].serial_number + '.jpg"><div class="mui-media-body">' + data.data[i].pro_name + '<p class="mui-ellipsis">￥' + data.data[i].yiwu_price + '</p></div></a><button class="mui-btn mui-btn-danger mui-btn-outlined" onclick="cart(' + data.data[i].id + ');">购物车</button>';
+						//								li.innerHTML .= li.innerHTML = '<a data-id="' + i + '" href="javascript:;" class="mui-navigate-right1"><img class="mui-media-object mui-pull-left" src="http:///pic/' + data.data[i].serial_number + '.jpg"><div class="mui-media-body">' + data.data[i].pro_name + '<p class="mui-ellipsis">￥' + data.data[i].yiwu_price + '</p></div></a><span class="mui-btn mui-btn-danger mui-btn-outlined" id="cart'+i+'">购物车</span>';
+						var str = '<div onclick="messageDetail(' + data[i].id + ');">111212121221</div>';
+						var str = str + 'title:' + data[i].title + '<br>';
+						var str = str + 'time:' + data[i].time + '<br>';
+						li.innerHTML = str;
+						table.appendChild(li);
+					}
+				} else {
+					alert('网络错误');
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		}
+
+		// 结合下拉刷新
+		apiready = function() {
+			loadData(1);
+			// 第一次加载
+			api.setRefreshHeaderInfo({
+				visible : true,
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#ccc',
+				textColor : '#fff',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...',
+				showTime : true
+			}, function(ret, err) {
+				window.location.reload();
+				api.refreshHeaderLoadDone();
+			});
+			// 默认第一次打开页面就下拉加载数据
+			//api.refreshHeaderLoading();
+			// 结合上拉刷新：
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				_page = parseInt($api.getStorage("currentPage")) + 1;
+				$api.setStorage("currentPage", _page);
+				loadData(_page);
+			});
+		}
+		function messageDetail(id) {
+			//alert(id);
+			//			api.openWin({
+			//				name : 'personer_messagedetail',
+			//				url : './personer_messagedetail_content.html',
+			//				pageParam : {
+			//					id : id
+			//				}
+			//			});
+			$api.setStorage('msgid', id);
+			api.openWin({
+				name : 'personer_messagedetail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '消息详情',
+					url : 'personer_messagedetail'
+				}
+			});
+		}
+	</script>
+</html>

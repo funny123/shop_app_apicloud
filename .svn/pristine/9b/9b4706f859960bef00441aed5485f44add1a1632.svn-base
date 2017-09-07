@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>商品列表</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/local_product_type.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+		<div class="top_fixed">
+			<div class="top">
+				<a href="local_product_list_add.html">商品管理</a>
+				<div class="focus">
+					商品列表
+				</div>
+			</div>
+			</div>
+			<div class="list" id="list"></div>
+		</article>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	$api.setStorage("currentPage", 1);
+	apiready = function() {
+		var db;
+		var str;
+		var ProName;
+		loadData();
+		api.addEventListener({
+			name : 'scrolltobottom',
+			extra : {
+				threshold : 0
+			}
+		}, function(ret, err) {
+			loadData();
+		});
+	}
+	function loadData() {
+//	alert($api.getStorage("currentPage"));
+		db = api.require('db');
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : 'SELECT * FROM T_Product order by Pid desc limit ' + ($api.getStorage("currentPage") - 1) * 15 + ' , 15'
+		}, function(ret, err) {
+			if (ret) {
+				//				alert(ret.data.length);
+				var data = ret.data;
+				for ( i = 0; i < data.length; i++) {
+					var str = '<ul onclick="local_product_detail(' + ret.data[i].Pid + ');">';
+					var str = str + '<li>';
+					var str = str + '<label>商品:</label>';
+					var str = str + '<span>' + ret.data[i].ProName + '</span>';
+					var str = str + '</li>';
+					var str = str + '<li>';
+					var str = str + '<label>条码:</label>';
+					var str = str + '<span>' + ret.data[i].BarCode + '</span>';
+					var str = str + '</li>';
+					var str = str + '<li>&gt;</li>';
+					var str = str + '</ul>';
+//					var str = str + '条形码:' + ret.data[i].BarCode + '<br><br>';
+					$api.append($api.byId('list'), str);
+				}
+				var new_page = parseInt($api.getStorage("currentPage")) + 1;
+				$api.setStorage("currentPage", new_page);
+			} else {
+				alert('网络错误');
+			}
+		});
+	}
+
+	function local_product_detail(Proid) {
+		$api.setStorage('Proid', Proid);
+		api.openWin({
+			name : 'local_product_list_detail',
+			url : './a_headback.html',
+			pageParam : {
+				title : '商品详情',
+				url : 'local_product_list_detail'
+			}
+		});
+	}
+</script>

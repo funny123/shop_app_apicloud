@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<style>
+			header {
+				background-color: #F2F2F2;
+				line-height: 40px;
+				height: 40px;
+				position: relative;
+			}
+			header b {
+				width: 40px;
+				height: 100%;
+				display: inline-block;
+				position: relative;
+				z-index: 1;
+				background: url() no-repeat center;
+				background-size: 70% auto;
+			}
+			header b.ic-back {
+				background-image: url(../image/ic-back.png);
+			}
+			header b.ic-check {
+				background-image: url(../image/ic-check.png);
+				float: right;
+			}
+			header .title {
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				text-align: center;
+				font-size: 16px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap" class="flex-wrap flex-vertical" >
+			<header class="border-b" >
+				<b tapmode="hover" onclick="backtoIndex();" class="ic-back"></b>
+				<div class="title">
+					地图
+				</div>
+			</header>
+			<div id="main" class="flex-con" ></div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			$api.fixIos7Bar($api.dom('header'));
+			//			$api.fixStatusBar($api.dom('header'));
+			api.setStatusBarStyle({
+				style : 'dark',
+				color : '#F2F2F2'
+			});
+			api.addEventListener({
+				name : 'keyback'
+			}, function(ret, err) {
+				backtoIndex();
+			});
+//			alert($api.dom('header').offsetHeight);
+//			alert($api.dom('#main').offsetHeight);
+if(api.winName=="map_o2o"){var url="map_baidumap_o2o.html";}
+else{var url="map_baidumap.html";}
+
+			var systemVersion = parseInt(api.systemVersion);
+			
+			if(api.systemType=="ios" && systemVersion>=10){
+				var h=$api.dom('#main').offsetHeight-20;
+				var h1=$api.dom('header').offsetHeight + $api.dom('#main').offsetHeight - 80;
+			}else{
+				var h=$api.dom('#main').offsetHeight;
+				var h1=$api.dom('header').offsetHeight + $api.dom('#main').offsetHeight - 60;
+			}
+			
+			api.openFrame({
+				name : 'map_baidumap',
+				url : url,
+				bounces : false,
+				rect : {
+					x : 0,
+					y : $api.dom('header').offsetHeight,
+					w : 'auto',
+					h : h
+				},
+				bounces : false,
+				pageParam : {
+					height : $api.dom('#main').offsetHeight
+				}
+			});
+			api.openFrame({
+				name : 'map_menu',
+				url : 'map_menu.html',
+				bounces : true,
+				vScrollBarEnabled : false,
+				rect : {
+					x : 10,
+					y : h1,
+					w : 35,
+					h : 35
+				},
+				bounces : false
+			});
+		};
+		function backtoIndex() {
+			api.closeWin({
+				//name : 'root'
+			});
+		}
+	</script>
+</html>

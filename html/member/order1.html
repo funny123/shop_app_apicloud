@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-counter-box {
+				width: 100%;
+				padding: 0;
+				line-height: 26px;
+				color: #848f94;
+				font-size: 14px;
+			}
+			.aui-list-view .aui-img-object {
+				max-width: 60px;
+				height: 60px;
+				line-height: 60px;
+				border: 1px solid #ECF0F1;
+				border-radius: 4px;
+			}
+			.aui-list-view {
+				background-color: #F3F3F3;
+			}
+			.aui-list-view-cell {
+				position: relative;
+				padding: 12px 15px;
+				overflow: hidden;
+				-webkit-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+				-webkit-touch-callout: none;
+				background: #fff;
+				margin-bottom: 8px;
+			}
+			.aui-list-view-cell:after {
+				border-bottom: 0px solid #e2e2e2;
+				display: block;
+				content: '';
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				-webkit-transform-origin: 0 0;
+				-webkit-transform: scale(1);
+				pointer-events: none;
+			}
+			.aui-list-view-cell:last-child:after {
+				border-bottom: 0px solid #e2e2e2;
+			}
+			.aui-clearfix {
+				height: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+			<ul class="aui-list-view" id="order_list"></ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js" ></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<!--<script type="text/javascript" src="../../script/aui-tab.js" ></script>-->
+	<script type="text/javascript">
+		var paystate = 1;
+		apiready = function() {
+			api.parseTapmode();
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=order_list&loginname=' + $api.getStorage('loginname') + '&paystate=' + paystate + '',
+				method : 'get',
+				data : {
+					values : {
+						//						name : 'haha'
+					},
+					files : {
+						//						file : 'fs://a.gif'
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					for (var i = 0; i <= ret.count - 1; i++) {
+						//						var str = '<li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openWinto(\'order_detail_head\',\'../goods/order_detail_head\')">';
+						var str = '<li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openOrder(\'../goods/order_detail_head\',\'' + ret.data[i].ordername + '\')">';
+						str = str + '<h2>订单编号:' + ret.data[i].ordername + '</h2>';
+						str = str + '<div class="aui-text-default aui-ellipsis-1"><h2>下单时间:' + ret.data[i].time + '</h2></div>';
+						str = str + '<div class="aui-counter-box">';
+						str = str + '</div>';
+						str = str + '</div>';
+						str = str + '<div class="aui-line-x" style="margin: 17px 0 8px 0;"></div>';
+						str = str + '<p class="aui-text-right">共一个商品 实付金额: <span class="aui-text-danger">￥' + ret.data[i].sale_amount + '</span></p>';
+						str = str + '<div class="aui-line-x" style="margin: 8px 0 5px 0;"></div>';
+						str = str + '<div class="aui-text-right">';
+						str = str + '<div class="aui-btn aui-btn-outlined">取消订单</div>';
+						str = str + '<div class="aui-btn aui-btn-warning aui-btn-outlined">立即支付</div>';
+						str = str + '</div>';
+						str = str + '</li>';
+						$api.append($api.byId('order_list'), str);
+					}
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+		};
+	</script>
+</html>

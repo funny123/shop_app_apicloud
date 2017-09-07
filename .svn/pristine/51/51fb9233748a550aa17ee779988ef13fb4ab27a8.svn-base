@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/supplier.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+		<div class="wrap edit">
+			<div class="choose">
+				<label>供应商分类</label>
+				<select id="supplier">
+					<option value="0">请选择分类</option>
+				</select>
+			</div>
+			<div class="choose">
+				<label>供应商名称</label>
+				<input type="text" placeholder="请输入供应商名称" id="SupplierName">
+			</div>
+			<div class="choose">
+				<label>供应商联系人</label>
+				<input type="text" placeholder="请输入供应商联系人" id="SupplierContact">
+			</div>
+			<div class="choose">
+				<label>供应商电话</label>
+				<input type="text" placeholder="请输入供应商电话" id="SupplierTel">
+			</div>
+
+			<div class="submit">
+				<div onclick="if(confirm('确实要删除吗?'))del_submit();">删除</div>
+				<div onclick="modify_submit();">修改</div>
+			</div>
+		</div>
+	</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var db;
+		var supcat;
+		apiready = function() {
+			db = api.require('db');
+			//			supid = $api.getStorage('supplierid');
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_Supplier where supid= '" + $api.getStorage('supplierid') + "'"
+			}, function(ret1, err1) {
+				if (ret1.data.length > 0) {
+					//					alert(JSON.stringify(ret1));
+					supcat = ret1.data[0].pid;
+					$api.byId('SupplierName').value = ret1.data[0].SupplierName;
+					$api.byId('SupplierContact').value = ret1.data[0].SupplierContact;
+					$api.byId('SupplierTel').value = ret1.data[0].SupplierTel;
+				} else {
+					alert('供应商不存在，请刷新列表页');
+					api.closeWin({
+					});
+				}
+			});
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_SupplierCat"
+			}, function(ret, err) {
+				if (ret.data.length > 0) {
+					//					alert(ret.data[0].catid);
+					for (var i = 0; i <= ret.data.length - 1; i++) {
+						if (ret.data[i].catid == supcat) {
+							var str = "<option selected='selected' value=" + ret.data[i].catid + ">" + ret.data[i].SupplierCatName + "</option>";
+						} else {
+							var str = "<option value=" + ret.data[i].catid + ">" + ret.data[i].SupplierCatName + "</option>";
+						}
+						$api.append($api.byId('supplier'), str);
+					}
+				} else {
+					alert('供应商分类不存在，请刷新列表页');
+					api.closeWin({
+					});
+				}
+			});
+			//获取供应商名称
+			//			//获取供应商原分类
+			//			var pid = $api.getStorage('pid');
+			//			db.selectSql({
+			//				name : 'ghuog_db' + $api.getStorage('mobile'),
+			//				sql : "SELECT * FROM T_SupplierCat where catid= '" + pid + "'"
+			//			}, function(ret2, err2) {
+			//				if (ret2.data != '') {
+			//					alert(JSON.stringify(ret2));
+			//					$api.byId('supplier').innerHTML = "<option value=" + ret2.data[0].catid + ">" + ret2.data[0].SupplierCatName + "</option>";
+			//				} else {
+			//				}
+			//			});
+		};
+		function modify_submit() {
+			if ($api.byId('supplier').value == 0) {
+				alert('请选择供应商分类');
+				return;
+			} else if (!$api.byId('SupplierName').value) {
+				alert('请输入供应商名称');
+				return;
+			} else if (!$api.byId('SupplierContact').value) {
+				alert('请输入供应商联系人');
+				return;
+			} else if (!$api.byId('SupplierTel').value) {
+				alert('请输入供应商联系方式');
+				return;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/supplier_modify.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						uuid : api.deviceId,
+						SupplierName : $api.byId('SupplierName').value,
+						SupplierTel : $api.byId('SupplierTel').value,
+						SupplierContact : $api.byId('SupplierContact').value,
+						SupplierCatId : $api.byId('supplier').value,
+						supid : $api.getStorage('supplierid')
+					}
+				}
+			}, function(data, err) {
+//				alert(data.code);
+				if (data.code == 200902) {
+					var SupplierName = $api.byId('SupplierName').value;
+					//					var supid = $api.getStorage('supplierid');
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						//						sql : "UPDATE T_SupplierCat SET SupplierCatName='" + SupplierCatName + "' where catid='" + $api.getStorage('suppliercatid') + "')"
+						sql : "UPDATE T_Supplier SET SupplierName='" + SupplierName + "',SupplierTel='" + $api.byId('SupplierTel').value + "',SupplierContact='" + $api.byId('SupplierContact').value + "',pid='" + $api.byId('supplier').value + "' where supid='" + $api.getStorage('supplierid') + "'"
+					}, function(ret, err) {
+						if (ret.status) {
+							api.toast({
+								msg : '修改供应商成功'
+							});
+//							alert(JSON.stringify(ret));
+						} else {
+							api.toast({
+								msg : '修改供应商失败'
+							});
+							alert(JSON.stringify(err));
+						}
+					});
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		}
+
+		function del_submit() {
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/upload_delete_info.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						uuid : api.deviceId,
+						tablename : 'T_Supplier',
+						idname : 'supid',
+						idvalue : $api.getStorage('supplierid')
+					}
+				}
+			}, function(data, err) {
+				alert(data.code);
+				if (data.code == 200800) {
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "delete from T_Supplier where supid=" + $api.getStorage('supplierid')
+					}, function(ret, err) {
+						if (ret.status) {
+							alert('供应商删除成功');
+							api.closeWin({
+							});
+						} else {
+						}
+					});
+				} else if (data.code == 200806) {
+					alert('此供应商已删除');
+					api.closeWin({
+					});
+				} else if (data.code == 200808) {
+					alert('请先删除此供应商名下的商品');
+				} else {
+					alert(JSON.stringify(data));
+				}
+			});
+		}
+	</script>
+</html>

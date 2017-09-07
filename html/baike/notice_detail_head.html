@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		 .aui-nav {
+        font-size: 14px;
+        color: #FF9800;
+        background:#e2e2e2;
+        height:44px;
+        text-align: center;
+    }
+    #aui-footer {
+			/*background: #f7f7f7;*/
+			background: rgba(247,247,247,0.7);
+		}
+		#aui-footer:before {
+			content: "";
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			right: 0px;
+			border-top: 1px solid #e2e2e2;
+			-webkit-transform: scaleY(.5);
+			-webkit-transform-origin: 0 0;
+		}
+.aui-iconfont {
+    color: #ff9800;
+    font-size:20px;
+    line-height:44px;
+    margin:3px;
+}
+    .blue {
+        background: #fff;
+    }
+    .blue .aui-iconfont,
+    .blue p {
+        color: #999;
+    }
+.aui-input-row:first-child:after {
+    border-top: 0px solid #c8c7cc;}
+    .aui-input-row .aui-input-addon{width:auto;}
+    .aui-input-row:last-child:after {
+    border-bottom: 0px solid #000;
+}
+    .heji{font-size:14px; vertical-align: middle;white-space: nowrap; line-height:45px;}
+		</style>
+	</head>
+	<body>
+		<header class="aui-bar aui-bar-nav aui-bar-warning" id='aui-header'>
+			<a class="aui-pull-left" tapmode onclick="api.closeWin();"> <span class="aui-iconfont aui-icon-left"></span></a>
+			<div class="aui-title aui-ellipsis-1">
+				水果百科 可以修改的标题..
+			</div>
+		</header>
+		
+		<footer class="aui-nav" id="aui-footer">        
+	        <div class="aui-col-xs-12">
+	            <div class="aui-col-xs-6"  tapmode="">
+		            <i class="aui-iconfont aui-icon-appreciate"></i>999
+		        </div>
+	            <div class="aui-col-xs-6"  tapmode  onclick="openFrame('share_body', '../share_body')">
+		            <i class="aui-iconfont aui-icon-share"></i>
+		        </div>
+	        </div>
+	    </footer>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+	apiready = function() {
+			api.parseTapmode();
+			var header = $api.byId('aui-header');
+	        $api.fixStatusBar(header); 
+	        var headerPos = $api.offset(header);
+        		var body_h = $api.offset($api.dom('body')).h;
+        		var footer_h = $api.offset($api.byId('aui-footer')).h;
+	        api.openFrame({
+	            name: 'notice_detail_body',
+	            url: 'notice_detail_body.html',
+	            rect: {
+	                x: 0,
+	                y: headerPos.h,
+	                w: 'auto',
+	                h: api.winHeight - headerPos.h - footer_h
+	            }
+	        });
+		}
+	
+	</script>
+</html>

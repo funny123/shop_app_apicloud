@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/minmax.css"/>
+		<style>
+			html, body {
+				background: rgba(0,0,0,0);
+			}
+			.num {
+				background: #F2F2F2;
+				width: 55%;
+				margin: 15rem auto 0px auto;
+			}
+			.input {
+				height: 4.3rem;
+				width: 100%;
+			}
+			.cancel {
+				float: left;
+				background: #C7C7C7;
+				text-align: center;
+				width: 50%;
+				line-height: 4.3rem;
+				height: 4.3rem;
+			}
+			.submit {
+				float: right;
+				background: #D8C09D;
+				text-align: center;
+				width: 50%;
+				line-height: 4.3rem;
+				height: 4.3rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="num">
+			<input class="input" id="num" type="number" placeholder="数量" />
+			<div class="cancel" onclick="closeframe();">
+				取消
+			</div>
+			<div class="submit" onclick="num_submit();">
+				确定
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			//			alert(api.pageParam.cartid);
+			//			alert(api.pageParam.num);
+			$api.byId('num').value = api.pageParam.num;
+		};
+		function closeframe() {
+			api.closeFrame({
+			});
+		}
+
+		function num_submit() {
+			//接口改数量和小计
+			//			alert(api.pageParam.cartid);
+			var new_num=$api.byId('num').value;
+//			if (!new_num) {
+//				alert('请输入数量');
+//				return;
+//			}
+//			else
+			 if (!(/(^[1-9]\d*$)/.test(new_num))) {
+				alert('请输入正确的数量');
+				return false;
+			}
+			var new_sub_total = $api.byId('num').value * api.pageParam.price;
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/cart_change_num.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						new_num : $api.byId('num').value,
+						new_sub_total : new_sub_total,
+						cartid : api.pageParam.cartid
+					}
+				}
+			}, function(data, err) {
+				//			alert(data.code);
+				if (data.code == 200601) {
+					api.execScript({
+						frameName : 'cart_detail',
+						script : 'new_total(' + api.pageParam.cartid + ',' + $api.byId('num').value + ',' + api.pageParam.price + ');'
+					});
+					api.closeFrame({
+					});
+				} else {
+					api.toast({
+						msg : '网络错误'
+					});
+				}
+			});
+		}
+	</script>
+</html>

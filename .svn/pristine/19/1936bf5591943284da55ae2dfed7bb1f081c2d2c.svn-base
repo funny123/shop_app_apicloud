@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<style>
+			body {
+			}
+		</style>
+	</head>
+	<body></body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var db;
+		apiready = function() {
+			db = api.require('db');
+			//			db.openDatabase({
+			//				name : 'ghuog_db'
+			//			}, function(ret, err) {
+			//				if (ret.status) {
+			//					alert(JSON.stringify(ret));
+			//				} else {
+			//					alert(JSON.stringify(err));
+			//				}
+			//			});
+			db.executeSql({
+				name : 'ghuog_db'+$api.getStorage('mobile'),
+				sql : "drop table T_Product"
+				//sql : "INSERT INTO Product(BarCode,ProName,Num,CostPrice,MarketPrice,ProPosition)VALUES('123456789','测试商品','12','25','38','A1')"
+			}, function(ret, err) {
+				if (ret.status) {
+				$api.setStorage('T_Product', '');
+					api.toast({
+						msg : '商品表刪除成功'
+					});
+				} else {
+										api.toast({
+											msg : err.msg
+										});
+					alert(err.msg);
+					$api.setStorage('T_Product', '');
+				}
+			});
+			db.executeSql({
+				name : 'ghuog_db'+$api.getStorage('mobile'),
+				sql : "drop table T_Stock"
+				//sql : "INSERT INTO Product(BarCode,ProName,Num,CostPrice,MarketPrice,ProPosition)VALUES('123456789','测试商品','12','25','38','A1')"
+			}, function(ret, err) {
+				if (ret.status) {
+				$api.setStorage('T_Stock', '');
+					api.toast({
+						msg : '库存表删除成功'
+					});
+				} else {
+										api.toast({
+											msg : err.msg
+										});
+					alert(err.msg);
+					$api.setStorage('T_Stock', '');
+				}
+			});
+			
+			db.executeSql({
+				name : 'ghuog_db'+$api.getStorage('mobile'),
+				sql : "drop table T_CheckOut"
+				//sql : "INSERT INTO Product(BarCode,ProName,Num,CostPrice,MarketPrice,ProPosition)VALUES('123456789','测试商品','12','25','38','A1')"
+			}, function(ret, err) {
+				if (ret.status) {
+				$api.setStorage('T_CheckOut', '');
+					api.toast({
+						msg : '库存表删除成功'
+					});
+				} else {
+										api.toast({
+											msg : err.msg
+										});
+					alert(err.msg);
+					$api.setStorage('T_CheckOut', '');
+				}
+			});
+			
+			db.executeSql({
+				name : 'ghuog_db'+$api.getStorage('mobile'),
+				sql : "drop table T_Supplier"
+				//sql : "INSERT INTO Product(BarCode,ProName,Num,CostPrice,MarketPrice,ProPosition)VALUES('123456789','测试商品','12','25','38','A1')"
+			}, function(ret, err) {
+				if (ret.status) {
+				$api.setStorage('T_Supplier', '');
+					api.toast({
+						msg : '供應商表删除成功'
+					});
+				} else {
+										api.toast({
+											msg : err.msg
+										});
+					alert(err.msg);
+					$api.setStorage('T_Supplier', '');
+				}
+			});
+			
+			db.executeSql({
+				name : 'ghuog_db'+$api.getStorage('mobile'),
+				sql : "drop table T_SupplierCat"
+				//sql : "INSERT INTO Product(BarCode,ProName,Num,CostPrice,MarketPrice,ProPosition)VALUES('123456789','测试商品','12','25','38','A1')"
+			}, function(ret, err) {
+				if (ret.status) {
+				$api.setStorage('T_SupplierCat', '');
+					api.toast({
+						msg : '供應商分类表删除成功'
+					});
+				} else {
+										api.toast({
+											msg : err.msg
+										});
+					alert(err.msg);
+					$api.setStorage('T_SupplierCat', '');
+				}
+			});
+			//
+			db.executeSql({
+				name : 'ghuog_db'+$api.getStorage('mobile'),
+				sql : "drop table T_ProductReturn"
+				//sql : "INSERT INTO Product(BarCode,ProName,Num,CostPrice,MarketPrice,ProPosition)VALUES('123456789','测试商品','12','25','38','A1')"
+			}, function(ret, err) {
+				if (ret.status) {
+				$api.setStorage('T_ProductReturn', '');
+					api.toast({
+						msg : '退货表删除成功'
+					});
+				} else {
+										api.toast({
+											msg : err.msg
+										});
+					alert(err.msg);
+					$api.setStorage('T_ProductReturn', '');
+				}
+			});
+		};
+	</script>
+</html>

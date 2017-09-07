@@ -1,0 +1,144 @@
+/* 盘点管理 */
+.article {
+    font-size: 1.4rem;
+    width: 100%;
+}
+
+
+/** 盘点记录 */
+.article .list {
+    padding-bottom: 2rem;
+    width: 100%;
+    position: relative;
+    top: 5.8rem;
+    border-top: 0.1rem solid #eaeaea;
+}
+.article .list ul {
+    margin: 0rem;
+    padding: 0rem;
+    width: 100%;
+    height: 4rem;
+    line-height: 4rem;
+    border-bottom: 0.1rem solid #eaeaea;
+}
+.article .list ul li {
+    margin: 0rem;
+    padding: 0rem;
+    float: left;
+    font-size: 1.2rem;
+}
+.article .list ul li label {
+    padding: 0rem 0.2rem 0rem 0rem;
+    float: left;
+    text-indent: 1.2rem;
+}
+.article .list ul li span {
+    float: left;
+    overflow: hidden;
+}
+.article .list ul li:nth-child(1) {
+    width: 52%;
+}
+.article .list ul li:nth-child(1) label {
+    text-indent: 2rem;
+}
+.article .list ul li:nth-child(1) span {
+    width: 13rem;
+}
+.article .list ul li:nth-child(2) {
+    width: 48%;
+}
+.article .list ul li:nth-child(2) span {
+    width: 12rem;
+}
+
+
+/** 盘点详情 */
+.article .wrap {
+    width: 100%;
+    position: relative;
+    top: 5.8rem;
+    border-top: 0.1rem solid #eaeaea;
+}
+/*** 列表 */
+.article .wrap .choose {
+    margin: 0.4rem 0rem 0rem 0rem;
+    padding-bottom: 0.4rem;
+    width: 100%;
+    height: 3.4rem;
+    line-height: 3.4rem;
+    border-bottom: 0.1rem solid #eaeaea;
+}
+.article .wrap .choose label {
+    width: 11rem;
+    float: left;
+    text-indent: 1rem;
+}
+.article .wrap .choose input {
+    width: 20rem;
+    height: 3.2rem;
+    border: 0rem;
+}
+.article .wrap .choose input:focus {
+    outline:none !important;
+}
+/*** 间隔线 */
+.article .wrap .thread {
+    margin: 0rem 0rem 0rem 0rem;
+    padding-top: 0.8rem;
+    width: 100%;
+    height: 3.4rem;
+    line-height: 3.4rem;
+    color: #b1b1b1;
+    font-size: 1.6rem;
+    text-indent: 1rem;
+    background-color: #f0f0f0;
+}
+
+/*** 列表 */
+.article .wrap .details {
+    position: relative;
+    top: 0rem;
+}
+.article .wrap .details ul {
+    height: 9rem;
+    line-height: 3rem;
+}
+.article .details ul li {
+    float: left;
+}
+.article .details ul li label {
+    text-indent: 1.18rem !important;
+}
+.article .details ul li span {
+    height: 3rem;
+}
+.article .details ul li:nth-child(1), .article .details ul li:nth-child(3), .article .details ul li:nth-child(5) {
+    width: 58%;
+}
+.article .details ul li:nth-child(1) span {
+    width: 16rem;
+}
+.article .details ul li:nth-child(3) span {
+    width: 13.6rem;
+}
+.article .details ul li:nth-child(2), .details ul li:nth-child(4), .details ul li:nth-child(6) {
+    width: 42%;
+}
+.article .details ul li:nth-child(2) span {
+    width: 10.5rem;
+}
+.article .details ul li:nth-child(4) span {
+    width: 8rem;
+}
+.details ul li:nth-child(6) span {
+    width: 9.3rem;
+}
+
+/** 未盘点商品 */
+.article .wrap .whether ul {
+    height: 6rem;
+}
+.article .whether ul li:nth-child(4) span {
+    width: 6.6rem;
+}

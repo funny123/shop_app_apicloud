@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="html">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/member_card.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+
+		<article class="article">
+		<div class="top_fixed">
+			<div class="top supplier">
+				<div class="focus">会员卡充值</div>
+				<a href="member_card_create.html">会员卡创建</a>
+				<a href="member_card_search.html">会员卡查询</a>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="choose">
+				<label>会员卡号</label>
+				<input type="text" id="mobile" placeholder="会员卡号" onkeypress="if(event.keyCode==13) {submit();return false;}" />
+			</div>
+			<div class="choose">
+				<label>会员姓名</label>
+				<input type="text" id="realname" placeholder="会员姓名" readonly="readonly" />
+			</div>
+			<div class="choose">
+				<label>充值金额</label>
+				<input type="number" id="money"  placeholder="金额"/>
+			</div>
+
+			<div class="payment">
+				<label>付款方式</label>
+				<div class="sort">
+					<div class="sort1" onclick="recharge_money();">
+						<img src="../image/pay_cash.png" alt=""/>
+						<span>现金</span>
+						
+					</div>
+					<div class="sort2" onclick="recharge_pos();">
+						<img src="../image/pay_visa.png" alt=""/>
+						<span>银行卡</span>
+						
+					</div>
+					<div class="sort3" onclick="recharge_alipay();">
+						<img src="../image/pay_alipay.png" alt=""/>
+						<span>支付宝</span>
+			
+					</div>
+					<div class="sort4" onclick="recharge_weixin();">
+						<img src="../image/pay_weixin.png" alt=""/>
+						<span>微信</span>
+						
+					</div>
+					<div class="sort5" onclick="recharge_other();">
+						<img src="../image/pay_other.png" alt=""/>
+						<span>其他方式</span>
+					
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+		};
+		function submit() {
+			var sMobile = $api.byId('mobile').value;
+			if (!(/^\w{6,15}$/.test(sMobile))) {
+				alert("请输入正确的会员卡号");
+				return false;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/member_card_name.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						boss_id : $api.getStorage('boss_id'),
+						card_num : $api.byId('mobile').value
+					}
+				}
+			}, function(data) {
+				if (data) {
+					if (data.code == 200) {
+						//登录成功
+						$api.byId('realname').value = data.realname;
+					} else if (data.code == 404) {
+						//登录失败
+						//						$api.byId('realname').innerHTML = '没有该会员';
+						alert('没有该会员');
+					}
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+
+//		function recharge_alipay() {
+//			var money = $api.byId('money').value;
+//			if (!$api.byId('realname').value) {
+//				alert('请先确认会员姓名');
+//			} else if (money == 0) {
+//				alert('请输入正确的金额');
+//				return false;
+//			} else if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(money))) {
+//				alert('请输入正确的金额');
+//				return false;
+//			} else {
+//				$api.setStorage('total_price', $api.byId('money').value);
+//				$api.setStorage('ordernum', 1);
+//				api.openWin({
+//					name : 'gathering_alipay',
+//					url : './a_headback.html',
+//					pageParam : {
+//						title : '收款',
+//						url : 'gathering_alipay'
+//					}
+//				});
+//			}
+//		}
+
+		function recharge_money() {
+			var money = $api.byId('money').value;
+			if (!$api.byId('realname').value) {
+				alert('请先确认会员姓名');
+			} else if (money == 0) {
+				alert('请输入正确的金额');
+				return false;
+			} else if (!(/(^[1-9]\d*$)/.test(money))) {
+				alert('请输入正确的金额');
+				return false;
+			} else {
+				$api.setStorage('total_price', $api.byId('money').value);
+				$api.setStorage('ordernum', 1);
+//				api.openWin({
+//					name : 'gathering_money',
+//					url : './a_headback.html',
+//					pageParam : {
+//						title : '收款',
+//						url : 'gathering_money'
+//					}
+//				});
+				api.openFrame({
+					name : 'gathering_money',
+					url : './gathering_money.html',
+					bgColor : 'rgba(0,0,0,0.3)'
+				});
+			}
+		}
+		
+		function recharge_pos() {
+			var money = $api.byId('money').value;
+			if (!$api.byId('realname').value) {
+				alert('请先确认会员姓名');
+			} else if (money == 0) {
+				alert('请输入正确的金额');
+				return false;
+			} else if (!(/(^[1-9]\d*$)/.test(money))) {
+				alert('请输入正确的金额');
+				return false;
+			} else {
+				$api.setStorage('total_price', $api.byId('money').value);
+				$api.setStorage('ordernum', 1);
+//				api.openWin({
+//					name : 'gathering_pos',
+//					url : './a_headback.html',
+//					pageParam : {
+//						title : '收款',
+//						url : 'gathering_pos'
+//					}
+//				});
+				api.openFrame({
+					name : 'gathering_pos',
+					url : './gathering_pos.html',
+					bgColor : 'rgba(0,0,0,0.3)'
+				});
+			}
+		}
+		
+		function recharge_alipay() {
+			var money = $api.byId('money').value;
+			if (!$api.byId('realname').value) {
+				alert('请先确认会员姓名');
+			} else if (money == 0) {
+				alert('请输入正确的金额');
+				return false;
+			} else if (!(/(^[1-9]\d*$)/.test(money))) {
+				alert('请输入正确的金额');
+				return false;
+			} else {
+				$api.setStorage('total_price', $api.byId('money').value);
+				$api.setStorage('ordernum', 1);
+//				api.openWin({
+//					name : 'gathering_alipay',
+//					url : './a_headback.html',
+//					pageParam : {
+//						title : '收款',
+//						url : 'gathering_alipay'
+//					}
+//				});
+				api.openFrame({
+					name : 'gathering_alipay',
+					url : './gathering_alipay.html',
+					bgColor : 'rgba(0,0,0,0.3)'
+				});
+			}
+		}
+		function recharge_weixin() {
+			var money = $api.byId('money').value;
+			if (!$api.byId('realname').value) {
+				alert('请先确认会员姓名');
+			} else if (money == 0) {
+				alert('请输入正确的金额');
+				return false;
+			} else if (!(/(^[1-9]\d*$)/.test(money))) {
+				alert('请输入正确的金额');
+				return false;
+			} else {
+				$api.setStorage('total_price', $api.byId('money').value);
+				$api.setStorage('ordernum', 1);
+//				api.openWin({
+//					name : 'gathering_weixin',
+//					url : './a_headback.html',
+//					pageParam : {
+//						title : '收款',
+//						url : 'gathering_weixin'
+//					}
+//				});
+				api.openFrame({
+					name : 'gathering_weixin',
+					url : './gathering_weixin.html',
+					bgColor : 'rgba(0,0,0,0.3)'
+				});
+			}
+		}
+		
+		function recharge_other() {
+			var money = $api.byId('money').value;
+			if (!$api.byId('realname').value) {
+				alert('请先确认会员姓名');
+			} else if (money == 0) {
+				alert('请输入正确的金额');
+				return false;
+			} else if (!(/(^[1-9]\d*$)/.test(money))) {
+				alert('请输入正确的金额');
+				return false;
+			} else {
+				$api.setStorage('total_price', $api.byId('money').value);
+				$api.setStorage('ordernum', 1);
+//				api.openWin({
+//					name : 'gathering_other',
+//					url : './a_headback.html',
+//					pageParam : {
+//						title : '收款',
+//						url : 'gathering_other'
+//					}
+//				});
+				api.openFrame({
+					name : 'gathering_other',
+					url : './gathering_other.html',
+					bgColor : 'rgba(0,0,0,0.3)'
+				});
+			}
+		}
+
+		function update_member_money(pay_way) {
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/member_card_charge.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						service_id : $api.getStorage('service_id'),
+						charge_mobile : $api.byId('mobile').value,
+						money : $api.byId('money').value,
+						pay_way : pay_way
+					}
+				}
+			}, function(data) {
+				if (data) {
+					if (data.code == 800200) {
+						//登录成功
+						alert('充值成功，新余额:' + data.new_balance);
+						window.location.reload();
+					} else if (data.code == 405) {
+						//登录失败
+						alert('充值失败');
+					}
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+	</script>
+</html>

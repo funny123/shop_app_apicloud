@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link href="../css/api.css" type="text/css" rel="stylesheet" />
+	<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+	<link href="../css/css.css" type="text/css" rel="stylesheet" />
+	<link href="../css/stocktaking.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+	<article class="article">
+	<div class="top_fixed">
+		<div class="top">
+			<a href="stocktaking_index.html">盘点库存</a>
+			<div class="focus">盘点记录</div>
+		</div>
+	</div>
+
+	<div class="list" id="list">
+	</div>
+
+		</article>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+		
+		$api.setStorage("currentPage", 1);
+		
+				// 结合下拉刷新
+		apiready = function() {
+			loadData();
+
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 0 
+				}
+			}, function(ret, err) {
+
+				loadData();
+			});
+		}
+
+		function loadData() {
+
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/stocktaking_list.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						page : $api.getStorage("currentPage")
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+				if(!ret.data){api.toast({
+	                msg:'没有更多了'
+                });return;}
+					var data = ret.data;
+					for ( i = 0; i < data.length; i++) {
+						var str = '<ul onclick="stocktaking_detail('+data[i].orderNo+');">';
+						var str = str + '<li><label>编号:</label><span>' + data[i].orderNo + '</span></li>';
+						var str = str + '<li><label>时间:</label><span>' + data[i].time + '</span></li>';
+						var str = str + '</ul>';
+						$api.append($api.byId('list'), str);
+					}
+					var new_page = parseInt($api.getStorage("currentPage")) + 1;
+					$api.setStorage("currentPage", new_page);
+				} else {
+					alert('网络错误');
+
+				}
+			});
+		}
+
+function stocktaking_detail(id){
+$api.setStorage('stocktaking_detail_id', id);
+			api.openWin({
+				name : 'stocktaking_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '盘点详情',
+					url : 'stocktaking_detail'
+				}
+			});
+}
+
+</script>
+</html>

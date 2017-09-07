@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/stocktaking.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		
+	<article class="article">
+		<div class="top_fixed">
+			<div class="top">
+				<div class="focus">盘点详情</div>
+				<a href="stocktaking_detail_no.html">未盘点商品</a>
+			</div>
+		</div>
+<div class="wrap">
+			<div class="choose">
+				<label>盘点编号</label>
+				<input type="text" placeholder="盘点编号" id="orderNo" readonly/>
+			</div>
+			<div class="thread">盘点商品</div>
+
+		<div class="list details" id="list"></div>
+	</div>
+	</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+	
+	$api.setStorage("currentPage", 1);
+	
+		apiready = function() {
+			$api.byId('orderNo').value = $api.getStorage('stocktaking_detail_id');
+			loadData();
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 0 
+				}
+			}, function(ret, err) {
+				loadData();
+			});
+		};
+		
+		function loadData() {
+
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/stocktaking_detail.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						orderNo : $api.getStorage('stocktaking_detail_id'),
+						page : $api.getStorage("currentPage")
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					if (!ret.data) {
+						api.toast({
+							msg : '没有更多了'
+						});
+						return;
+					}
+					var data = ret.data;
+					for ( i = 0; i < data.length; i++) {
+						
+				if(data[i].is_pingku==1){var pingkuword="已平库";}
+					else{var pingkuword="未平库";}	
+						var str = '<ul>';
+						var str = str + '<li><label>商品:</label><span>' + data[i].ProName + '</span></li>';
+						var str = str + '<li><label>条码:</label><span>' + data[i].BarCode + '</span></li>';
+						var str = str + '<li><label>盘点数量:</label><span>' + data[i].Num + '</span></li>';
+						var str = str + '<li><label>差值:</label><span>' + data[i].Dvalue + '</span></li>';
+						var str = str + '<li><label>库存记录:</label><span>' + data[i].DbNum + '</span></li>';
+						var str = str + '<li onclick="pingku(' + data[i].Pid + ');"><label>平库存:</label><span>' + pingkuword + '</span></li>';
+//						var str = '商品:' + data[i].ProName + '';
+//						var str = str + ' 条码:' + data[i].BarCode + '<br>';
+//						var str = str + '盘点数量:' + data[i].Num + '';
+//						var str = str + '盘点数量:' + data[i].Num + '';
+//						var str = str + ' 库存记录数量:' + data[i].DbNum + '';
+//						var str = str + ' 盘点差值:' + data[i].Dvalue + '<br>';
+//						var str = str + '<span onclick="pingku(' + data[i].Pid + ');">平库存 ' + data[i].is_pingku + '</span><br><br>';
+						var str = str + '</ul>';
+						$api.append($api.byId('list'), str);
+					}
+					
+					var new_page = parseInt($api.getStorage("currentPage")) + 1;
+					$api.setStorage("currentPage", new_page);
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+
+
+		
+		function pingku(Pid){
+
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/stocktaking_pingku.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						Pid : Pid,
+						orderNo : $api.getStorage('stocktaking_detail_id')
+					}
+				}
+			}, function(ret, err) {
+				if (ret.code==200) {
+					alert('平库成功');
+				} else if (ret.code==405) {
+					alert('已有新盘点，不能再平库');
+				} else {
+					alert('网络错误');
+
+				}
+			});
+		}
+		
+	</script>
+</html>

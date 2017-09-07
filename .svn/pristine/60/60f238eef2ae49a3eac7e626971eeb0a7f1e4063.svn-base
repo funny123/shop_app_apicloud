@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/supplier.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+		<div class="top_fixed">
+			<div class="top four">
+				<a href="supplier_manage.html">新增供应商</a>
+				<a href="supplier_list.html">供应商列表</a>
+				<a href="supplier_cat_add.html">新增分类</a>
+				<div class="focus">分类列表</div>
+			</div>
+		</div>
+		
+		<div class="list">
+			<ul id="list">
+
+				
+			</ul>
+		</div>
+	</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script>
+		apiready = function() {
+			db = api.require('db');
+	
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_SupplierCat"
+			}, function(ret2, err2) {
+				if (ret2.data != '') {
+//					alert(ret2.data[0].catid);
+					for (var i = 0; i < ret2.data.length; i++) {
+	
+						var str = '<li onclick="supplierCatDetail(' + ret2.data[i].catid + ');"><div>' + ret2.data[i].SupplierCatName + '</div><span>&gt;</span></li>';
+						$api.append($api.byId('list'), str);
+					}
+				} else {
+					//
+				}
+			});
+		}
+		function supplierCatDetail(catid) {
+//		alert(catid);
+			$api.setStorage('suppliercatid', catid);
+			api.openWin({
+				name : 'supplier_cat_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '供应商分类详情',
+					url : 'supplier_cat_detail'
+				}
+			});
+		}
+	</script>
+</html>

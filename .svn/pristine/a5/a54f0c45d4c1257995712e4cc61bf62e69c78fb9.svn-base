@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/supplier.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+		<div class="top_fixed">
+			<div class="top four">
+				<div class="focus">新增供应商</div>
+				<a href="supplier_list.html">供应商列表</a>
+				<a href="supplier_cat_add.html">新增分类</a>
+				<a href="supplier_cat_list.html">分类列表</a>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="choose">
+				<label>供应商分类</label>
+				<select id="supplier">
+					<option value="0">请选择分类</option>
+				</select>
+			</div>
+			<div class="choose">
+				<label>供应商名称</label>
+				<input type="text" placeholder="请输入供应商名称" id="SupplierName">
+			</div>
+			<div class="choose">
+				<label>供应商联系人</label>
+				<input type="text" placeholder="请输入供应商联系人" id="SupplierContact">
+			</div>
+			<div class="choose">
+				<label>供应商电话</label>
+				<input type="text" placeholder="请输入供应商电话" id="SupplierTel">
+			</div>
+
+			<button type="button" id="reg" onclick="supplier_submit();">提交</button>
+		</div>
+	</article>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var db;
+	var SupplierName;
+	var SupplierContact;
+	var SupplierTel;
+	apiready = function() {
+		db = api.require('db');
+		//				alert(ret.data[0].Status);
+		//				alert($api.getStorage('isstatus'));
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_SupplierCat"
+		}, function(ret2, err2) {
+			if (ret2.data != '') {
+				//				alert(ret2.data[0].catid);
+				for (var i = 0; i <= ret2.data.length - 1; i++) {
+					var str = "<option value=" + ret2.data[i].catid + ">" + ret2.data[i].SupplierCatName + "</option>";
+					$api.append($api.byId('supplier'), str);
+				}
+			} else {
+				//
+			}
+		});
+	};
+	function supplier_submit() {
+		if ($api.byId('supplier').value == 0) {
+			alert('请选择供应商分类');
+			return;
+		} else if (!$api.byId('SupplierName').value) {
+			alert('请输入供应商名称');
+			return;
+		} else if (!$api.byId('SupplierContact').value) {
+			alert('请输入供应商联系人');
+			return;
+		} else if (!$api.byId('SupplierTel').value) {
+			alert('请输入供应商联系方式');
+			return;
+		}
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/supplier_add.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					boss_id : $api.getStorage('boss_id'),
+					//service_id : $api.getStorage('service_id'),
+					uuid : api.deviceId,
+					SupplierName : $api.byId('SupplierName').value,
+					SupplierContact : $api.byId('SupplierContact').value,
+					SupplierTel : $api.byId('SupplierTel').value,
+					supplier : $api.byId('supplier').value
+				}
+			}
+		}, function(data, err) {
+			if (data.code == 200902) {
+				var supid = data.supid;
+				//alert(supid);
+				pid = $api.byId('supplier').value;
+				SupplierTel = $api.byId('SupplierTel').value;
+				SupplierContact = $api.byId('SupplierContact').value;
+				SupplierName = $api.byId('SupplierName').value;
+				db.executeSql({
+					name : 'ghuog_db' + $api.getStorage('mobile'),
+					sql : "INSERT INTO T_Supplier(pid,supid,SupplierName,SupplierTel,SupplierContact,Status)VALUES('" + pid + "','" + supid + "','" + SupplierName + "','" + SupplierTel + "','" + SupplierContact + "',1)"
+				}, function(ret, err) {
+					if (ret.status) {
+						api.toast({
+							msg : '添加供应商成功'
+						});
+						//alert(JSON.stringify(ret));
+						window.location.reload();
+					} else {
+						api.toast({
+							msg : '添加供应商失败'
+						});
+						//alert(JSON.stringify(err));
+					}
+				});
+			} else if (data.code == 200901) {
+				alert('添加供应商失败，供应商分类不存在');
+			} else {
+				api.alert({
+					msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+				});
+			}
+		});
+	}
+</script>

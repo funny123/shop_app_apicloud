@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		 <link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		    <style type="text/css">
+		    body {
+		        background: #ffffff;
+		    }
+		    .aui-content {
+			    -webkit-overflow-scrolling: touch;
+			    margin-bottom: 15px;
+			    height: 100%;
+			}
+			.aui-flex-col{height:100%;}
+			.aui-flex-item-3{height:100%;background:#f6f6f6;}
+		    .box [class*=aui-flex-]:not(.aui-flex-col) {
+		        background-color: rgba(26, 188, 156, 0.5);
+		        color: #ffffff;
+		        font-size: 12px;
+		    }
+		    .box.nobg [class*=aui-flex-]:not(.aui-flex-col){
+		        background: #ffffff;
+		    }
+		    .box.bottom {
+		        margin-bottom: 15px;
+		    }
+		    img {
+		        width: 100%;
+		    }
+		    .aui-flex-item-9 {
+			    float: left;
+			    width: 75%;
+			    padding: 12px 15px;
+			}
+		    .aui-border-t:after,
+		    .aui-border-b:after,
+		    .aui-border-l:after,
+		    .aui-border-r:after,
+		    .aui-border-tb:after,
+		    .aui-border:after {
+		        border-color: #e0e0e0;
+		    }
+		    .demo-box {
+		    		height:550px;
+		    		font-size:14px;
+				overflow-y: auto;
+		        -webkit-overflow-scrolling: touch;
+		    }
+		    .demo-box::-webkit-scrollbar {
+		        width: 0px;
+		        height: 0px;
+		        visibility: hidden;
+		        display: none;
+		    }
+		    .img-list {
+		        padding: 2px;
+		    }
+		    .img-list > div {
+		        padding: 2px;
+		    }
+		    .img-list img {
+		        display: block;
+		    }
+		   .aui-list-view-cells {
+			    position: relative;
+			    padding: 12px 12px;
+			    overflow: hidden;
+			    -webkit-transform-style: preserve-3d;
+			    transform-style: preserve-3d;
+			    -webkit-touch-callout: none;
+			}
+			 .aui-list-view-cells:active {
+					background: #f6f6f6;
+					border-radius: 6px;
+				}
+			.aui-list-view-cell{background:#f6f6f6;}
+			.active{border:0;		background:#fff;}
+			.active:after {
+			border-left: 5px solid #FF9800;
+    			border-right: 1px solid #fff;   		
+    			}    			
+    			.aui-list-view:after {
+   			 border-top: 0px solid #c8c7cc; }
+		  </style>
+
+	</head>
+	<body >
+	<div class="aui-content">
+        <div class="aui-flex-col">
+            <div class="aui-flex-item-3 ">
+                <ul class="aui-list-view demo-box" style="margin-bottom: 0;background: none" id="leftbox">
+                    <li class="aui-list-view-cell aui-border-r active">分类一</li>
+                    <li class="aui-list-view-cell aui-border-r">分类二</li>
+                    <li class="aui-list-view-cell aui-border-r">分类三</li>
+                    <li class="aui-list-view-cell aui-border-r">分类四</li>
+                    <li class="aui-list-view-cell aui-border-r">分类五</li>
+                    <li class="aui-list-view-cell aui-border-r">分类六</li>
+                    <li class="aui-list-view-cell aui-border-r">分类七</li>
+                    <li class="aui-list-view-cell aui-border-r">分类七</li>
+                    <li class="aui-list-view-cell aui-border-r">分类七</li>
+                </ul>
+            </div>
+            <div class="aui-flex-item-9">
+                <ul class="aui-list-view demo-box aui-text-center" style="margin-bottom: 0;">
+                    
+                    <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">香蕉</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>
+		            <li class="aui-list-view-cells aui-img aui-col-xs-6" tapmode onclick="openGoods()">
+		                <img class="aui-img-object" src="../image/pic.jpg" data-echo="../image/pic.jpg">
+		                    <p>
+		                        <span class="goods-price aui-money">火龙果</span>
+		                    </p>
+		            </li>	            
+                </ul>
+            </div>
+        </div>
+    </div>
+
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/common.js"></script>
+	<script type="text/javascript" src="../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../script/echo.min.js"></script>
+	<script type="text/javascript">	
+		function openGoods(){
+			openWinto('goods_list_head','goods/goods_list_head');
+		}
+		Zepto(function() {
+			$("#leftbox").on("tap", "li", function() {
+                $('#leftbox li').removeClass('active');
+                $(this).addClass('active');
+			});
+		});
+		apiready = function() {
+			api.parseTapmode();
+		}
+	</script>
+</html>

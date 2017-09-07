@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-list-view .aui-img-object {
+				max-width: 80px;
+				height: 80px;
+				line-height: 80px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+			<ul class="aui-list-view" id="goods_list"></ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript">
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		apiready = function() {
+			//			alert(api.pageParam.clsno);
+			api.ajax({
+				url : 'http://www.ghuog.com/yii2_shop/api/web/app/v1?job=test',
+				method : 'get',
+				data : {
+					values : {
+						//						name : 'haha'
+					},
+					files : {
+						//						file : 'fs://a.gif'
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					//					api.alert({
+					//						msg : JSON.stringify(ret)
+					//					});
+					for (var i = 0; i <= ret.data.length - 1; i++) {
+						var html = '<li class="aui-list-view-cell aui-img aui-counter-list" tapmode onclick="openGoods(\'./goods_content\',\'' + ret.data[i].no + '\')">';
+						html = html + '<img class="aui-img-object aui-pull-left" src="' + ret.data[i].images + '" data-echo="' + ret.data[i].images + '">';
+						html = html + '<div class="aui-img-body">';
+						html = html + '<div class="aui-text-default aui-ellipsis-1">' + ret.data[i].name + '</div>';
+						html = html + '<span class="aui-carfont aui-ellipsis-1">' + ret.data[i].no + '</span>';
+						html = html + '<div class="aui-counter-box">';
+						html = html + '<div class="aui-pull-left aui-text-danger">' + ret.data[i].price + '</div>';
+						html = html + '<div class="aui-text-default aui-pull-right"></div>';
+						html = html + '</div>';
+						html = html + '</div>';
+						html = html + '</li>';
+						$api.append($api.byId('goods_list'), html);
+					}
+				} else {
+					api.alert({
+						msg : JSON.stringify(err)
+					});
+				}
+			});
+			api.parseTapmode();
+		};
+	</script>
+</html>

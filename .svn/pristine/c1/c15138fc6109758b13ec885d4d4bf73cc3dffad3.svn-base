@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>消息列表详情</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/re_public.css" />
+		<link rel="stylesheet" type="text/css" href="../css/new_file.css" />
+	</head>
+	<body>
+		<div class="aui-content">
+			<div class="aui-order">
+				<p>标题</p><p id="title">123</p>
+			</div>
+			<div class="aui-order">
+				<p>时间</p><p id="time">123</p>
+			</div>
+			<div class="aui-order">
+				<p>事项</p><p id="content">123</p>
+			</div>
+		
+			<ul class="mui-table-view mui-table-view-chevron" id="list"></ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			var table = document.body.querySelector('.mui-table-view');
+			var cells = document.body.querySelectorAll('.mui-table-view-cell');
+			//var id = api.pageParam.id;
+			alert($api.getStorage('token'));
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/personer_message_detail.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						id : $api.getStorage('msgid')
+					}
+				}
+			}, function(data, err) {
+				if (data) {
+					document.getElementById("time").innerHTML = data.data.time;
+					document.getElementById("content").innerHTML = data.data.content;
+					document.getElementById("title").innerHTML = data.data.title;
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		};
+	</script>
+</html>

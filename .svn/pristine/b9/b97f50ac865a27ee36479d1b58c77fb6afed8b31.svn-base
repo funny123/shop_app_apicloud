@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="./css/common.css" />
+	<style>
+		#aui-footer .aui-iconfont {
+			font-size: 25px;
+		}
+		
+		
+		.aui-bar-1d9dd5 {
+				background: #4385f6;
+			}
+			.aui-bar-nav {
+			    -webkit-box-pack: center;
+			    -webkit-box-align: center;
+			    /*height: 50px;*/
+			}
+			
+		.aui-bar-navs {
+		display:-webkit-box;
+			    -webkit-box-pack: center;
+			    -webkit-box-align: center;
+			    /*height: 50px;*/
+			}
+			.aui-nav .aui-bar-tab .active-warning .aui-iconfont, .aui-nav .aui-bar-tab .active-warning p {
+				color: #FF9800;
+			}
+			.aui-searchbar .aui-icon-search {
+			    line-height: 30px;
+			    margin-right: 5px;
+			    font-size: 16px;
+			}
+			
+		.chat {
+			background: #FF9800;
+			width: 45px;
+			height: 45px;
+			border-radius: 50%;
+			-webkit-border-radius: 50%;
+			line-height: 45px;
+			margin: 5px auto 0 auto;
+			text-align: center;
+		}
+		.chat i.aui-iconfont {
+			color: #fff !important;
+			line-height: 45px !important;
+			padding-top: 0 !important;
+		}
+		#aui-footer li.active-1d9dd5 .chat {
+			background: #FF9800;
+		}
+		.aui-left{font-size:14px;padding-left: 8px;}
+		
+		.display-none{display:none;}
+	</style>
+	</head>
+	<body>
+		<header class="aui-bar aui-bar-nav aui-bar-warning header" id="index-header">
+			<div class="aui-bar-navs">
+				<a class="aui-left" tapmode onclick="openWinto('city_win','./html/city_win')">
+			        <span class="aui-iconfont aui-icon-locationfill"></span>历下区
+			    </a>
+			    <div class="aui-searchbar aui-border-radius" tapmode="" onclick="">
+		            <i class="aui-iconfont aui-icon-search aui-text-default"></i>		           
+		            <div class="aui-searchbar-input">
+			            	<form action="javascript:search();">
+			           	 	<input type="search" placeholder="请输入搜索内容" id="search-input">
+			            	</form>
+		            </div>
+		        </div>
+				<a class="aui-iconfont aui-icon-scan aui-pull-right" tapmode onclick="doScanner();"></a>
+				</div>
+		</header>
+		
+		
+		<header class="aui-bar aui-bar-nav aui-bar-warning header display-none" id="sort-header" style="padding-top:25px;">		    
+		    <div class="aui-title">分类</div>
+		    <a class="aui-pull-right">
+		        <span class="aui-iconfont aui-icon-search"></span>
+		    </a>
+		</header>
+		
+		
+		<header class="aui-bar aui-bar-nav aui-bar-warning header display-none" id="cart-header" style="padding-top:25px;">		
+			<div class="aui-title">购物车</div>	
+			<a class=" aui-pull-right" tapmode onclick="">编辑</a>
+		</header>
+		<header class="aui-bar aui-bar-nav aui-bar-warning header display-none" id="order-header" style="padding-top:25px;">
+			<div class="aui-title">我的订单</div>	
+			<a class=" aui-pull-right" tapmode onclick="">&nbsp;</a>
+		</header>
+		<header class="aui-bar aui-bar-nav aui-bar-warning header display-none" id="member-header" style="padding-top:25px;">			
+			<div class="aui-title">个人中心</div>	
+			<a class="aui-iconfont aui-icon-settings aui-pull-right" tapmode onclick="openWinto('ucenter_setting_head','./html/member/ucenter_setting_head')"></a>
+		</header>
+
+    
+		<footer class="aui-nav" id="aui-footer">
+			<ul class="aui-bar-tab">
+				<li class="active-warning" data-header="index" tapmode="" onclick="randomSwitchBtn(this,'首页',0)">
+					<span class="aui-iconfont aui-icon-homefill"></span>
+					<p>
+						首页
+					</p>
+				</li>
+				<li class="" data-header="sort" tapmode=""  onclick="randomSwitchBtn(this,'分类',1)" >
+					<span class="aui-iconfont aui-icon-sort"></span>
+					<p>
+						分类
+					</p>
+				</li>
+				<li  tapmode="" data-header="cart" onclick="randomSwitchBtn(this,'购物车',2)" >
+					<div class="chat">
+						<i class="aui-iconfont aui-icon-cart" style="color:#fff;"></i>
+					</div>
+				</li>
+				<li tapmode="" data-header="order" onclick="randomSwitchBtn(this,'我的订单',3)" >
+					<span class="aui-iconfont aui-icon-form"></span>
+					<p>
+						订单
+					</p>
+				</li>
+				<li tapmode="activeBtn" data-header="member" onclick="randomSwitchBtn(this,'个人中心',4)" >
+					<span class="aui-iconfont aui-icon-friend"></span>
+					<p>
+						我
+					</p>
+				</li>
+			</ul>
+		</footer>
+	</body>
+	<script type="text/javascript" src="./script/api.js"></script>
+	<script type="text/javascript" src="./script/common.js"></script>
+	<script type="text/javascript" src="./script/zepto.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			api.parseTapmode();
+			// 设置ios7的标题栏字体变亮，全局用一个就行了
+	       api.setStatusBarStyle({
+			    style: 'light'
+			});		
+			var header = $api.dom('.aui-bar');
+			var headers = $api.byId('index-header');
+			$api.fixStatusBar(headers);		
+			var headerPos = $api.offset(header);
+			var body_h = $api.offset($api.dom('body')).h;
+			var footer_h = $api.offset($api.byId('aui-footer')).h;
+			api.openFrameGroup({
+				name : 'footer_tab_index',
+				scrollEnabled : false,
+				rect : {
+					x : 0,
+					y : headerPos.h,
+					w : 'auto',
+					h : body_h - headerPos.h - footer_h
+				},
+				index : 0,
+				preload : 0,
+				frames : [{
+					name : 'main',
+					url : './html/main.html'
+				}, {
+					name : 'sort',
+					url : './html/sort.html',
+					vScrollBarEnabled: false,					
+				}, {
+					name : 'footer_tab_3',
+					url : './html/cart.html'
+				}, {
+					name : 'footer_tab_4',
+					url : './html/member/my_goods_body.html'
+				}, {
+					name : 'member_body',
+					url : './html/member/member_body.html'
+				}]
+			}, function(ret, err) {
+				var footer = $api.byId('aui-footer');
+				var footerBar = $api.domAll(footer, 'div');
+				for (var j = 0; j < footerBar.length; j++) {
+					$api.removeCls(footerBar[j], 'active-warning');
+				}
+			});
+		}
+		function randomSwitchBtn(obj, name, index) {
+			var footer = $api.byId('aui-footer');
+			var footerBar = $api.domAll(footer, 'li');
+			for (var j = 0; j < footerBar.length; j++) {
+				$api.removeCls(footerBar[j], 'active-warning');
+			}
+			$api.addCls(obj, 'active-warning');
+			api.setFrameGroupIndex({
+				name : 'footer_tab_index',
+				index : index
+			});
+			var that = $("#aui-footer li").eq(index);
+			$('.aui-bar-tab li').eq(index).addClass('active-warning');
+			// 获取data-header存储的值
+			var headerId = that.attr("data-header");
+			// 对应的dom头部
+			var headerDOM = headerId + "-header";
+			//$api.fixStatusBar(headerDOM);	
+			//alert(headerId);
+			$("#" + headerDOM).removeClass("display-none").siblings(".header").addClass("display-none");
+
+			
+		}
+	</script>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>o2o订单详情</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/O2O.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<article class="article">
+			<div class="wrap">
+				<div class="choose">
+					<label>订货单号</label>
+					<input type="text" placeholder="订货单号" id="order_no" readonly/>
+				</div>
+				<div class="choose">
+					<label>商品总价</label>
+					<input type="text" placeholder="商品总价" id="total" readonly/>
+				</div>
+				<div class="choose">
+					<label>物流单号</label>
+					<input type="text" placeholder="物流单号" id="kuaidi_no" readonly/>
+				</div>
+				<div class="thread">商品详情</div>
+				<div class="list column" id="list"></div>
+			<button id="status1" onclick="map();" style="display: none;" >请分配订单</button>
+			<button id="status2" class="dark" style="display: none;" >等待买家付款</button>
+			<button id="status3" onclick="map();" style="display: none;" >请分配订单</button>
+			<button id="status4" class="dark" style="display: none;" >请至电脑端打印发货单（货运单）</button>
+			<button id="status5" class="dark" style="display: none;" >已打单</button>
+			<button id="status6" class="dark" style="display: none;" >已确认单号</button>
+			<button id="status7" class="dark" style="display: none;" >已出库 等待收货</button>
+			<button id="status72" onclick="show_pay_way();" style="display: none;" >已出库 确认送达</button>
+			<button id="status8" class="dark" style="display: none;" >已完成</button>
+			<button id="status30" class="dark" style="display: none;" >已取消</button>
+				<div class="payment" id="pay_way" style="display: none">
+					<div class="sort" >
+						<div class="sort1" onclick="gathering_money();">
+							<img src="../image/pay_cash.png" />
+							<span>现金</span>
+						</div>
+						<div class="sort2" onclick="gathering_pos();">
+							<img src="../image/pay_visa.png" />
+							<span>银行卡</span>
+						</div>
+						<div class="sort3" onclick="gathering_alipay();" >
+							<img src="../image/pay_alipay.png" />
+							<span>支付宝</span>
+						</div>
+						<div class="sort4" onclick="gathering_weixin();">
+							<img src="../image/pay_weixin.png" />
+							<span>微信</span>
+						</div>
+						<div class="sort5" onclick="member_card_pay();">
+							<img src="../image/pay_member_card.png" />
+							<span>会员卡</span>
+						</div>
+						<div class="sort6" onclick="gathering_other();">
+							<img src="../image/pay_other.png" />
+							<span>其他</span>
+						</div>
+					</div>
+					<div class="cancel" onclick="close_pay_way();">&times;</div>
+						
+					</div>
+				
+			</div>
+		</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			//var table = document.body.querySelector('.mui-table-view');
+			//var cells = document.body.querySelectorAll('.mui-table-view-cell');
+			//var orddr = api.pageParam.orddr;
+			//alert($api.getStorage('o2o_order_detail_order_id'));
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/o2o_order_detail.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						order_id : $api.getStorage('o2o_order_detail_order_id')
+					}
+				}
+			}, function(data, err) {
+				//			alert(JSON.stringify(data));
+				if (data) {
+					//alert(data.data[0].order_no);
+					//					var data = ret.data;
+					document.getElementById("order_no").value = data.data[0].order_no;
+					document.getElementById("total").value = data.data[0].totalprice;
+					document.getElementById("kuaidi_no").value = data.data[0].kuaidi_no;
+					if (data.data[0].status == 7 && data.data[0].is_huodaofukuan == 2) {
+						$api.byId('status72').style.display = "";
+						$api.setStorage('o2o_status7_kuaidi_no', data.data[0].kuaidi_no);
+						$api.setStorage('ordernum', data.data[0].checkout_order_num);
+						$api.setStorage('total_price', data.data[0].totalprice);
+					} else if (data.data[0].status == 1 || data.data[0].status == 3) {
+						$api.byId('status' + data.data[0].status).style.display = "";
+						var map = api.require('bMap');
+						map.getCoordsFromName({
+							address : data.data[0].address
+						}, function(ret, err) {
+							if (ret.status) {
+								//alert(JSON.stringify(ret));
+								//alert(ret.lon);
+								$api.setStorage('o2o_order_lon', ret.lon);
+								$api.setStorage('o2o_order_lat', ret.lat);
+								//alert(JSON.stringify(ret));
+							} else {
+								//alert(JSON.stringify(err));
+								$api.setStorage('o2o_order_lon', 0);
+								$api.setStorage('o2o_order_lat', 0);
+							}
+						});
+					} else {
+						$api.byId('status' + data.data[0].status).style.display = "";
+					}
+					for ( i = 0; i < data.data.length; i++) {
+						var str = '<ul>';
+						var str = str + '<li><label>商品名:</label><span>' + data.data[i].pro_name + '</span></li>';
+						var str = str + '<li><label>数量:</label><span>' + data.data[i].num + '</span></li>';
+						var str = str + '<li><label>小计:</label><span>' + data.data[i].sub_total + '</span></li>';
+						var str = str + '</ul>';
+						$api.append($api.byId('list'), str);
+					}
+				} else {
+					alert('网络错误');
+				}
+			});
+		};
+		function show_pay_way() {
+			$api.byId('pay_way').style.display = "";
+		}
+
+		function close_pay_way() {
+			$api.byId('pay_way').style.display = "none";
+		}
+
+		//现金结账
+		function gathering_money() {
+			api.openFrame({
+				name : 'gathering_money',
+				url : './gathering_money.html',
+				bgColor : 'rgba(0,0,0,0.3)',
+				pageParam : {
+					from : 'o2o',
+					kuaidi_no : $api.getStorage('o2o_status7_kuaidi_no')
+				}
+			});
+		}
+
+		//现金结账
+		function gathering_pos() {
+			api.openFrame({
+				name : 'gathering_pos',
+				url : './gathering_pos.html',
+				bgColor : 'rgba(0,0,0,0.3)',
+				pageParam : {
+					from : 'o2o',
+					kuaidi_no : $api.getStorage('o2o_status7_kuaidi_no')
+				}
+			});
+		}
+
+		//现金结账
+		function gathering_alipay() {
+			api.openFrame({
+				name : 'gathering_alipay',
+				url : './gathering_alipay.html',
+				bgColor : 'rgba(0,0,0,0.3)',
+				pageParam : {
+					from : 'o2o',
+					kuaidi_no : $api.getStorage('o2o_status7_kuaidi_no')
+				}
+			});
+		}
+
+		//现金结账
+		function gathering_weixin() {
+			api.openFrame({
+				name : 'gathering_weixin',
+				url : './gathering_weixin.html',
+				bgColor : 'rgba(0,0,0,0.3)',
+				pageParam : {
+					from : 'o2o',
+					kuaidi_no : $api.getStorage('o2o_status7_kuaidi_no')
+				}
+			});
+		}
+
+		//会员卡结账
+		function member_card_pay() {
+			api.openFrame({
+				name : 'gathering_member_card',
+				url : './gathering_member_card.html',
+				bgColor : 'rgba(0,0,0,0.3)',
+				pageParam : {
+					from : 'o2o',
+					kuaidi_no : $api.getStorage('o2o_status7_kuaidi_no')
+				}
+			});
+		}
+
+		//现金结账
+		function gathering_other() {
+			api.openFrame({
+				name : 'gathering_other',
+				url : './gathering_other.html',
+				bgColor : 'rgba(0,0,0,0.3)',
+				pageParam : {
+					from : 'o2o',
+					kuaidi_no : $api.getStorage('o2o_status7_kuaidi_no')
+				}
+			});
+		}
+
+		function winreload() {
+			window.location.reload();
+		}
+
+		function map() {
+			api.openWin({
+				name : 'map_o2o',
+				url : './map_index.html'
+			});
+		}
+	</script>
+</html>

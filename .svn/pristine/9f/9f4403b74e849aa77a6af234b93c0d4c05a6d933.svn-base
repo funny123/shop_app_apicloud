@@ -1,0 +1,212 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			html, body {
+				background: rgba(0,0,0,0);
+			}
+			body {
+			}
+			
+    			#sendVerify span{font-size:14px;}
+			.top-area {
+			}
+			.logo {
+				height: 30px;
+				display: -webkit-box;
+				-webkit-box-orient: horizontal;
+				-webkit-box-pack: center;
+				-webkit-box-align: center;
+				display: box;
+				box-orient: horizontal;
+				box-pack: center;
+				box-align: center;
+			}
+			.login-area {
+				text-align: center;
+			}
+			.login-area img {
+				width: 75px;
+				height: 75px;
+				border-radius: 8px;
+				-webkit-border-radius: 8px;
+			}
+			.login-area p {
+				padding: 5px 0 0 0;
+				font-size: 15px;
+				color: #fff;
+			}
+			.form {
+				padding: 0 30px;
+			}
+			.form-row {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-orient: horizontal;
+				-webkit-flex-flow: row;
+				flex-flow: row;
+				width: 100%;
+				padding: 12px;
+				position:relative;
+			}
+			.form-row:after {
+				content: "";
+				position: absolute;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+				border-bottom: 1px solid #e0e0e0;
+				-webkit-transform: scaleY(.5);
+				-webkit-transform-origin: 0 0;
+			}
+			.form-row span {
+				display: block;
+				width: 50px;
+				color: #959595;
+			}
+			.form-row span {
+				font-size: 22px;
+			}
+			.form-row .input-box {
+				-webkit-box-flex: 1;
+				-webkit-flex: 1;
+				flex: 1;
+				padding-top: 2px;
+			}
+			.form-row .input-box input {
+				background: rgba(0,0,0,0);
+				border: none;
+				outline: none;
+				color: #999;
+				padding: 4px;
+				margin: 0;
+			}
+			.form-btn {
+				padding: 30px 30px 15px 30px;
+			}
+			.aui-btn-ff9800 {
+				background: #ff9800 !important;
+				color: #f9f9f9 !important;
+				border: none;
+				outline: none;
+			}
+			.form-btn button:active {
+				background: rgba(255,152,0,0.8) !important;
+			}
+			.getcode {
+				color: #ff9800;
+				line-height: 33px;
+				font-size:14px;
+			}
+			.showpwd {
+				color: #fff;
+				line-height: 33px;
+				font-size: 20px;
+			}
+			.form-o {
+				padding: 0 30px;
+			}
+			.form-o span {
+				float: left;
+				color: #f9f9f9;
+				font-size: 13px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="top-area">
+			<div class="logo"></div>
+			<div class="form">
+				<div class="form-area">
+					<div class="form-row">
+						<span class="aui-iconfont aui-icon-mobilefill">&nbsp;|</span>
+						<div class="input-box">
+							<input type="number" name="phone" value="1855656565" placeholder="请输入手机号" readonly="" />
+						</div>
+						<div class="aui-input-addon">
+		                    <div class="aui-btn aui-btn-default" id="sendVerify" status="1" tapmode onclick="getVerify()">获取验证码</div>
+		                </div>
+					</div>
+					
+					<div class="form-row">
+						<span class="aui-iconfont aui-icon-safe">&nbsp;|</span>
+						<div class="input-box">
+							<input type="number" name="code" id="code" value="" placeholder="请输入验证码" />
+						</div>
+					</div>
+					<div class="form-row">
+						<span class="iconfont icon-mima">&nbsp;|</span>
+						<div class="input-box">
+							<input type="password" id="password" name="phone" value="" placeholder="请输入新密码" />
+						</div>
+						<i class="aui-input-addon aui-iconfont aui-icon-attention aui-text-default" tapmode onclick="showPassword();" id="showpass-btn"></i>
+					</div>
+				</div>
+			</div>
+			<div class="form-btn">
+				<button class="aui-btn aui-btn-ff9800 aui-btn-block" id="login-btn" tapmode onclick="H.$toast('修改成功！');setTimeout(function(){H.$closeCurrentWin();},1500);">
+					提交
+				</button>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+	var isinerval,times;
+    apiready = function () {
+        api.parseTapmode();
+    }
+	function showPassword(){
+        $api.attr($api.byId('password'),'type','text');
+        $api.removeCls($api.byId('showpass-btn'),'aui-icon-attention');
+        $api.addCls($api.byId('showpass-btn'),'aui-icon-attentionfill');
+        $api.attr($api.byId('showpass-btn'),'onclick','hidePassword();');
+        api.parseTapmode();
+    }
+    function hidePassword(){
+        $api.attr($api.byId('password'),'type','password');
+        $api.removeCls($api.byId('showpass-btn'),'aui-icon-attentionfill');
+        $api.addCls($api.byId('showpass-btn'),'aui-icon-attention');
+        $api.attr($api.byId('showpass-btn'),'onclick','showPassword();');
+        api.parseTapmode();
+    }
+    function getVerify() {
+        var sendVerify = $api.byId('sendVerify');
+        var status = $api.attr(sendVerify,'status');
+        if(status!=1){
+            return;
+        }
+        $api.removeAttr(sendVerify,'onclick');
+        api.parseTapmode();
+        $api.html(sendVerify,'<span id="GetVerify" style="color:#fff;">120</span>');
+        times = 119;
+        isinerval = setInterval("CountDown()", 1000);
+        setTimeout(function(){
+            $api.val($api.byId("code"),'888888');
+        },500)
+        
+    }
+    function CountDown() {
+        if (times < 1) {
+            var sendVerify = $api.byId('sendVerify');
+            $api.attr(sendVerify,'onclick','get_verify()');
+            $api.attr(sendVerify,'status','1');
+            api.parseTapmode();
+            $api.html(sendVerify,'重新获取');
+            clearInterval(isinerval);
+            return;
+        }
+        var getVerify = $api.byId('GetVerify');
+        $api.html(getVerify,''+times+'');
+        times--;
+    }
+	</script>
+</html>

@@ -1,0 +1,38 @@
+@media screen and (min-width: 602px) {
+	html {
+		font-size: 110%;
+	}
+	body {
+		font-size: 1.6rem;
+	}
+}
+@media screen and (min-width: 416px) and (max-width: 601px) {
+	html {
+		font-size: 100%;
+	}
+	body {
+		font-size: 1.6rem;
+	}
+}
+@media screen and (min-width: 360px) and (max-width: 415px) {
+	html {
+		font-size: 62.5%;
+	}
+	body {
+		font-size: 1.6rem;
+	}
+}
+@media screen and (max-width: 359px) {
+	html {
+		font-size: 55.55555556%;
+	}
+	body {
+		font-size: 1.5rem;
+	}
+	.article .supplier div {
+		width: 9.48rem !important;
+	}
+	.article .four div {
+		width: 7.9rem !important;
+	}
+}

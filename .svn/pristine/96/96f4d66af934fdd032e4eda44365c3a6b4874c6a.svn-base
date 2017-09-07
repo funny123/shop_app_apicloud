@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/minmax.css"/>
+		<style>
+			body {
+			}
+			header {
+				background-color: #FCFCFC;
+				line-height: 4.0rem;
+				height: 4.0rem;
+				position: relative;
+				border-bottom: 0.1rem solid #DDDDDD
+			}
+			header b {
+				width: 4.0rem;
+				height: 100%;
+				display: inline-block;
+				position: relative;
+				z-index: 1;
+				background: url() no-repeat center;
+				background-size: 70% auto;
+			}
+			header b.ic-back {
+				background-image: url(../image/ic-back.png);
+			}
+			header b.ic-check {
+				background-image: url(../image/ic-check.png);
+				float: right;
+			}
+			header .title {
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				text-align: center;
+			}
+			.barcode {
+				width: 23.0rem;
+				height: 5.0rem;
+				border: 1px solid #039be5;
+			}
+			.inputwarp {
+				float: left;
+				/*margin-left: 1.0rem;*/
+			}
+			.inputright {
+				line-height: 5.0rem;
+				float: right;
+				/*background: #0062CC;*/
+				margin-right: 1.0rem;
+			}
+			.zhifuway {
+				background: #00ACC1;
+				line-height: 5.0rem;
+				width: 15%;
+				text-align: center;
+			}
+			.zongjia {
+				background: #B3E5FC;
+				line-height: 3.0rem;
+			}
+			.queren {
+				position: fixed;
+				bottom: 0px;
+				width: 100%;
+			}
+			.keyborad1 {
+				width: 23%;
+				/*height: 2.0rem;*/
+				line-height: 6.0rem;
+				text-align: center;
+			}
+			.slh {
+				line-height: 6.0rem;
+				margin-left: 2.0rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap" class="flex-wrap flex-vertical" >
+			<div style="position: fixed; top: 0.0rem;width: 100%;background: #ffffff;">
+				<header class="border-b" >
+					<b tapmode="hover" onclick="backtoIndex();" class="ic-back"></b>
+					<div class="title">
+						收银台
+					</div>
+					<b tapmode="hover" id="shangban"  class="ic-check"></b>
+				</header>
+				<div id="jieban" style="display: none;z-index: 50;background:#039be5">
+					<input type="text" id="jieban_last_balance" placeholder="上一班余额" />
+					<input type="text" id="jieban_machine_no" placeholder="机号" />
+					<div onclick="jieban_submit();">
+						确定
+					</div>
+					<div onclick="jieban_cancel();">
+						取消
+					</div>
+				</div>
+				<div id="wangdian" style="display: none;">
+					网店订单
+					<input type="text" id="wangdian_note_input" placeholder="快递单号或备注" onkeypress="if(event.keyCode==13) {wangdiannote();return false;}" />
+					<input type="text" id="wangdian_note2_input" placeholder="店铺" onkeypress="if(event.keyCode==13) {document.getElementById('wangdian_money_input').focus();return false;}" />
+					<input type="text" id="wangdian_money_input" placeholder="订单金额" onkeypress="if(event.keyCode==13) {wangdian_cash();return false;}" />
+				</div>
+				<div id="o2o" style="display: none;">
+					o2o订单
+					<input type="text" id="o2o_note_input" placeholder="快递单号或备注" onkeypress="if(event.keyCode==13) {o2onote();return false;}" />
+					<input type="text" id="o2o_money_input" placeholder="订单金额" readonly="readonly" />
+					<input type="text" id="o2o_is_huodaofukuan_input" placeholder="1在线支付 2货到付款" readonly="readonly" />
+					<input type="text" id="o2o_note2_input" placeholder="备注" onkeypress="if(event.keyCode==13) {o2o_cash();return false;}" />
+				</div>
+				<div id="jiaoban" style="display: none;z-index: 50;background:#039be5">
+					上一班余额
+					<input type="text" id="jiaoban_last_balance" placeholder="上一班余额" readonly="readonly" />
+					<input type="hidden" id="jiaoban_machine_no" />
+					<br>
+					本班应收金额
+					<input type="text" id="jiaoban_lilun_money" placeholder="本班应收金额" readonly="readonly" />
+					<br>
+					<input type="hidden" id="jiaoban_lilun_yue" placeholder="本班结束理论余额" readonly="readonly" />
+					本班上交总金额
+					<input type="text" id="jiaoban_chuzhang_money" placeholder="本班上交总金额" />
+					<br>
+					本班理论净余额
+					<input type="text" id="jiaoban_lilun_yue_new" placeholder="本班结束理论余额new" readonly="readonly" />
+					<br>
+					本班实际余额
+					<input type="text" id="jiaoban_real_balance" placeholder="本班实际余额" />
+					<br>
+					备注
+					<input type="text" id="jiaoban_note" placeholder="余额不平的备注" />
+					<div onclick="jiaoban_cancel();">
+						取消
+					</div>
+					<div onclick="jiaoban_submit();">
+						确定
+					</div>
+				</div>
+				<div class="inputwarp">
+					<input type="text" class="barcode" name="barcode" id="barcode" onkeypress="if(event.keyCode==13) {tijiao();return false;}" />
+				</div>
+				<div class="inputright">
+					<span onclick="tijiao();">提交</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span onclick="scanner();">扫描</span>
+				</div>
+				<div style="clear: both;"></div>
+				<div class="zongjia">
+					<span style="width: 38%">总价：<span id="total_price"></span></span>&nbsp;&nbsp;<span style="width: 18%"><span id="total_num"></span>件</span>&nbsp;<span style="width: 10%" id="order_type">&nbsp;</span>&nbsp;<span style="width: 10%" onclick="if(confirm('确实要删除吗?'))clearstorage();">清</span>&nbsp;<span style="width: 10%" onclick="youhuijianpan();">惠</span>
+				</div>
+			</div>
+			<div id="main" class="flex-con" >
+				<div onclick="changeNum();" style="margin-top: 15.0rem;">
+					更改数量
+				</div>
+				<div id="keyborad" class="queren" style="display: none;z-index: 100;background:#039be5">
+					<div class="slh">
+						数量：
+						<input type="number" id="new_num" readonly="readonly" />
+						<span onclick="clearKey();">取消</span>
+					</div>
+					<div>
+						<span class="keyborad1" id="n7" onclick="selectNum(7);"> 7 </span>
+						<span class="keyborad1" id="n8" onclick="selectNum(8);"> 8 </span>
+						<span class="keyborad1" id="n9" onclick="selectNum(9);"> 9 </span>
+						<span class="keyborad1" id="backspace" onclick="selectNum('backspace');"> 退格 </span>
+					</div>
+					<div>
+						<span class="keyborad1" id="n4" onclick="selectNum(4);"> 4 </span>
+						<span class="keyborad1" id="n5" onclick="selectNum(5);"> 5 </span>
+						<span class="keyborad1" id="n6" onclick="selectNum(6);"> 6 </span>
+						<span class="keyborad1" id="clear" onclick="selectNum('clear');"> 清空 </span>
+					</div>
+					<div>
+						<span class="keyborad1" id="n1" onclick="selectNum(1);"> 1 </span>
+						<span class="keyborad1" id="n2" onclick="selectNum(2);"> 2 </span>
+						<span class="keyborad1" id="n3" onclick="selectNum(3);"> 3 </span>
+						<span class="keyborad1" onclick="changeNumSubmit();"> &nbsp; </span>
+					</div>
+					<div>
+						<span class="keyborad1" id="n0" onclick="selectNum(0);"> 0 </span>
+						<span class="keyborad1" id="n0" onclick="selectNum(0);"> &nbsp; </span>
+						<span class="keyborad1"> . </span>
+						<span class="keyborad1" onclick="changeNumSubmit();"> 确定 </span>
+					</div>
+				</div>
+				<div id="keyboradyouhui" class="queren" style="display: none;z-index: 100;background:#EBD275">
+					<div class="slh">
+						优惠金额：
+						<input type="text" id="benefit" readonly="readonly" />
+						<span onclick="clearKeyyouhui();">取消</span>
+					</div>
+					<div>
+						<span class="keyborad1" id="n7" onclick="selectNumyouhui(7);"> 7 </span>
+						<span class="keyborad1" id="n8" onclick="selectNumyouhui(8);"> 8 </span>
+						<span class="keyborad1" id="n9" onclick="selectNumyouhui(9);"> 9 </span>
+						<span class="keyborad1" id="backspace" onclick="selectNumyouhui('backspace');"> 退格 </span>
+					</div>
+					<div>
+						<span class="keyborad1" id="n4" onclick="selectNumyouhui(4);"> 4 </span>
+						<span class="keyborad1" id="n5" onclick="selectNumyouhui(5);"> 5 </span>
+						<span class="keyborad1" id="n6" onclick="selectNumyouhui(6);"> 6 </span>
+						<span class="keyborad1" id="clear" onclick="selectNumyouhui('clear');"> 清空 </span>
+					</div>
+					<div>
+						<span class="keyborad1" id="n1" onclick="selectNumyouhui(1);"> 1 </span>
+						<span class="keyborad1" id="n2" onclick="selectNumyouhui(2);"> 2 </span>
+						<span class="keyborad1" id="n3" onclick="selectNumyouhui(3);"> 3 </span>
+						<span class="keyborad1" onclick="benefit();"> &nbsp; </span>
+					</div>
+					<div>
+						<span class="keyborad1" id="n0" onclick="selectNumyouhui(0);"> 0 </span>
+						<span class="keyborad1" id="n10" onclick="selectNumyouhui(0);"> &nbsp; </span>
+						<span class="keyborad1" id="ndian" onclick="selectNumyouhui('.');"> . </span>
+						<span class="keyborad1" onclick="benefit();"> 确定 </span>
+					</div>
+				</div>
+				<ul id="table-view" style="margin-bottom: 6.0rem"></ul>
+				<div style="position: fixed; bottom: 0px;width: 100%">
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<div style="background: #ffffff;">
+						<span class="zhifuway" onclick="gathering_money();"> 现金 </span>
+						<span class="zhifuway" onclick="gathering_pos();"> POS </span>
+						<span class="zhifuway" onclick="gathering_alipay();"> 支付 </span>
+						<span class="zhifuway" onclick="gathering_weixin();"> 微信 </span>
+						<span class="zhifuway" onclick="member_card_pay();"> 会员 </span>
+						<span class="zhifuway" onclick="gathering_other();"> 其他 </span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/jquery.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#jiaoban_chuzhang_money").blur(function() {
+				$api.byId('jiaoban_lilun_yue_new').value = ($api.byId('jiaoban_lilun_yue').value - $api.byId('jiaoban_chuzhang_money').value).toFixed(2);
+			});
+		});
+		var db;
+		var FNScanner;
+		if (!$api.getStorage('checkout_total_num') || $api.getStorage('checkout_total_num') ==0) {
+			var d = new Date();
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			var OrderNum = d.getFullYear() + m + r + h + mi + se + parseInt(Math.random() * 90000 + 10000, 10);
+			$api.setStorage('ordernum', OrderNum);
+		}
+		apiready = function() {
+			db = api.require('db');
+			if (!$api.getStorage('ShiftOrderNo')) {
+				$api.byId('shangban').innerHTML = "<span onclick='jieban();'>接</span>"
+			} else {
+				$api.byId('shangban').innerHTML = "<span onclick='jiaoban();'>交</span>"
+			}
+			$api.fixIos7Bar($api.dom('header'));
+			FNScanner = api.require('FNScanner');
+			api.addEventListener({
+				name : 'keyback'
+			}, function(ret, err) {
+				backtoIndex();
+			});
+			//焦点在文本框
+			$api.byId('barcode').focus();
+			//采购转出库订单
+			if ($api.getStorage('order_type') == 2) {
+				$api.html($api.byId('order_type'), '采');
+			} else if ($api.getStorage('order_type') == 1) {
+				$api.html($api.byId('order_type'), '员');
+			} else if ($api.getStorage('order_type') == 8) {
+				$api.html($api.byId('order_type'), '批');
+			}
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_CheckOut where OrderNum='" + $api.getStorage('ordernum') + "' order by id desc"
+			}, function(ret, err) {
+				if (ret.data.length > 0) {
+					var total = 0.0;
+					var total_num = 0;
+					var total_cost = 0.0;
+					//					str = JSON.stringify(ret);
+					for (var i = 0; i <= ret.data.length - 1; i++) {
+						var str = '<li><div>' + '商品:' + ret.data[i].ProName + '</div>';
+						var str = str + '<div style="float:left">条码:' + ret.data[i].BarCode + '<span>货架号:' + ret.data[i].ProPosition + '</span></div><div style="float:right" onclick="delete_order(' + ret.data[i].id + ');">删除</div><br>';
+						var str = str + '单价:' + ret.data[i].MarketPrice + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数量:' + ret.data[i].Num + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小计:' + ret.data[i].SubTotal + '<br><br></li>';
+						$api.append($api.byId('table-view'), str);
+						total += parseFloat(ret.data[i].SubTotal);
+						total_num += parseInt(ret.data[i].Num);
+						total_cost += parseFloat(ret.data[i].CostPrice);
+					}
+					//					total=parseFloat(ret.data[0].SubTotal)+parseFloat(ret.data[1].SubTotal);
+					total = total.toFixed(2);
+					$api.byId('total_price').innerHTML = total;
+					$api.byId('total_num').innerHTML = total_num;
+					$api.setStorage('total_price', total);
+					$api.setStorage('checkout_total_num', total_num);
+					$api.setStorage('checkout_total_cost', total_cost);
+					$api.byId('barcode').value = '';
+				}
+			});
+		};
+		function winreload() {
+			window.location.reload();
+		}
+
+		function scanner() {
+			FNScanner.openScanner({
+				autorotation : false
+			}, function(ret, err) {
+				if (ret.eventType == 'success') {
+					$api.byId('barcode').value = ret.content;
+					tijiao();
+					setTimeout("scanner1()", 1000);
+				}
+			});
+		}
+
+		function scanner1() {
+			FNScanner.openScanner({
+				autorotation : false
+			}, function(ret, err) {
+				if (ret.eventType == 'success') {
+					$api.byId('barcode').value = ret.content;
+					tijiao();
+					setTimeout("scanner()", 1000);
+				}
+			});
+		}
+
+		//现金结账
+		function gathering_money() {
+			if ($api.getStorage('total_price') <= 0) {
+				alert('总价不正确');
+				return false;
+			}
+			api.openFrame({
+				name : 'gathering_money',
+				url : './gathering_money.html',
+				bgColor : 'rgba(0,0,0,0.3)'
+			});
+		}
+
+		//现金结账
+		function gathering_pos() {
+			if ($api.getStorage('total_price') <= 0) {
+				alert('总价不正确');
+				return false;
+			}
+			api.openFrame({
+				name : 'gathering_pos',
+				url : './gathering_pos.html',
+				bgColor : 'rgba(0,0,0,0.3)'
+			});
+		}
+
+		//现金结账
+		function gathering_alipay() {
+			if ($api.getStorage('total_price') <= 0) {
+				alert('总价不正确');
+				return false;
+			}
+			api.openFrame({
+				name : 'gathering_alipay',
+				url : './gathering_alipay.html',
+				bgColor : 'rgba(0,0,0,0.3)'
+			});
+		}
+
+		//现金结账
+		function gathering_weixin() {
+			if ($api.getStorage('total_price') <= 0) {
+				alert('总价不正确');
+				return false;
+			}
+			api.openFrame({
+				name : 'gathering_weixin',
+				url : './gathering_weixin.html',
+				bgColor : 'rgba(0,0,0,0.3)'
+			});
+		}
+
+		//会员卡结账
+		function member_card_pay() {
+			if ($api.getStorage('total_price') <= 0) {
+				alert('总价不正确');
+				return false;
+			}
+			api.openFrame({
+				name : 'gathering_member_card',
+				url : './gathering_member_card.html',
+				bgColor : 'rgba(0,0,0,0.3)'
+			});
+		}
+
+		//会员卡结账
+		function member_card_pay_code() {
+			if ($api.getStorage('total_price') <= 0) {
+				alert('总价不正确');
+				return false;
+			}
+			api.openFrame({
+				name : 'gathering_member_card_code',
+				url : './gathering_member_card_code.html',
+				bgColor : 'rgba(0,0,0,0.3)'
+			});
+		}
+
+		//现金结账
+		function gathering_other() {
+			if ($api.getStorage('total_price') <= 0) {
+				alert('总价不正确');
+				return false;
+			}
+			api.openFrame({
+				name : 'gathering_other',
+				url : './gathering_other.html',
+				bgColor : 'rgba(0,0,0,0.3)'
+			});
+		}
+
+		function tijiao() {
+			if (!$api.getStorage('ShiftOrderNo')) {
+				alert('请先做接班操作');
+				return;
+			}
+			var BarCode = $api.byId('barcode').value;
+			if (BarCode == '1688') {
+				if (!$api.getStorage('total_price') || $api.getStorage('total_price') <= 0) {
+					alert('商品总价不正确');
+					return false;
+				}
+				document.getElementById('wangdian').style.display = "";
+				document.getElementById('wangdian_note_input').focus();
+				document.getElementById('barcode').value = '';
+				return false;
+			}
+			if (BarCode == '020') {
+				if (!$api.getStorage('total_price') || $api.getStorage('total_price') <= 0) {
+					alert('商品总价不正确');
+					return false;
+				}
+				document.getElementById('o2o').style.display = "";
+				document.getElementById('o2o_note_input').focus();
+				document.getElementById('barcode').value = '';
+				return false;
+			}
+			if (!(/^\d{5,18}$/.test(BarCode))) {
+				alert('请输入正确的条码');
+				$api.byId('barcode').value = '';
+				$api.byId('barcode').focus
+				return false;
+			}
+			if (BarCode.substring(5, 0) == "06340" || BarCode.substring(3, 0) == "020") {
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/member_card_name.php',
+					method : 'post',
+					data : {
+						values : {
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token'),
+							card_num : BarCode,
+							boss_id : $api.getStorage('boss_id')
+						}
+					}
+				}, function(data) {
+					if (data) {
+						if (data.code == 200) {
+							$api.setStorage('order_type', data.type);
+							$api.setStorage('orddermobile', BarCode);
+							$api.setStorage('ordder', data.id);
+							$api.setStorage('member_card_balance', data.balance);
+							db.selectSql({
+								name : 'ghuog_db' + $api.getStorage('mobile'),
+								sql : "UPDATE T_CheckOut SET OrderType='" + data.type + "',ordder='" + data.id + "' where OrderNum= '" + $api.getStorage('ordernum') + "'"
+							}, function(ret2, err2) {
+								if (ret2.status) {
+								}
+							});
+							if (data.type == 1) {
+								api.toast({
+									msg : '已设置为会员卡订单 卡余额：' + data.balance
+								});
+								$api.val($api.byId('barcode'), '');
+								$api.html($api.byId('order_type'), '员');
+							} else if (data.type == 8) {
+								api.toast({
+									msg : '已设置为批发会员卡订单 卡余额：' + data.balance
+								});
+								$api.val($api.byId('barcode'), '');
+								$api.html($api.byId('order_type'), '批');
+							}
+						} else if (data.code == 404) {
+							alert('没有该会员');
+							return;
+						}
+					} else {
+						alert('网络错误');
+					}
+				});
+				return false;
+			}
+			var d = new Date();
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			var CheckTime1 = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+			//判断条形码是否存在
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_Product where Barcode= '" + BarCode + "'"
+			}, function(ret, err) {
+				if (ret.data.length > 0) {
+					var Num = 1;
+					//						var market_price = ret.data[0].MarketPrice;
+					if ($api.getStorage('order_type') == 8 && ret.data[0].WholesalePrice > 0) {
+						var market_price = ret.data[0].WholesalePrice;
+					} else if ($api.getStorage('order_type') == 8 && ret.data[0].MemberPrice > 0) {
+						var market_price = ret.data[0].MemberPrice;
+					} else if ($api.getStorage('order_type') == 1 && ret.data[0].MemberPrice > 0) {
+						var market_price = ret.data[0].MemberPrice;
+					} else {
+						var market_price = ret.data[0].MarketPrice;
+					}
+					var ProName = ret.data[0].ProName;
+					var SubTotal = Num * parseFloat(market_price);
+					if ($api.getStorage('total_price') == 0 || !$api.getStorage('total_price')) {
+						var is_first = 1;
+					} else {
+						var is_first = 2;
+					}
+					var uidtimestamp = $api.getStorage('uid') + new Date().getTime();
+					var Profit=parseFloat(market_price)-parseFloat(ret.data[0].CostPrice);
+					db.selectSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "INSERT INTO T_CheckOut(ProName,MarketPrice,BarCode,Num,CheckTime,OrderNum,SubTotal,status,OrderType,ordder,Type,is_first,ShiftOrderNo,ProCat,ProSup,ProPosition,uidtimestamp,CostPrice,Profit)VALUES('" + ProName + "','" + market_price + "','" + BarCode + "','" + Num + "','" + CheckTime1 + "','" + $api.getStorage('ordernum') + "','" + SubTotal + "',2,'" + $api.getStorage('order_type') + "','" + $api.getStorage('ordder') + "',1,'" + is_first + "','" + $api.getStorage('ShiftOrderNo') + "','" + ret.data[0].ProCat + "','" + ret.data[0].supId + "','" + ret.data[0].ProPosition + "','" + uidtimestamp + "','" + ret.data[0].CostPrice + "','" + Profit + "')"
+					}, function(ret2, err2) {
+						if (ret2.status) {
+						}
+					});
+					db.selectSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "SELECT * FROM T_CheckOut where OrderNum='" + $api.getStorage('ordernum') + "' order by id desc"
+					}, function(ret3, err3) {
+					//alert(JSON.stringify(ret3));
+						if (ret3.status) {
+							var str = '<li><div>' + '商品:' + ret3.data[0].ProName + '</div>';
+							var str = str + '<div style="float:left">条码:' + ret3.data[0].BarCode + '<span>货架号:' + ret3.data[0].ProPosition + '</span></div><div style="float:right" onclick="delete_order(' + ret3.data[0].id + ');">删除</div><br>';
+							var str = str + '单价:' + ret3.data[0].MarketPrice + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数量:' + ret3.data[0].Num + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小计:' + ret3.data[0].SubTotal + '<br><br></li>';
+							$api.prepend($api.byId('table-view'), str);
+							var new_total = 0.0;
+							var new_total_num = 0;
+							var new_total_cost = 0.0;
+							for (var i = 0; i < ret3.data.length; i++) {
+								new_total += parseFloat(ret3.data[i].SubTotal);
+								new_total_num += parseInt(ret3.data[i].Num);
+								new_total_cost += parseFloat(ret3.data[i].CostPrice);
+							}
+							new_total = new_total.toFixed(2);
+							$api.byId('total_price').innerHTML = new_total;
+							$api.byId('total_num').innerHTML = new_total_num;
+							$api.setStorage('total_price', new_total);
+							$api.setStorage('checkout_total_num', new_total_num);
+							$api.setStorage('checkout_total_cost', new_total_cost);
+						}
+					});
+					$api.val($api.byId('barcode'), '');
+					setTimeout("tishi()", 100);
+					//api.toast({msg:parseFloat($api.getStorage('total_price'))});
+				} else {
+					api.startPlay({
+						path : 'widget://image/wrong.wav'
+					}, function(ret, err) {
+					});
+					alert('商品不存在');
+					$api.val($api.byId('barcode'), '');
+				}
+			});
+		}
+
+		function tishi() {
+			if ($api.getStorage('ordder') && parseFloat($api.getStorage('total_price')) > parseFloat($api.getStorage('member_card_balance'))) {
+				if (!$api.getStorage('member_card_alert')) {
+					$api.setStorage('member_card_alert', 1);
+					api.startPlay({
+						path : 'widget://image/wrong.wav'
+					}, function(ret, err) {
+					});
+					alert('卡余额不足');
+				} else {
+					api.startPlay({
+						path : 'widget://image/di.wav'
+					}, function(ret, err) {
+					});
+				}
+			} else {
+				api.startPlay({
+					path : 'widget://image/di.wav'
+				}, function(ret, err) {
+				});
+			}
+		}
+
+		function wangdiannote() {
+			if (!document.getElementById('wangdian_note_input').value) {
+				alert('请输入货运单号');
+				return false;
+			}
+			document.getElementById('wangdian_note2_input').focus();
+		}
+
+		function wangdian_cash() {
+			var sWangdian = document.getElementById('wangdian_money_input').value;
+			//alert(sNewTotal);
+			if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(sWangdian))) {
+				alert('请输入正确的订单金额');
+				return false;
+			}
+			var d = new Date();
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			var TimeNow = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+			var uidtimestamp = $api.getStorage('uid') + new Date().getTime();
+			var TotalProfit=parseFloat(document.getElementById('wangdian_money_input').value)-parseFloat($api.getStorage('checkout_total_cost'));
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : 'UPDATE T_CheckOut SET Status=1,Type=5,NoteNote="' + document.getElementById('wangdian_note_input').value + '",Total=' + document.getElementById('wangdian_money_input').value + ',TotalCostPrice=' + $api.getStorage('checkout_total_cost') + ',TotalProfit=' + TotalProfit + ' where OrderNum= ' + $api.getStorage('ordernum') + ''
+			}, function(ret, err) {
+			});
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : 'INSERT INTO T_CashList(orderNo,time,sum,gathering,change,note,note2,cashType,status,ShiftOrderNo,uidtimestamp)VALUES(' + $api.getStorage('ordernum') + ',"' + TimeNow + '",' + document.getElementById('wangdian_money_input').value + ',' + document.getElementById('wangdian_money_input').value + ',0,"' + document.getElementById('wangdian_note_input').value + '","' + document.getElementById('wangdian_note2_input').value + '",8,1,"' + $api.getStorage('ShiftOrderNo') + '","' + uidtimestamp + '")'
+			}, function(ret, err) {
+			});
+			setTimeout("clearstorage1()", 500);
+		}
+
+		function o2onote() {
+			if (!document.getElementById('o2o_note_input').value) {
+				alert('请输入货运单号');
+				return false;
+			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/o2o_order_info.php',
+				method : 'post',
+				data : {
+					values : {
+						token : $api.getStorage("token"),
+						mobile : $api.getStorage("mobile"),
+						kuaidi_no : document.getElementById('o2o_note_input').value
+					}
+				}
+			}, function(data, err) {
+				//			alert(data.code);
+				if (data.code == 200) {
+					document.getElementById('o2o_money_input').value = data.totalprice;
+					document.getElementById('o2o_is_huodaofukuan_input').value = data.is_huodaofukuan;
+					document.getElementById('o2o_note2_input').focus();
+				} else if (data.code == 404) {
+					alert('没有此订单');
+				} else {
+					api.alert({
+						msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+					});
+				}
+			});
+		}
+
+		function o2o_cash() {
+			var tsO2O = document.getElementById('o2o_money_input').value;
+			if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(tsO2O))) {
+				alert('订单金额不正确');
+				return false;
+			}
+			//调接口把状态改为7 如果是在线付款的 加收入http://ririqiang.com/ghuog/api_shop/o2o_order_checkout.php
+			var TotalProfit=parseFloat(document.getElementById('o2o_money_input').value)-parseFloat($api.getStorage('checkout_total_cost'));
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/o2o_order_checkout.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						kuaidi_no : document.getElementById('o2o_note_input').value,
+						is_huodaofukuan : document.getElementById('o2o_is_huodaofukuan_input').value,
+						money : document.getElementById('o2o_money_input').value,
+						ordernum : $api.getStorage('ordernum')
+					}
+				}
+			}, function(data, err) {
+				if (data.code == 200) {
+					db.selectSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : 'UPDATE T_CheckOut SET Status=1,Type=6,NoteNote="' + document.getElementById('o2o_note_input').value + '",Total=' + document.getElementById('o2o_money_input').value + ',TotalCostPrice=' + $api.getStorage('checkout_total_cost') + ',TotalProfit=' + TotalProfit + ' where OrderNum= ' + $api.getStorage('ordernum') + ''
+						//				sql : "INSERT INTO T_CheckOut(ProName,MarketPrice,BarCode,Num,CheckTime,OrderNum,SubTotal,status,OrderType,ordder)VALUES('" + ProName + "','" + market_price + "','" + BarCode + "','" + Num + "','" + CheckTime1 + "','" + OrderNum + "','" + SubTotal + "',2,'" + $api.getStorage('order_type') + "','" + $api.getStorage('ordder') + "')"
+					}, function(ret, err) {
+					});
+					if (document.getElementById('o2o_is_huodaofukuan_input').value == 1) {
+						var d = new Date();
+						var m = (d.getMonth() + 1);
+						if (m < 10) {
+							m = "0" + m;
+						}
+						var r = d.getDate();
+						if (r < 10) {
+							r = "0" + r;
+						}
+						var h = d.getHours();
+						if (h < 10) {
+							h = "0" + h;
+						}
+						var mi = d.getMinutes();
+						if (mi < 10) {
+							mi = "0" + mi;
+						}
+						var se = d.getSeconds();
+						if (se < 10) {
+							se = "0" + se;
+						}
+						var TimeNow = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+						var uidtimestamp = $api.getStorage('uid') + new Date().getTime();
+						db.selectSql({
+							name : 'ghuog_db' + $api.getStorage('mobile'),
+							sql : 'INSERT INTO T_CashList(orderNo,time,sum,gathering,change,note,note2,cashType,status,ShiftOrderNo,uidtimestamp)VALUES(' + $api.getStorage('ordernum') + ',"' + TimeNow + '",' + document.getElementById('o2o_money_input').value + ',' + document.getElementById('o2o_money_input').value + ',0,"' + document.getElementById('o2o_note_input').value + '","' + document.getElementById('o2o_note2_input').value + '",7,1,"' + $api.getStorage('ShiftOrderNo') + '","' + uidtimestamp + '")'
+						}, function(ret, err) {
+						});
+					}
+					setTimeout("clearstorage1()", 500);
+				} else if (data.code == 404) {
+					alert('没有此订单');
+				} else {
+					alert('网络错误1');
+				}
+			});
+		}
+
+		function benefit() {
+			if ($api.getStorage('total_price') <= 0) {
+				alert('总价不正确');
+				return false;
+			}
+			var sBenefit = $api.byId('benefit').value;
+			var sNewTotal = $api.getStorage('total_price') - sBenefit;
+			//alert(sNewTotal);
+			if (sBenefit == 0) {
+				alert('请输入正确的优惠金额');
+				return false;
+			} else if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(sBenefit))) {
+				alert('请输入正确的优惠金额');
+				return false;
+			} else if (sNewTotal <= 0) {
+				alert('优惠金额应小于总价');
+				return false;
+			}
+			var d = new Date();
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			var CheckTime2 = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+			var uidtimestamp = $api.getStorage('uid') + new Date().getTime();
+			var benefit = "-" + $api.byId('benefit').value;
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "INSERT INTO T_CheckOut(ProName,MarketPrice,BarCode,Num,CheckTime,OrderNum,SubTotal,status,OrderType,ordder,Type,NoteNote,is_first,ShiftOrderNo,uidtimestamp,CostPrice,Profit)VALUES('优惠','" + benefit + "','1','1','" + CheckTime2 + "','" + $api.getStorage('ordernum') + "','" + benefit + "',2,'" + $api.getStorage('order_type') + "','" + $api.getStorage('ordder') + "',1,'订单的优惠',2,'" + $api.getStorage('ShiftOrderNo') + "','" + uidtimestamp + "',0,0)"
+			}, function(ret, err) {
+				winreload();
+			});
+		}
+
+		function youhuijianpan() {
+			$api.byId('keyboradyouhui').style.display = "";
+		}
+
+		function jieban() {
+			$api.byId('jieban').style.display = "";
+		}
+
+		function jieban_cancel() {
+			$api.byId('jieban').style.display = "none";
+		}
+
+		function jieban_submit() {
+			var LastYue = document.getElementById('jieban_last_balance').value;
+			if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(LastYue))) {
+				alert('请输入上一班余额');
+				return false;
+			} else if (!document.getElementById('jieban_machine_no').value) {
+				alert('请输入机号');
+				return false;
+			}
+			var d = new Date();
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			var jieban_time = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+			var goShiftOrderNo = d.getFullYear() + m + r + h + mi + se + parseInt(Math.random() * 900 + 100, 10);
+			var uidtimestamp = $api.getStorage('uid') + new Date().getTime();
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "INSERT INTO T_CheckOutShift(ShiftOrderNo,time,TheoryCash,LastBalance,MachineNo,Type,status,uidtimestamp)VALUES(" + goShiftOrderNo + ",'" + jieban_time + "',0,'" + $api.byId('jieban_last_balance').value + "','" + $api.byId('jieban_machine_no').value + "',1,1,'" + uidtimestamp + "')"
+			}, function(ret, err) {
+				if (ret.status) {
+					$api.setStorage('ShiftOrderNo', goShiftOrderNo);
+					winreload();
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+		}
+
+		function jiaoban() {
+			$api.byId('jiaoban').style.display = "";
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_CheckOutShift where ShiftOrderNo=" + $api.getStorage('ShiftOrderNo')
+			}, function(ret, err) {
+				if (ret.status) {
+					$api.byId('jiaoban_last_balance').value = ret.data[0].LastBalance;
+					$api.byId('jiaoban_machine_no').value = ret.data[0].MachineNo;
+					$api.byId('jiaoban_lilun_money').value = ret.data[0].TheoryCash;
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+			setTimeout("jiaoban1();", 500);
+		}
+
+		function jiaoban1() {
+			$api.byId('jiaoban_lilun_yue').value = (parseFloat($api.byId('jiaoban_last_balance').value) + parseFloat($api.byId('jiaoban_lilun_money').value)).toFixed(2);
+		}
+
+		function jiaoban_cancel() {
+			$api.byId('jiaoban').style.display = "none";
+		}
+
+		function jiaoban_submit() {
+			var ShangJiao = document.getElementById('jiaoban_chuzhang_money').value;
+			var ShijiYue = document.getElementById('jiaoban_real_balance').value;
+			if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(ShangJiao))) {
+				alert('请输入上交金额，未上交请填0');
+				return false;
+			} else if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(ShijiYue))) {
+				alert('请输入余额');
+				return false;
+			}
+			var d = new Date();
+			var m = (d.getMonth() + 1);
+			if (m < 10) {
+				m = "0" + m;
+			}
+			var r = d.getDate();
+			if (r < 10) {
+				r = "0" + r;
+			}
+			var h = d.getHours();
+			if (h < 10) {
+				h = "0" + h;
+			}
+			var mi = d.getMinutes();
+			if (mi < 10) {
+				mi = "0" + mi;
+			}
+			var se = d.getSeconds();
+			if (se < 10) {
+				se = "0" + se;
+			}
+			var jiaoban_time = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+			var uidtimestamp = $api.getStorage('uid') + new Date().getTime();
+			var goRealCash = parseFloat($api.byId('jiaoban_real_balance').value) + parseFloat($api.byId('jiaoban_chuzhang_money').value) - parseFloat($api.byId('jiaoban_last_balance').value);
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "INSERT INTO T_CheckOutShift(ShiftOrderNo,time,MachineNo,LastBalance,TheoryCash,TheoryBalance,TheoryBalanceNew,RealCash,TurnIn,RealBalance,note,Type,status,uidtimestamp)VALUES(" + $api.getStorage('ShiftOrderNo') + ",'" + jiaoban_time + "','" + $api.byId('jiaoban_machine_no').value + "','" + $api.byId('jiaoban_last_balance').value + "','" + $api.byId('jiaoban_lilun_money').value + "','" + $api.byId('jiaoban_lilun_yue').value + "','" + $api.byId('jiaoban_lilun_yue_new').value + "','" + goRealCash + "','" + $api.byId('jiaoban_chuzhang_money').value + "','" + $api.byId('jiaoban_real_balance').value + "','" + $api.byId('jiaoban_note').value + "',2,1,'" + uidtimestamp + "')"
+			}, function(ret, err) {
+				if (ret.status) {
+				} else {
+					alert(JSON.stringify(err));
+				}
+			});
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "DELETE FROM T_CheckOutShift where status=2"
+			}, function(ret1, err1) {
+				if (ret1.status) {
+					$api.setStorage('ShiftOrderNo', '')
+					winreload();
+				} else {
+					alert(JSON.stringify(err1));
+				}
+			});
+		}
+
+		function clearKeyyouhui() {
+			$api.byId('keyboradyouhui').style.display = "none";
+		}
+
+		function selectNumyouhui(num) {
+			if (num == 'clear') {
+				$api.byId('benefit').value = '';
+			} else if (num == 'backspace') {
+				$api.byId('benefit').value = $api.byId('benefit').value.substring(0, $api.byId('benefit').value.length - 1);
+			} else {
+				$api.byId('benefit').value = $api.byId('benefit').value + num;
+			}
+		}
+
+		function changeNum() {
+			$api.byId('keyborad').style.display = "";
+		}
+
+		function clearKey() {
+			$api.byId('keyborad').style.display = "none";
+		}
+
+		function selectNum(num) {
+			if (num == 'clear') {
+				$api.byId('new_num').value = '';
+			} else if (num == 'backspace') {
+				$api.byId('new_num').value = $api.byId('new_num').value.substring(0, $api.byId('new_num').value.length - 1);
+			} else {
+				$api.byId('new_num').value = $api.byId('new_num').value + num;
+			}
+		}
+
+		function changeNumSubmit() {
+			var NewNum = $api.byId('new_num').value;
+			if (!(/(^[1-9]\d*$)/.test(NewNum))) {
+				alert('请输入正确的数量');
+				return false;
+			}
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_CheckOut where OrderNum='" + $api.getStorage('ordernum') + "' order by id desc limit 1"
+			}, function(ret3, err3) {
+				if (ret3.data.length > 0) {
+					var NewSubTotal = ret3.data[0].MarketPrice*NewNum;
+					var NewCostPrice = ret3.data[0].CostPrice/ret3.data[0].Num*NewNum;
+					var NewProfit = ret3.data[0].Profit/ret3.data[0].Num*NewNum;
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "UPDATE T_CheckOut SET Num='" + NewNum + "',SubTotal='" + NewSubTotal + "',CostPrice='" + NewCostPrice + "',Profit='" + NewProfit + "' where id= '" + ret3.data[0].id + "'"
+					}, function(ret, err) {
+						if (ret.status) {
+							api.toast({
+								msg : '商品数量更新成功'
+							});
+						}
+					});
+					winreload();
+				} else {
+					alert('请先扫描条码');
+				}
+			});
+		}
+
+		function clearstorage() {
+			db.executeSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "delete from T_CheckOut where OrderNum= '" + $api.getStorage('ordernum') + "'"
+			}, function(ret, err) {
+				if (ret.status) {
+				}
+				clearstorage1();
+			});
+		}
+
+		function clearstorage1() {
+			$api.setStorage('ordernum', '');
+			$api.setStorage('total_price', '');
+			$api.setStorage('order_type', '');
+			$api.setStorage('ordder', '');
+			$api.setStorage('orddermobile', '');
+			$api.setStorage('member_card_balance', '');
+			$api.setStorage('member_card_alert', '');
+			$api.setStorage('checkout_total_num', '');
+			$api.setStorage('checkout_total_cost', '');
+			setTimeout("winreload()", 200);
+		}
+
+		function delete_order(id) {
+			db.executeSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "delete from T_CheckOut where id= '" + id + "'"
+			}, function(ret, err) {
+				if (ret.status) {
+					api.toast({
+						msg : '删除成功'
+					});
+					winreload();
+				} else {
+				}
+			});
+		}
+
+		function backtoIndex() {
+			api.closeToWin({
+				name : 'root'
+			});
+		}
+	</script>
+</html>

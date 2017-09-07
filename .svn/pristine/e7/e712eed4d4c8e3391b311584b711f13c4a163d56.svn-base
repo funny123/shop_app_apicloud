@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>类目</title>
+		<link rel="stylesheet" href="../css/re_public.css" />
+		<link rel="stylesheet" href="../css/new_file.css" />
+		<style>
+			html,body{background:rgba(0,0,0,0);}
+		</style>
+	</head>
+	<body>
+
+			<div class="cat_num">
+				<!--<div onclick="cat_num('Z');" class="cat_num">针织<span class="up_icon"></span></div>
+				<div onclick="cat_num('W');" class="cat_num">文体<span class="up_icon"></span></div>-->
+				<div class="cat_num_thread">针织<span class="up_icon"></span></div>
+				<div class="cat_num_thread">文体<span class="up_icon"></span></div>
+				<div class="cat_num_thread">日用百货<span class="up_icon"></span></div>
+				<div class="cat_num_sub">
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+				</div>
+				<div class="cat_num_thread">日用百货<span class="up_icon"></span></div>
+				<div class="cat_num_sub">
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+				</div>
+				<div class="cat_num_thread">日用百货<span class="up_icon"></span></div>
+				<div class="cat_num_sub">
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+				</div>
+				<div class="cat_num_thread">日用百货<span class="up_icon"></span></div>
+				<div class="cat_num_sub">
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+				</div>
+				<div class="cat_num_thread">日用百货<span class="up_icon"></span></div>
+				<div class="cat_num_sub">
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+				</div>
+				<div class="cat_num_thread">日用百货<span class="up_icon"></span></div>
+				<div class="cat_num_sub">
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RZ');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RW');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('RL');" class="cat_num_cate">雨伞</div>
+						<div onclick="cat_num('RB');" class="cat_num_cate">针织</div>
+						<div onclick="cat_num('');" class="cat_num_cate">所有</div>
+				</div>
+			</div>
+			<div style="height:50.0rem;background: #fff;position:fixed;bottom:2.3rem;width:65%;z-index: -1"></div>
+			<div onclick="closeframe();" class="cat_num_close">关闭</div>
+	
+		
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/jquery-1.7.1.min.js" ></script>
+	<script type="text/javascript">
+		apiready = function() {
+		};
+		function cat_num(str) {
+			$api.setStorage('barcode', '');
+			$api.setStorage('serial', '');
+			$api.setStorage('keyword', '');
+			$api.setStorage('cat_num', str);
+			api.execScript({
+				//							name : 'personer_setting',
+				frameName : 'product_list',
+				script : 'winreload();'
+			});
+			api.closeFrame({
+				name : 'product_list_cat_num'
+			});
+		}
+		function closeframe(){
+		api.closeFrame({
+	        name: 'product_list_cat_num'
+        });
+		}
+		
+		$(document).ready(function() {
+			$(".cat_num_thread").click(function(){
+			$(this).next(".cat_num_sub").slideToggle().siblings(".cat_num_sub").slideUp();		
+			$(this).toggleClass("up_icon").siblings().removeClass("up_icon");
+			
+				
+				
+			});
+	});
+	
+	</script>
+</html>

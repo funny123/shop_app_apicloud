@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css"> 
+		 .aui-list-view i.aui-iconfont {
+		    padding: 0px;
+		    top:-2px;
+		    border-radius:0px;
+		    margin:0;
+		    color: #e74c3c;
+		    font-size: 14px;
+		}
+		.time{font-size:12px;float: right;padding:4px 0;color:#999}
+		.aui-list-view-cell:active {
+		    background: #FFFFFF;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+	        <ul class="aui-list-view">
+	            <li class="aui-list-view-cell aui-img">
+	                <div class="aui-img-body">
+	                    <div>这是我的昵称啊<span class="time">2016-04-01 12:12:12</span></div>
+                    	<span class="name-icon" >
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                		</span>
+	                    <p class="aui-ellipsis-3">图文列表缩略图在左边的样式，默认大小为80PX，文字介绍内容可以为一行也可以为两行，超出部分自动省略</p>
+	                    <ul class="aui-list-view aui-grid-view listimg" style="margin: 0;">
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_0" src="../../image/nopic_post.jpg" datasrc="http://d.3987.com/nn_160401/desk_001.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(0)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_1" src="../../image/nopic_post.jpg" datasrc="http://d.3987.com/nn_160401/desk_001.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(1)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_2" src="../../image/nopic_post.jpg" datasrc="http://d.3987.com/nn_160401/desk_001.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(2)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_3" src="../../image/nopic_post.jpg" datasrc="http://img12.360buyimg.com/n1/jfs/t1840/6/2126847606/167728/b2d9d070/56aefd9cN7fd7d8a5.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(3)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_4" src="../../image/nopic_post.jpg" datasrc="http://img12.360buyimg.com/n1/jfs/t1840/6/2126847606/167728/b2d9d070/56aefd9cN7fd7d8a5.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(4)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_5" src="../../image/nopic_post.jpg" datasrc="http://img12.360buyimg.com/n1/jfs/t1840/6/2126847606/167728/b2d9d070/56aefd9cN7fd7d8a5.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(5)">
+				            </li>
+				        </ul>
+	                </div>
+	            </li>
+	            
+	            <li class="aui-list-view-cell aui-img">
+	                <div class="aui-img-body">
+	                    <div>这是我的昵称啊<span class="time">2016-04-01 12:12:12</span></div>
+                    	<span class="name-icon" >
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                		</span>
+	                    <p class="aui-ellipsis-3">图文列表缩略图在左边的样式，默认大小为80PX，文字介绍内容可以为一行也可以为两行，超出部分自动省略</p>
+	                    <ul class="aui-list-view aui-grid-view listimg" style="margin: 0;">
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_0" src="../../image/nopic_post.jpg" datasrc="http://d.3987.com/nn_160401/desk_001.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(0)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_1" src="../../image/nopic_post.jpg" datasrc="http://d.3987.com/nn_160401/desk_001.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(1)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_2" src="../../image/nopic_post.jpg" datasrc="http://d.3987.com/nn_160401/desk_001.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(2)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_3" src="../../image/nopic_post.jpg" datasrc="http://img12.360buyimg.com/n1/jfs/t1840/6/2126847606/167728/b2d9d070/56aefd9cN7fd7d8a5.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(3)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_4" src="../../image/nopic_post.jpg" datasrc="http://img12.360buyimg.com/n1/jfs/t1840/6/2126847606/167728/b2d9d070/56aefd9cN7fd7d8a5.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(4)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_5" src="../../image/nopic_post.jpg" datasrc="http://img12.360buyimg.com/n1/jfs/t1840/6/2126847606/167728/b2d9d070/56aefd9cN7fd7d8a5.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(5)">
+				            </li>
+				        </ul>
+	                </div>
+	            </li>
+	            
+	            <li class="aui-list-view-cell aui-img">
+	                <div class="aui-img-body">
+	                    <div>这是我的昵称啊<span class="time">2016-04-01 12:12:12</span></div>
+                    	<span class="name-icon" >
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                			<i class="aui-iconfont aui-icon-favorfill"></i>
+                		</span>
+	                    <p class="aui-ellipsis-3">图文列表缩略图在左边的样式，默认大小为80PX，文字介绍内容可以为一行也可以为两行，超出部分自动省略</p>
+	                    <ul class="aui-list-view aui-grid-view listimg" style="margin: 0;">
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_0" src="../../image/nopic_post.jpg" datasrc="http://d.3987.com/nn_160401/desk_001.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(0)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_1" src="../../image/nopic_post.jpg" datasrc="http://d.3987.com/nn_160401/desk_001.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(1)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_2" src="../../image/nopic_post.jpg" datasrc="http://d.3987.com/nn_160401/desk_001.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(2)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_3" src="../../image/nopic_post.jpg" datasrc="http://img12.360buyimg.com/n1/jfs/t1840/6/2126847606/167728/b2d9d070/56aefd9cN7fd7d8a5.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(3)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_4" src="../../image/nopic_post.jpg" datasrc="http://img12.360buyimg.com/n1/jfs/t1840/6/2126847606/167728/b2d9d070/56aefd9cN7fd7d8a5.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(4)">
+				            </li>
+				            <li class="aui-list-view-cell aui-img aui-col-xs-4">
+				                <img class="aui-img-object" id="imgslist_5" src="../../image/nopic_post.jpg" datasrc="http://img12.360buyimg.com/n1/jfs/t1840/6/2126847606/167728/b2d9d070/56aefd9cN7fd7d8a5.jpg" data-echo="../../image/nopic_post.jpg" tapmode onclick="clickImg(5)">
+				            </li>
+				        </ul>
+	                </div>
+	            </li>
+	                    
+	           
+	        </ul>
+	    </div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript">		
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		function clickImg(i) {
+			// 定义一个数组，存储需要预览的图片
+			var browerImgs = new Array();
+			$("#imgslist_" + i).closest("ul").find('li').each(function(e) {
+				//$("#imgslist_"+i).each(function() {
+				// 将图片追加到数组中
+				browerImgs.push($(this).find("img").attr("datasrc"));
+			});
+			//alert(browerImgs);
+			// 调用图片预览函数
+			photoBrowser(browerImgs, i);
+		}
+		function photoBrowser(browerImgs, i){
+			var photoBrowser = api.require('photoBrowser');
+			photoBrowser.open({
+			    images: browerImgs,
+			    activeIndex: i,
+			    placeholderImg: 'widget://image/loading.gif',
+			    bgColor: '#000'
+			}, function(ret){
+			    if(ret.eventType == 'click'){
+			    	//点击隐藏
+			    	photoBrowser.close();
+			    }else if(ret.eventType == 'longPress'){
+			    	//长按
+			    	api.actionSheet({
+					    buttons: ['保存']
+					},function( ret, err ){
+					    if( ret ){			         
+					         if(ret.buttonIndex == 1){					         	
+					         	photoBrowser.getImage({
+								    index: i
+								}, function(ret){
+									var pathAlbum = ret.path;
+									//保存图片到相册
+								    api.saveMediaToAlbum({
+									    path: ''+pathAlbum+''
+									}, function( ret, err ){ 
+									    if( ret ){
+									         toast('保存成功','middle');
+									    }else{
+									         toast('保存失败','middle');
+									    }
+									});
+								});
+					         }						
+					         
+					    }else{
+					         alert( JSON.stringify( err ) );
+					    }
+					});
+			    }
+			});
+		}
+	</script>
+</html>

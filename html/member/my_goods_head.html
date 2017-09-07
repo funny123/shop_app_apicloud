@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			body {
+				background: url(../../image/ucenter_bg.png) no-repeat left top;
+				background-size: cover;
+				-webkit-background-size: cover;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="aui-bar aui-bar-nav aui-bar-warning" id='aui-header'>
+			<a class="aui-pull-left" tapmode onclick="api.closeWin();"> <span class="aui-iconfont aui-icon-left"></span>返回 </a>
+			<div class="aui-title">
+				我的订单
+			</div>
+		</header>
+		<div class="aui-tab aui-tab-warning aui-padded-5" id="tab">
+			<ul class="aui-tab-nav aui-tab-border" id="demo2">
+				<li class="active" onclick="order(0);">
+					未支付
+				</li>
+				<li onclick="order(1);">
+					待发货
+				</li>
+				<li onclick="order(2);">
+					已发货
+				</li>
+				<li onclick="order(3);">
+					已完成
+				</li>
+				<li onclick="order(4);">
+					已取消
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			api.parseTapmode();
+			var header = $api.byId('aui-header');
+			$api.fixStatusBar(header);
+			var headerPos = $api.offset(header);
+			var body_h = $api.offset($api.dom('body')).h;
+			var tabPos = $api.offset($api.byId('tab'));
+			//			api.openFrame({
+			//				name : 'my_goods_body',
+			//				url : 'my_goods_body.html',
+			//				rect : {
+			//					x : 0,
+			//					y : headerPos.h,
+			//					w : 'auto',
+			//					h : 'auto'
+			//				}
+			//			});
+			api.openFrameGroup({
+				name : 'order',
+				rect : {
+					x : 0,
+					y : headerPos.h + tabPos.h,
+					w : 'auto',
+					h : 'auto'
+				},
+				frames : [{
+					name : 'order0',
+					url : 'order0.html',
+					bgColor : '#fff'
+				}, {
+					name : 'order1',
+					url : 'order1.html',
+					bgColor : '#fff'
+				}, {
+					name : 'order2',
+					url : 'order2.html',
+					bgColor : '#fff'
+				}, {
+					name : 'order3',
+					url : 'order3.html',
+					bgColor : '#fff'
+				}, {
+					name : 'order4',
+					url : 'order4.html',
+					bgColor : '#fff'
+				}]
+			}, function(ret, err) {
+				var index = ret.index;
+			});
+		}
+		var tab = $api.domAll("#tab li");
+		for (var i in tab) {
+			$api.addEvt(tab[i], 'click', function() {
+				$api.removeCls($api.dom("#tab li.active"), 'active');
+				$api.addCls(this, 'active');
+			});
+		};
+		function order(no) {
+			api.setFrameGroupIndex({
+				name : 'order',
+				index : no
+			});
+		}
+	</script>
+</html>

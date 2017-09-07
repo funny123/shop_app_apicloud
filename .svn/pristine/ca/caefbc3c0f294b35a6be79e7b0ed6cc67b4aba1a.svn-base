@@ -1,0 +1,289 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/minmax.css"/>
+		<style>
+			html, body {
+				background: rgba(0,0,0,0);
+			}
+			.kuangkuang {
+				/*position: fixed;*/
+				/*top: 12.0rem;*/
+				width: 80%;
+				background: #ffffff;
+				height: 16.5rem;
+				margin: 12.5rem auto 0 auto;
+			}
+			.anniu {
+				width: 45%;
+				height: 3.5rem;
+				text-align: center;
+				line-height: 3.5rem;
+				background: #6AB495;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="kuangkuang" >
+			<!--<div class="mui-input-row">
+			<textarea name="feedback" id="feedback" cols="30" rows="10" placeholder="请输入意见建议"></textarea>
+			</div>-->
+			<div style="width: 90%; padding-top: 1.0rem;text-align: center; font-size: 3.0rem;">
+				其他方式收款
+				<br>
+				<span>金额: </span>
+				<input style="width: 60%;" type="number" placeholder="请输入金额" id="money" >
+			</div>
+			<div style="text-align: center; margin: 1.0rem 0 1.0rem 0;">
+				<input style="width: 90%;" type="text" placeholder="在此输入备注" id="note" >
+			</div>
+			<div style="text-align: center;">
+				<span class="anniu" onclick="cancelgathering();"> 取消 </span>
+				<span class="anniu" onclick="gathering();"> 确定 </span>
+			</div>
+			<!--<div onclick="inputcode();">
+			手动输入会员条码收款
+			</div>-->
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	//	var FNScanner;
+	var db;
+	//	var change;
+	var BluetoothPrinter;
+	apiready = function() {
+	if (api.pageParam.kuaidi_no) {
+			$api.byId('note').value = api.pageParam.kuaidi_no;
+			document.getElementById("note").readOnly = true;
+		}
+		BluetoothPrinter = api.require('djyPrinter');
+		db = api.require('db');
+		//		FNScanner = api.require('FNScanner');
+		if ($api.getStorage('total_price') > 0) {
+			$api.byId('money').value = $api.getStorage('total_price');
+			document.getElementById("money").readOnly = true;
+		} else {
+			$api.byId('money').value = '';
+			$api.setStorage('ordernum', 2);
+		}
+	};
+	function gathering() {
+		var money = $api.byId('money').value;
+		if (money == 0) {
+			alert('请输入正确的金额');
+			return false;
+		} else if (!(/(^[0-9]+(.[0-9]{1,2})?$)/.test(money))) {
+			alert('请输入正确的金额');
+			return false;
+		}
+		updatestatus();
+		if (api.pageParam.from == "o2o") {
+		//通过快递单号更改local_order的状态8
+		api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/o2o_order_72to8.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+//						kuaidi_no : $api.getStorage('o2o_status7_kuaidi_no'),
+						order_id:$api.getStorage('o2o_order_detail_order_id'),
+						total_price:$api.getStorage('total_price'),
+						boss_id:$api.getStorage('boss_id')
+					}
+				}
+			}, function(data, err) {
+				if (data.code==200) {
+						$api.setStorage('ordernum', '');
+						$api.setStorage('total_price', '');
+						$api.setStorage('o2o_status7_kuaidi_no', '');
+						api.execScript({
+							name : 'o2o_order_detail',
+							frameName : 'o2o_order_detail',
+							script : 'winreload();'
+						});
+						setTimeout("api.closeFrame({});", 500);
+				} else if(data.code==404){alert('状态不正确');}else{
+					alert('网络错误');
+				}
+			});
+		
+			
+		} else if ($api.getStorage('ordernum') > 100) {
+			//			printOrder();
+			if(!$api.getStorage("printer_name")){
+				printOrder_no();
+			} else {
+				printOrder();
+			}
+			api.execScript({
+				name : 'local_checkout_scaner',
+				script : 'winreload();'
+			});
+			setTimeout("api.closeFrame({});", 500);
+			//			$api.setStorage('ordernum', '');
+			//			$api.setStorage('total_price', '');
+			//			$api.setStorage('order_type', '');
+			//			api.execScript({
+			//				name : 'local_checkout_scaner',
+			//				script : 'winreload();'
+			//			});
+			//			setTimeout("api.closeWin({});", 1000);
+		} else if ($api.getStorage('ordernum') == 1) {
+			printOrder_no();
+			api.execScript({
+				name : 'member_card',
+				frameName : 'member_card',
+				script : 'update_member_money(9);'
+			});
+			setTimeout("api.closeFrame({});", 500);
+		} else if ($api.getStorage('ordernum') == 2) {
+			printOrder_no();
+			api.execScript({
+				name : 'local_checkout_scaner',
+				script : 'winreload();'
+			});
+			setTimeout("api.closeFrame({});", 500);
+		}
+	}
+
+	function cancelgathering() {
+		if ($api.getStorage('ordernum') == 2) {
+			api.execScript({
+				name : 'local_checkout_scaner',
+				script : 'winreload();'
+			});
+			api.closeFrame();
+		} else {
+			api.closeFrame();
+		}
+	}
+
+	function printOrder_no() {
+		$api.setStorage('ordernum', '');
+		$api.setStorage('total_price', '');
+		$api.setStorage('order_type', '');
+		$api.setStorage('ordder', '');
+		$api.setStorage('orddermobile', '');
+		$api.setStorage('member_card_balance', '');
+		$api.setStorage('member_card_alert', '');
+		$api.setStorage('checkout_total_num', '');
+		$api.setStorage('checkout_total_cost', '');
+	}
+
+	function printOrder() {
+		BluetoothPrinter.listBT({}, function(ret, err) {
+		});
+		BluetoothPrinter.connect({
+			name : $api.getStorage("printer_name")
+		}, function(ret, err) {
+			if (ret) {
+				//				alert(ret.status);
+				printTest();
+			} else {
+				alert('连接失败');
+			}
+		});
+	}
+
+	function printTest() {
+		//		var BluetoothPrinter = api.require('djyPrinter');
+		var total = 0.0;
+		var d = new Date();
+		var m = (d.getMonth() + 1);
+		if (m < 10) {
+			m = "0" + m;
+		}
+		var r = d.getDate();
+		if (r < 10) {
+			r = "0" + r;
+		}
+		var h = d.getHours();
+		if (h < 10) {
+			h = "0" + h;
+		}
+		var mi = d.getMinutes();
+		if (mi < 10) {
+			mi = "0" + mi;
+		}
+		var se = d.getSeconds();
+		if (se < 10) {
+			se = "0" + se;
+		}
+		var CheckTime = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_CheckOut where OrderNum='" + $api.getStorage('ordernum') + "' order by id desc"
+		}, function(ret, err) {
+			if (ret.status) {
+				var str = String.fromCharCode(29) + String.fromCharCode(33) + String.fromCharCode(17) + //字体放大
+				String.fromCharCode(27) + String.fromCharCode(97) + String.fromCharCode(1) + //居中
+				$api.getStorage('shop_name') + "\n" + String.fromCharCode(29) + String.fromCharCode(33) + String.fromCharCode(0) + //字体放大
+				String.fromCharCode(27) + String.fromCharCode(97) + String.fromCharCode(0) + "\n" + '商品名' + String.fromCharCode(32) + '数量' + String.fromCharCode(32) + '单价' + String.fromCharCode(32) + '小计\n' + '-------------------------------\n';
+				for (var i = 0; i <= ret.data.length - 1; i++) {
+					str = str + String.fromCharCode(27) + String.fromCharCode(97) + String.fromCharCode(0) + ret.data[i].ProName.substr(0, 7) + String.fromCharCode(32) + ret.data[i].Num + String.fromCharCode(32) + ret.data[i].MarketPrice + String.fromCharCode(32) + ret.data[i].SubTotal + "\n";
+					total += parseFloat(ret.data[i].SubTotal);
+				}
+				str = str + '-------------------------------\n';
+				str = str + String.fromCharCode(27) + String.fromCharCode(97) + String.fromCharCode(0) + '总计金额：' + total + '元' + String.fromCharCode(10);
+				str = str + String.fromCharCode(27) + String.fromCharCode(97) + String.fromCharCode(0) + '付款方式：其他' + String.fromCharCode(10);
+				str = str + String.fromCharCode(27) + String.fromCharCode(97) + String.fromCharCode(0) + '打印时间：' + CheckTime + String.fromCharCode(10);
+				str = str + "\n" + "\n" + "\n";
+				BluetoothPrinter.printPOSCommand({
+					msg : str
+				}, function(ret, err) {
+					//				alert(JSON.stringify(ret));
+				});
+			}
+		});
+		printOrder_no();
+	}
+
+	function updatestatus() {
+	var TotalProfit=parseFloat(document.getElementById('money').value)-parseFloat($api.getStorage('checkout_total_cost'));
+		db.executeSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "UPDATE T_CheckOut SET Status='1',Total='" + $api.byId('money').value + "',TotalCostPrice='" + $api.getStorage('checkout_total_cost') + "',TotalProfit='" + TotalProfit + "' where OrderNum= '" + $api.getStorage('ordernum') + "'"
+		}, function(ret, err) {
+			if (ret.status) {
+			} else {
+			}
+		});
+		//时间
+		var d = new Date();
+		var m = (d.getMonth() + 1);
+		if (m < 10) {
+			m = "0" + m;
+		}
+		var r = d.getDate();
+		if (r < 10) {
+			r = "0" + r;
+		}
+		var h = d.getHours();
+		if (h < 10) {
+			h = "0" + h;
+		}
+		var mi = d.getMinutes();
+		if (mi < 10) {
+			mi = "0" + mi;
+		}
+		var se = d.getSeconds();
+		if (se < 10) {
+			se = "0" + se;
+		}
+		var TimeNow = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+		var uidtimestamp=$api.getStorage('uid')+new Date().getTime();
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "INSERT INTO T_CashList(orderNo,time,sum,gathering,change,note,cashType,status,ShiftOrderNo,uidtimestamp)VALUES('" + $api.getStorage('ordernum') + "','" + TimeNow + "','" + $api.byId('money').value + "','" + $api.byId('money').value + "','0','" + $api.byId('note').value + "',9,1,'" + $api.getStorage('ShiftOrderNo') + "','" + uidtimestamp + "')"
+		}, function(ret, err) {
+		});
+	}
+</script>

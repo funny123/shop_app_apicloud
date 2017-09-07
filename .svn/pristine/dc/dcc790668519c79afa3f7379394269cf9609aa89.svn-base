@@ -1,0 +1,332 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/employee.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+
+		<article class="article">
+		<div class="top_fixed">
+			<div class="top">
+				<div class="focus">新增员工</div>
+				<a href="employee_list.html">员工列表</a>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="choose">
+				<label>手机号</label>
+				<input type="number" placeholder="请输入手机号" id="mobile"/>
+			</div>
+			<div class="choose">
+				<label>密码</label>
+				<input type="password"  placeholder="请输入密码" id="password"/>
+			</div>
+<div class="thread">员工权限</div>
+			<div class="choose power">
+				<label>出库</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="checkout" />
+					<label class="switch_label" for="checkout">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+				<label>入库</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="stock" />
+					<label class="switch_label" for="stock">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+			</div>
+			<div class="choose power">
+				<label>采购</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="buy" />
+					<label class="switch_label" for="buy">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+				<label>添加商品</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="addproduct" />
+					<label class="switch_label" for="addproduct">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+			</div>
+			<div class="choose power">
+				<label>询价</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="inquiry" />
+					<label class="switch_label" for="inquiry">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+				<label>地图</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="map" />
+					<label class="switch_label" for="map">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+			</div>
+			<div class="choose power">
+				<label>结账收银</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="checkoutscaner" />
+					<label class="switch_label" for="checkoutscaner">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+				<label>退货</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="return" />
+					<label class="switch_label" for="return">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+			</div>
+			<div class="choose power">
+				<label>商品分类</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="procat" />
+					<label class="switch_label" for="procat">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+				<label>供应商</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="sup" />
+					<label class="switch_label" for="sup">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+			</div>
+			<div class="choose power">
+				<label>会员卡</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="membercard" />
+					<label class="switch_label" for="membercard">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+				<label>报表</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="report" />
+					<label class="switch_label" for="report">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+			</div>
+			<div class="choose power">
+				<label>盘点</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="stocktaking" />
+					<label class="switch_label" for="stocktaking">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+				<label>促销</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="saleactiviy" />
+					<label class="switch_label" for="saleactiviy">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+			</div>
+			<div class="choose power range">
+				<label>O2O</label>
+				<div class="switch">
+					<input type="checkbox" class="switch_box" id="o2oorder" />
+					<label class="switch_label" for="o2oorder">
+						<span class="switch_inner" data-on="ON" data-off="OFF"></span>
+						<span class="switch_switch"></span>
+					</label>
+				</div>
+			</div>
+
+			<button id="reg" onclick="employee_submit();">提交</button>
+		</div>
+		</article>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+
+
+	var is_checkout;
+	var is_stock;
+	var is_addproduct;
+	var is_inquiry;
+	var is_buy;
+	var is_map;
+	var is_checkoutscaner;
+	var is_return;
+	var is_procat;
+	var is_sup;
+	var is_membercard;
+	var is_stocktaking;
+	var is_saleactiviy;
+	var is_o2oorder;
+	var is_report;
+	apiready = function() {
+//	alert($api.getStorage('is_zhiying'));
+	};
+	function employee_submit() {
+		var sMobile = $api.byId('mobile').value;
+		var sPassword = $api.byId('password').value;
+		if (!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(sMobile))) {
+			alert("请输入正确的手机号");
+			return false;
+			
+		} else if (!(/^\w{6,15}$/.test(sPassword))) {
+			alert('密码长度6-15位');
+			return false;
+		}
+		if ($api.byId('buy').checked) {
+			is_buy = 1;
+		} else {
+			is_buy = 2;
+		}
+		if ($api.byId('inquiry').checked) {
+			is_inquiry = 1;
+		} else {
+			is_inquiry = 2;
+		}
+		if ($api.byId('map').checked) {
+			is_map = 1;
+		} else {
+			is_map = 2;
+		}
+		if ($api.byId('addproduct').checked) {
+			is_addproduct = 1;
+		} else {
+			is_addproduct = 2;
+		}
+		if ($api.byId('checkoutscaner').checked) {
+			is_checkoutscaner = 1;
+		} else {
+			is_checkoutscaner = 2;
+		}
+		if ($api.byId('stock').checked) {
+			is_stock = 1;
+		} else {
+			is_stock = 2;
+		}
+		if ($api.byId('return').checked) {
+			is_return = 1;
+		} else {
+			is_return = 2;
+		}
+		if ($api.byId('checkout').checked) {
+			is_checkout = 1;
+		} else {
+			is_checkout = 2;
+		}
+		if ($api.byId('procat').checked) {
+			is_procat = 1;
+		} else {
+			is_procat = 2;
+		}
+		if ($api.byId('sup').checked) {
+			is_sup = 1;
+		} else {
+			is_sup = 2;
+		}
+		if ($api.byId('membercard').checked) {
+			is_membercard = 1;
+		} else {
+			is_membercard = 2;
+		}
+		if ($api.byId('report').checked) {
+			is_report = 1;
+		} else {
+			is_report = 2;
+		}
+		if ($api.byId('stocktaking').checked) {
+			is_stocktaking = 1;
+		} else {
+			is_stocktaking = 2;
+		}
+		if ($api.byId('saleactiviy').checked) {
+			is_saleactiviy = 1;
+		} else {
+			is_saleactiviy = 2;
+		}
+		if ($api.byId('o2oorder').checked) {
+			is_o2oorder = 1;
+		} else {
+			is_o2oorder = 2;
+		}
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/employee_add.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					boss_id : $api.getStorage('boss_id'),
+					phone : $api.byId('mobile').value,
+					password : $api.byId('password').value,
+					is_buy : is_buy,
+					is_inquiry : is_inquiry,
+					is_map : is_map,
+					is_addproduct : is_addproduct,
+					is_checkoutscaner : is_checkoutscaner,
+					is_stock : is_stock,
+					is_return : is_return,
+					is_checkout : is_checkout,
+					is_procat : is_procat,
+					is_sup : is_sup,
+					is_membercard : is_membercard,
+					is_stocktaking : is_stocktaking,
+					is_saleactiviy : is_saleactiviy,
+					is_o2oorder : is_o2oorder,
+					is_report : is_report
+				}
+			}
+		}, function(data) {
+			if (data) {
+				if (data.code == 800200) {
+					//登录成功
+					alert('添加员工成功');
+					window.location.reload();
+				} else if (data.code == 405) {
+					//登录失败
+					alert('注册失败');
+				} else if (data.code == 800300) {
+					//登录失败
+					alert('员工数量已到上限，请升级');
+				}
+			} else {
+				alert('网络错误');
+			}
+		});
+	}
+
+	function winreload() {
+		window.location.reload();
+	}
+</script>

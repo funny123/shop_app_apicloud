@@ -1,0 +1,246 @@
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-in {
+				overflow-x: hidden;
+			}
+			.aui-in li {
+				display: -webkit-box;
+				-webkit-box-orient: horizontal;
+				box-sizing: border-box;
+				position: relative;
+				clear: both;
+			}
+			.aui-in li:after {
+				border-bottom: 1px solid #d7d7d7;
+				display: block;
+				content: '';
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				-webkit-transform-origin: 0 0;
+				-webkit-transform: scaleY(0.5);
+				pointer-events: none;
+			}
+			.aui-user-view-cell {
+				padding: 13px 13px;
+			}
+			.aui-user-view-cell p {
+			    margin-top: 3px;
+			    margin-bottom: 0;
+			    font-size: 14px;
+			}
+			.aui-user-view-cell:after {
+				border-bottom: 0;
+			}
+			.aui-in li > div {
+				-webkit-box-align: center;
+				width: 100%;
+				box-sizing: border-box;
+			}
+			.aui-user-view:after {
+				border-top: 0;
+			}
+			.hidden-menu {
+				width: auto !important;
+				position: relative;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-orient: horizontal;
+				-webkit-flex-flow: row;
+				flex-flow: row;
+				width: 100%;
+				position: relative;
+				top: -1px;
+			}
+			.hidden-menu p {
+				display: -webkit-box;
+				-webkit-box-orient: horizontal;
+				-webkit-box-pack: center;
+				-webkit-box-align: center;
+				display: box;
+				box-orient: horizontal;
+				box-pack: center;
+				box-align: center;
+				padding: 0 20px;
+				color: #fff;
+				font-size: 18px;
+			}
+			.one {
+				background: #f00;
+			}
+			.two {
+				background: #F1C40F;
+			}
+			.three {
+				background: #0000FF;
+			}
+			.aui-user-view-cell .aui-img, .aui-user-view-cell  .active-bg{
+				width: 70px;
+				height: 70px;
+				position: absolute;
+				right: 25px;
+				top: 8px;
+				background: url(../../image/icon_grabover.png) center center no-repeat;
+				z-index: 999;
+				background-size: 100% 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="result"></div>
+		<div class="aui-content">
+			<ul class="aui-user-view aui-in">
+				<li tapmode >					
+					<div class="aui-user-view-cell aui-img drop-div" tapmode onclick="openWinto('edit_address_head','edit_address_head')">
+						<div class="aui-img-body">
+							<span>陈奕迅</span> <span>18663767656</span>
+							<p class='aui-ellipsis-2' style="margin-right:12px;">
+								山东省济南市历下区华强电子世界华强电子世界B栋2211
+							</p>
+						</div>
+						<div class="active-bg"></div>
+					</div>
+					<div class="hidden-menu" tapmode onclick="toast('点击删除','middle')">
+						<p class="one">
+							删除
+						</p>
+					</div>	
+					<a class="aui-arrow-right"></a>				
+				</li>
+				<li tapmode >					
+					<div class="aui-user-view-cell aui-img drop-div" tapmode onclick="openWinto('edit_address_head','edit_address_head')">
+						<div class="aui-img-body">
+							<span>陈奕迅</span> <span>18663767656</span>
+							<p class='aui-ellipsis-2' style="margin-right:12px;">
+								山东省济南市历下区华强电子世界华强电子世界B栋2211
+							</p>
+						</div>
+						<!--<div class="active-bg"></div>-->
+					</div>
+					<div class="hidden-menu">
+						<p class="one" tapmode  >
+							删除
+						</p>
+					</div>	
+					<a class="aui-arrow-right"></a>				
+				</li>	
+				<li tapmode >					
+					<div class="aui-user-view-cell aui-img drop-div" tapmode onclick="openWinto('edit_address_head','edit_address_head')">
+						<div class="aui-img-body">
+							<span>陈奕迅</span> <span>18663767656</span>
+							<p class='aui-ellipsis-2' style="margin-right:12px;">
+								山东省济南市历下区华强电子世界华强电子世界B栋2211
+							</p>
+						</div>
+						<!--<div class="active-bg"></div>-->
+					</div>
+					<div class="hidden-menu">
+						<p class="one" tapmode >
+							删除
+						</p>
+					</div>	
+					<a class="aui-arrow-right"></a>				
+				</li>					
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/hammer.min.js"></script>
+	<script type="text/javascript">
+		var hammertime = null;
+		var maxWidth = 0;
+		var marginLeft = 0;
+		function addPan(obj) {
+			marginLeft = 0;
+			// 获取最大的滑动值
+			maxWidth = obj.siblings(".hidden-menu").width();
+			hammertime = new Hammer(obj[0], {
+				domEvents : true
+			});
+			// 开始拖动
+			hammertime.on("panstart", function(e) {
+				obj.css({
+					"transition" : "margin-left 0s",
+					"-webkit-transition" : "margin-left 0s",
+				});
+				marginLeft = parseInt(obj.css("margin-left"), 10);
+				obj.parent().siblings().each(function() {
+					$(this).children(".drop-div").css({
+						"transition" : "margin-left 0.2s",
+						"-webkit-transition" : "margin-left 0.2s",
+						"margin-left" : "0px"
+					});
+				});
+			});
+			// 拖动过程
+			hammertime.on("panmove", function(e) {
+				var panRange = marginLeft + e.deltaX;
+				if (panRange < 0 && panRange > -maxWidth) {
+					obj.css({
+						"margin-left" : panRange + "px"
+					});
+				}
+			});
+			// 拖动结束
+			hammertime.on("panend", function(e) {
+				marginLeft = parseInt(obj.css("margin-left"));
+				if (e.deltaX < 0) {
+					if (marginLeft > -30) {
+						obj.css({
+							"transition" : "margin-left 0.2s",
+							"-webkit-transition" : "margin-left 0.2s",
+							"margin-left" : "0px"
+						});
+					} else {
+						obj.css({
+							"transition" : "margin-left 0.2s",
+							"-webkit-transition" : "margin-left 0.2s",
+							"margin-left" : (-maxWidth) + "px"
+						});
+					}
+				} else {
+					if (marginLeft < -(maxWidth - 30)) {
+						obj.css({
+							"transition" : "margin-left 0.2s",
+							"-webkit-transition" : "margin-left 0.2s",
+							"margin-left" : (-maxWidth) + "px"
+						});
+					} else {
+						obj.css({
+							"transition" : "margin-left 0.2s",
+							"-webkit-transition" : "margin-left 0.2s",
+							"margin-left" : "0px"
+						});
+					}
+				}
+			});
+		}
+
+		Zepto(function($) {
+			$(".aui-in li").each(function() {
+				// 添加手势
+				addPan($(this).children(".drop-div"));
+			});
+			$(".drop-div").on("tap", function() {
+				$(".drop-div").css({
+					"transition" : "margin-left 0.2s",
+					"-webkit-transition" : "margin-left 0.2s",
+					"margin-left" : "0px"
+				});
+			});
+		});
+	</script>
+</html>

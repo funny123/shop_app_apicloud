@@ -1,0 +1,110 @@
+body{line-height:1;}
+
+/* 列表页面   begin */
+section{position:fixed;top:0;width:100%;z-index: 999;height:2.5rem;background:#fff;}
+.aui-btn{padding:0;}
+.aui-btn-block,.aui-select{float:left;}
+.aui-btn-block{width:14%;background:#fff;padding-top:0.14rem;}
+.aui-btn-block p{text-align:center;font-size:0.6rem;color: #979797;padding-top:0.14rem;}
+.aui-select{width:82%;background:#f3f3f3;margin-right:0.25rem;}
+#keyword_type,#search_word{float:left;font-size:0.7rem;}
+#keyword_type{width:20%;background:url(../image/nav_right.png) right center no-repeat;padding:0 0.25rem;}
+#search_word{width:50%;font-size:0.5rem;color: #252525;}
+.aui-select .sec2,.aui-search{float:right;font-size:0.7rem;padding:0.3rem 0 0.3rem;}
+.aui-select .sec2{width:8%;background:#ef6512;text-align:center;}
+.aui-search{width:20%;background:#e40000;margin:0.4rem 0.25rem 0 0;color:#fff;}
+
+/*  */
+.aui-list{padding:2.6rem 0 0 0;}
+.aui-list .aui-list-item { padding-left:0;}
+.aui-list-item.aui-list-item-arrow{padding-right:0;}
+.aui-list .aui-list-item:after{background:#fff;height:0.0rem;}
+.aui-list .aui-list-item-media{width:5.35rem;height:5.35rem;line-height:5.35rem;text-align:center;background:#f3f3f3;margin:0.1rem 0.5rem 0.1rem 0;padding:0;padding-right:0;}
+.aui-list .aui-list-item-media img{vertical-align:middle;width: auto;height: auto;max-width:5.35rem;max-height:5.35rem;  margin:0 auto;}
+.aui-list .aui-code{margin-top:0.5rem;}
+.aui-list .aui-list-item-text {height:1.0rem;line-height: 1.0rem;}
+.aui-list .aui-list-item-right{margin-top:0.4rem;color:#e35959;margin-left:0;}
+.aui-media-list .aui-list-item-inner{padding:0;border-bottom:0.05rem solid #ddd;position: relative;padding:0.5rem 0;}
+.aui-media-list .aui-list-item-inner .aui-cart{position:absolute;right:1.0rem;bottom:0.5rem;width:1.6rem;height:1.6rem;}
+
+/* 点击类目页面   begin */
+.cat_num{width:65%; background:#fff;color:#252525;font-size:0.7rem; }
+.cat_num .cat_num_thread{width:100%;position:relative;padding:0.8rem 0 0.8rem 0.8rem;}
+.cat_num_thread span{width:0.4rem;height:0.4rem;position:absolute;right:2.0rem;background:transparent;border:1px solid #ddd;border-top:none;border-right:none;z-index:2;top:50%;margin-top:-0.4rem;
+-webkit-transform: rotate(-45deg);transform: rotate(-45deg);        
+} 
+.up_icon span{ top: 60%;-webkit-transform: rotate(-225deg);transform: rotate(-225deg);}
+.cat_num .cat_num_sub{width:100%;padding-left:0.8rem;border-bottom: 0.05rem solid #ddd;display:none;}
+.cat_num .cat_num_sub .cat_num_cate{width:25%;float:left;text-align:center;padding:0.5rem 0;border:0.05rem solid #ddd;margin:0 0.8rem 0.8rem 0;font-size:0.6rem; }
+.cat_num_close,.detail_btn{position:fixed;bottom: 0;width:65%;text-align:center;padding:0.8rem 0;background:#e35959;font-size:0.7rem;color:#fff;z-index: 999;}
+
+/* 详情页  begin */
+.detail_img{width:18..rem;height:18.0rem;background:#0062CC;}
+.detail_img img{width:100%;}
+.detail_con{padding:0.5rem 0.8rem;color:#252525;margin-bottom:1.8rem;}
+.detail_con #pro_name{padding:0.5rem 0;font-size:0.9rem;}
+.detail_con .detail_code{font-size:0.7rem;}
+.detail_con .detail_code span{display:inline-block;margin-right:0.5rem;}
+.detail_con #yiwu_price{color:#e35959;padding:0.8rem 0;background:url("../image/yiwu_price.png") 3.0rem center no-repeat;}
+.detail_con ul{position:relative;width:100%;display:table;}
+.detail_con ul li{float:left;width:25%;text-align: center;font-size:0.6rem;padding:0.5rem 0 0.5rem 0.5rem;}
+.detail_con ul li img{position:absolute;left:0;top:46%;margin-top:-0.25rem;}
+.detail_con ul li:nth-child(2) img{position:absolute;left:25%;}
+.detail_con ul li:nth-child(3) img{position:absolute;left:50%;}
+.detail_con ul li:nth-child(4) img{position:absolute;left:75%;}
+.detail_btn{width:100%;padding:0;border-top: 0.05rem solid #ddd;background:#fff;}
+.detail_btn p{float:left;width:40%;}
+.detail_btn p span{float:left;width:30%;padding:0.6rem 0;font-size:0.9rem;color:#252525;}
+.detail_btn p input{float:left;width:40%;height:1.5rem;line-height:1.5rem;margin:0.4rem 0;text-align:center;}
+.detail_btn button{float:right;width:30%;text-align:center;color:#fff;padding:0.6rem 0;font-size:0.9rem;background:#e35959;}
+.detail_btn button:last-child{background:#e3751e;}
+
+/* 个人中心 */
+.aui-person{position:relative;padding:0.7rem 0.7rem 0.7rem 2.5rem;margin:1.0rem 0;font-size:0.7rem;background: #fff;}
+.aui-person span:first-child{width: 1.1rem;height: 1.1rem;position: absolute;
+    top: 50%;margin-top:-0.55rem;left: 0.75rem;  
+}
+#setting span:first-child{background:url("../image/per_01.png") left center no-repeat;background-size:contain;}
+#orderlist span:first-child{background:url("../image/per_02.png") left center no-repeat;background-size:contain;}
+#caiwuList span:first-child{background:url("../image/per_03.png") left center no-repeat;background-size:contain;}
+#messageList span:first-child{background:url("../image/per_04.png") left center no-repeat;background-size:contain;}
+#feedback span:first-child{background:url("../image/per_05.png") left center no-repeat;background-size:contain;}
+.aui-person span:last-child{content: '';width: 0.4rem;height: 0.4rem;position: absolute;margin-top: -0.2rem;
+    top: 50%;
+    right: 0.75rem;
+    background: transparent;
+    border: 1px solid #dddddd;
+    border-top: none;
+    border-right: none;
+    z-index: 2;
+    -webkit-border-radius: 0;
+            border-radius: 0;
+    -webkit-transform: rotate(-135deg);
+            transform: rotate(-135deg);
+}
+.aui-media-body{padding:0;}
+.aui-media-body div{position:relative;padding:0.7rem 0 0.7rem 2.5rem;border-bottom:1px solid #d9d9d9;}
+.aui-media-body div:last-child{border-bottom:none;}
+.aui-button{position:fixed;bottom: 0;width:100%;text-align:center;padding:0.8rem 0;background:#e35959;font-size:0.7rem;color:#fff;z-index: 999;}
+/* 意见反馈 */
+.aui-input-row{margin:0.4rem 0.7rem;}
+.aui-input-row textarea{width:100%;padding:0.7rem;border:1px solid #ddd;border-radius:0.25rem;resize:vertical; }
+.aui-input-row label{font-size:0.7rem;width:17%;text-align: left;display:inline-block;padding:0.5rem 0;}
+.aui-input-row span,.aui-input-row input{border-bottom:1px solid #ddd;display:inline-block;width:80%;padding:0.5rem 0;font-size:0.6rem;color:#ddd; }
+/* 我的订单位- 财务明细 */
+.aui-table-view{background:#fff;margin:0.7rem;}
+.aui-table-view div{padding:0.3rem 0.2rem;border-radius: 0.25rem; }
+/* 订单详情 */
+.aui-order{padding:0.7rem 0;display:table; width:100%;font-size:0.8rem;text-align:right; }
+.aui-order p{float:left;width:27%;margin-right:0.2rem;}
+.aui-order p:last-child{width:70%;text-align:left;font-size:0.6rem;font-weight:bold;padding-top:0.2rem;}
+
+
+
+
+
+
+
+
+
+

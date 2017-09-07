@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget id="A6939163143666" version="0.0.1"> 
+  <name>供货港</name>  
+  <description/>  
+  <author email="717900268@qq.com" href="http://www.apicloud.com">funy</author>  
+  <content src="index.html"/>  
+  <preference name="pageBounce" value="false"/>  
+  <preference name="appBackground" value="rgba(0,0,0,0.0)"/>  
+  <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>  
+  <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>  
+  <preference name="hScrollBarEnabled" value="true"/>  
+  <preference name="vScrollBarEnabled" value="true"/>  
+  <preference name="autoLaunch" value="true"/>  
+  <preference name="fullScreen" value="false"/>  
+  <preference name="autoUpdate" value="true"/>  
+  <preference name="smartUpdate" value="false"/>  
+  <preference name="debug" value="true"/>  
+  <preference name="iOS7StatusBarAppearance" value="true"/>  
+  <preference name="backgroundMode" value="bluetooth-central | bluetooth-peripheral"/>  
+  <permission name="readPhoneState"/>  
+  <permission name="camera"/>  
+  <permission name="record"/>  
+  <permission name="location"/>  
+  <permission name="fileSystem"/>  
+  <permission name="internet"/>  
+  <permission name="bootCompleted"/>  
+  <permission name="hardware"/>  
+  <access origin="*"/>  
+  <feature name="bMap"> 
+    <param name="android_api_key" value="m2KgvdR61lAgZGhIGZVNHoSUIKqnD2DO"/>  
+    <param name="ios_api_key" value="rfh8UHz6KTGyEPZp0b0DBGSSOYcao2yX"/> 
+  </feature> 
+</widget>

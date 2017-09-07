@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<meta name="viewport"
+		content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+		<link rel="stylesheet" type="text/css" href="../csspublic.css"/>
+		<style>
+			.aui-nav {
+				font-size: 18px;
+			}
+			.aui-nav div {
+				height: 55px;
+			}
+			.aui-nav .buy {
+				line-height: 55px;
+			}
+			#main {
+				text-align: center;
+				color: #fff;
+			}
+			#checkAll {
+				margin-top: 12px;
+				color: #fff
+			}
+			.empty {
+				position: absolute;
+				top: 50%;
+				left: 0;
+				margin-top: -3rem;
+				width: 100%;
+				height: 6rem;
+				text-align: center;
+			}
+			.empty i {
+				font-size: 3rem;
+				color: #82818F;
+				padding-bottom: 0.5 rem;
+			}
+			#app {
+				min-height: 20rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<div class="aui-content">
+				<div v-if="list.length > 0">
+					<ul class="aui-list-view" >
+						<transition-group name="list" tag="p">
+							<li class="aui-list-view-cell aui-img aui-counter-list" v-for="(vo,index) in list" v-bind:key="index" >
+								<input class="aui-checkbox aui-checkbox-warning" type="checkbox" v-model="vo.status" v-on:click="single_check(index)">
+								<img class="aui-img-object aui-pull-left" :src="vo.Img" v-on:click="open_goods(vo.info_id)">
+								<div class="aui-img-body">
+									<div class="aui-ellipsis-1" v-on:click="open_goods(vo.info_id)">
+										{{ vo.Name }}
+									</div>
+									<div class="aui-counter-box">
+										<div class="aui-pull-left aui-text-danger" v-on:click="open_goods(vo.info_id)">
+											¥ {{ vo.Price }}元
+										</div>
+										<div class="aui-counter aui-warning aui-pull-right">
+											<div class="aui-counter-minus aui-disabled" v-on:click="cut_to_cart(index)"></div>
+											<input class="aui-counter-input" type="number" v-model="vo.Num">
+											<div class="aui-counter-plus" v-on:click="add_to_cart(index)"></div>
+										</div>
+									</div>
+								</div>
+							</li>
+						</transition-group>
+					</ul>
+				</div>
+			</div>
+			<footer class="aui-nav" id="aui-footer" v-if="list.length > 0">
+				<div class="aui-col-xs-4" v-on:click="all_checked()">
+					<input class="aui-checkbox aui-checkbox-warning" id="checkAll" type="checkbox" v-model="all_checked_val">
+					<label class="buy" for="checkAll" >全选</label>
+				</div>
+				<div class="aui-col-xs-4 buy aui-text-center aui-text-danger">
+					<strong>￥{{ total_price }}</strong>
+				</div>
+				<!--<div class="aui-col-xs-4 buy aui-bg-danger" id="main" v-on:click="order_confirm()">
+					结算
+				</div>-->
+			</footer>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script>
+	var vm = new Vue({
+		el : '#app',
+		data : {
+			total_price : 0, //总价是ajax换返回数据计算所得，代码有体现
+			all_checked_val : true,
+			list : '',
+			status:1
+		},
+		methods : {
+			init : function() {
+				db.selectSql({
+					name : 'cart',
+					sql : 'SELECT * FROM Cart'
+				}, function(ret, err) {
+					if (ret.status) {
+						//					alert(JSON.stringify(ret));
+						if (ret.status == 1) {
+							vm.list = ret.data;
+							vm.total_price = 0;
+						} else {
+							vm.list = [];
+						}
+						//					var vm = new Vue({
+						//						el : "#app",
+						//						data : {
+						//							carts : ret.data
+						//						},
+						//						methods : {
+						//							plus : function(index) {
+						//								alert(Num);
+						//							}
+						//						}
+						//					})
+					} else {
+						alert(JSON.stringify(err));
+					}
+				});
+				//              api.ajax({
+				//                  url: cart_list_url,
+				//                  method: 'post',
+				//                  timeout: 30,
+				//                  dataType: 'json',
+				//                  returnAll: false,
+				//                  data: {
+				//                      values: {
+				//                          token: $api.getStorage('token'),
+				//                          deviceid: api.deviceId,
+				//                      }
+				//                  }
+				//              }, function (ret, err) {
+				//                  if (ret) {
+				//                      if(ret.status == 1){
+				//                          vm.list = ret.data.list;
+				//                          vm.total_price = ret.data.total_price;
+				//                      }else{
+				//                          vm.list = [];
+				//                      }
+				//
+				//
+				//
+				//                  } else {
+				//                      api.toast({
+				//                          msg: err.msg,
+				//                          duration: 2000,
+				//                          location: 'bottom'
+				//                      });
+				//                      console.log(JSON.stringify(err));
+				//                  }
+				//              });
+			},
+			//购物车加1
+			add_to_cart : function(index) {
+				var goods_id = vm.list[index].goods_id;
+				var info_id = vm.list[index].info_id;
+				var Num = 1;
+				vm.list[index].Num += 1;
+				vm.list[index].Price = Number(vm.list[index].Price) * Number(vm.list[index].Num);
+				if (vm.list[index].status == 1) {
+					vm.total_price = Number(vm.total_price) + Number(vm.list[index].Price);
+				}
+				add_to_cart(goods_id, info_id, Num);
+			},
+			//购物车减1
+			cut_to_cart : function(index) {
+				var goods_id = vm.list[index].goods_id;
+				var info_id = vm.list[index].info_id;
+				var Num = 1;
+				vm.list[index].Num -= 1;
+				vm.list[index].Price = Number(vm.list[index].Price) * Number(vm.list[index].Num);
+				if (vm.list[index].status == 1) {
+					vm.total_price = Number(vm.total_price) - Number(vm.list[index].Price);
+				}
+				cutdown_to_cart(goods_id, info_id, Num);
+				if (vm.list[index].Num == 0) {
+					vm.list.splice(index, 1);
+					//删除节点
+				}
+			},
+			//全选
+			all_checked : function() {
+				setTimeout(function() {
+					var temp_status = null;
+					if (vm.all_checked_val) {
+						for (var i = 0; i < vm.list.length; i++) {
+							vm.list[i].status = 1;
+							vm.total_price = Number(vm.total_price) + Number(vm.list[i].Price);
+						}
+						temp_status = 1;
+					} else {
+						for (var i = 0; i < vm.list.length; i++) {
+							vm.list[i].status = 0;
+						}
+						vm.total_price = 0;
+						temp_status = 0;
+					}
+					//更新数据库
+					//                  api.ajax({
+					//                      url: update_allcart_status_url,
+					//                      method: 'post',
+					//                      timeout: 30,
+					//                      dataType: 'json',
+					//                      returnAll: false,
+					//                      data: {
+					//                          values: {
+					//                              token: $api.getStorage('token'),
+					//                              deviceid: api.deviceId,
+					//                              status: temp_status
+					//                          }
+					//                      }
+					//                  }, function (ret, err) {
+					//                      if (ret) {
+					//                          console.log(JSON.stringify(ret));
+					//                      } else {
+					//                          api.alert(JSON.stringify(err));
+					//                      }
+					//                  });
+				}, 200);
+			},
+			//单选
+			single_check : function(index) {
+				var temp_status = null;
+				setTimeout(function() {
+					if (vm.list[index].status) {
+						vm.total_price = Number(vm.total_price) + Number(vm.list[index].Price);
+						temp_status = 1;
+					} else {
+						vm.total_price = Number(vm.total_price) - Number(vm.list[index].Price);
+						temp_status = 0;
+					}
+					vm.for_all_checked_val();
+					console.log(vm.list[index].status);
+					//更新数据库
+					api.ajax({
+						url : update_cart_status_url,
+						method : 'post',
+						timeout : 30,
+						dataType : 'json',
+						returnAll : false,
+						data : {
+							values : {
+								token : $api.getStorage('token'),
+								deviceid : api.deviceId,
+								goods_id : vm.list[index].goods_id,
+								status : temp_status
+							}
+						}
+					}, function(ret, err) {
+						if (ret) {
+							console.log(JSON.stringify(ret));
+						} else {
+							api.alert(JSON.stringify(err));
+						}
+					});
+				}, 200);
+			},
+			for_all_checked_val : function() {
+				for (var i = 0; i < vm.list.length; i++) {
+					if (!vm.list[i].status) {
+						vm.all_checked_val = false;
+						return false;
+					} else {
+						vm.all_checked_val = true;
+					}
+				}
+			},
+			//打开商品详情
+			open_goods : function(info_id) {
+				api.openWin({
+					name : 'index_goods_detail',
+					url : 'widget://html/index/goods_detail.html',
+					pageParam : {
+						info_id : info_id
+					}
+				});
+			},
+			order_confirm : function() {
+				api.openWin({
+					name : 'cart_order_confirm',
+					url : 'widget://html/cart/order_confirm.html',
+				});
+			}
+		}
+	});
+//	vm.init();
+var db;
+	apiready = function() {
+	db = api.require('db');
+	vm.init();
+//		api.setRefreshHeaderInfo({
+//			visible : true,
+//			loadingImg : 'widget://image/refresh.png',
+//			bgColor : '#f4f4f4',
+//			textColor : '#333333',
+//			textDown : '下拉刷新...',
+//			textUp : '松开刷新...',
+//			showTime : true
+//		}, function(ret, err) {
+//			vm.init();
+//			setInterval("api.refreshHeaderLoadDone()", '1000');
+//		});
+		vm.init();
+		//监听网络连接事件
+		api.addEventListener({
+			name : 'update_cart_list'
+		}, function(ret, err) {
+			vm.init();
+		});
+	}; 
+</script>

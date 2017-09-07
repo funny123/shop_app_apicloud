@@ -1,0 +1,227 @@
+/* 供应商管理 */
+.article {
+    font-size: 1.4rem;
+    width: 100%;
+}
+
+/** 新增员工 */
+.article .wrap {
+    padding-bottom: 6rem;
+    width: 100%;
+    position: relative;
+    top: 5.8rem;
+    border-top: 0.1rem solid #eaeaea;
+}
+.article .wrap .choose {
+    margin: 0.4rem 0rem 0rem 0rem;
+    padding-bottom: 0.4rem;
+    width: 100%;
+    height: 3.4rem;
+    line-height: 3.4rem;
+    border-bottom: 0.1rem solid #eaeaea;
+}
+.article .wrap .choose label {
+    width: 11rem;
+    float: left;
+    text-indent: 1rem;
+}
+.article .wrap .choose input {
+    width: 20rem;
+    height: 3.2rem;
+    border: 0rem;
+}
+.article .wrap .choose select {
+    padding: 0.4rem 0.6rem;
+}
+.article .wrap .choose input:focus {
+    outline:none !important;
+}
+/*** 手机号绑定 */
+.article .wrap .inquiry input{
+    width: 16rem;
+}
+.article .wrap .inquiry span {
+    padding: 0.1rem 1rem;
+    line-height: 2.6rem;
+    border-radius: 0.4rem;
+    border: 0.1rem solid #eaeaea;
+}
+/*** 权限 */
+.article .wrap .thread {
+    margin: 0rem 0rem 0rem 0rem;
+    padding-top: 0.8rem;
+    width: 100%;
+    height: 3.4rem;
+    line-height: 3.4rem;
+    color: #b1b1b1;
+    font-size: 1.6rem;
+    text-indent: 1rem;
+    background-color: #f0f0f0;
+}
+.article .wrap .power label{
+    width: 8.6rem;
+    text-align: right;
+    padding-right: 1.6rem;
+}
+/*** 活动按钮 */
+.switch {
+    position: relative;
+    float: left;
+    width: 60px;
+    margin: 0;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select: none;
+}
+.switch_box {display: none;}
+.switch_label {
+    padding: 0rem !important;
+    width: 60px !important;
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: left !important;
+    border: 1px solid #eaeaea;
+    border-radius: 20px;
+}
+.switch_inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.switch_inner::before, .switch_inner::after {
+    width: 50%;
+    height: 26px;
+    padding: 0;
+    display: block;
+    float: right;
+    line-height: 26px;
+    font-size: 12px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+.switch_inner::after {
+    content: attr(data-on);
+    padding-left: -2px;
+    background-color: #0b973d;
+    color: #FFFFFF;
+}
+.switch_inner::before {
+    content: attr(data-off);
+    padding-right: 10px;
+    background-color: #EEEEEE;
+    color: #999999;
+    text-align: right;
+}
+.switch_switch {
+    position: absolute;
+    display: block;
+    width: 15px;
+    height: 15px;
+    margin: 5px 3px 5px 0px;
+    background: #FFFFFF;
+    top: 0;
+    bottom: 0;
+    right: 36px;
+    border: 1px solid #eaeaea;
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+.switch_box:checked + .switch_label .switch_inner {margin-left: 0;}
+.switch_box:checked + .switch_label .switch_switch {right: 0px;}
+/*** 提交 */
+.article .wrap button {
+    width: 100%;
+    height: 4.3rem;
+    text-align: center;
+    line-height: 4.3rem;
+    color: #ffffff;
+    font-size: 1.6rem;
+    position: fixed;
+    bottom: 0rem;
+    background-color: #0b923b;
+}
+/** 员工列表 */
+.article .list {
+    padding-bottom: 2rem;
+    width: 100%;
+    position: relative;
+    top: 5.8rem;
+    border-top: 0.1rem solid #eaeaea;
+}
+/** 列表 */
+.article .list ul {
+    margin: 0rem;padding: 0rem;
+    width: 100%;
+    height: 4rem;
+    line-height: 4rem;
+    border-bottom: 0.1rem solid #eaeaea;
+}
+.article .list ul li {
+    margin: 0rem;
+    padding: 0rem;
+    float: left;
+}
+.article .list ul li label {
+    padding: 0rem 0.2rem 0rem 0rem;
+    float: left;
+    text-indent: 1.18rem;
+}
+.article .list ul li span {
+    float: left;
+}
+.article .list ul li:nth-child(1) {
+    width: 38%;
+    font-size: 1.3rem;
+}
+.article .list ul li:nth-child(1) span {
+    width: 9rem;
+    height: 4rem;
+    overflow: hidden;
+}
+.article .list ul li:nth-child(2) {
+    margin-left: 1%;
+    width: 53%;
+    font-size: 1.2rem;
+}
+.article .list ul li:nth-child(2) span {
+    width: 12rem;
+    height: 4rem;
+    overflow: hidden;
+}
+.article .list ul li:nth-child(3) {
+    margin-left: 1%;
+    width: 6%;
+    color: #c0c0c0;
+}
+
+/** 会员卡编辑 */
+.article .edit {
+    position: relative;
+    top: 1rem;
+}
+/*** 修改与删除 */
+.article .submit {
+    width: 100%;
+    height: 4.3rem;
+    font-size: 1.6rem;
+    position: fixed;
+    bottom: 0rem;
+}
+.submit div {
+    text-align: center;
+    line-height: 4.3rem;
+    color: #ffffff;
+    float: left;
+}
+.submit div:nth-child(1) {
+    width: 40%;
+    background-color: #718077;
+}
+.submit div:nth-child(2) {
+    width: 60%;
+    background-color: #0b923b;
+}

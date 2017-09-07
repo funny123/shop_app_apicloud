@@ -1,0 +1,95 @@
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-content{margin-top:15px;}
+			.aui-input-row .aui-input {
+			    font-size: 14px;
+			    margin: 0;
+			    display: table-cell;
+			    position: relative;
+			    float: left;
+			    width: 100%;
+			    border: none;
+			    border-radius: 0;
+			    text-align: right;
+			}
+			.aui-input-row .aui-input-addon {
+			    font-size: 14px;
+			    font-weight: 400;
+			    line-height: 1;
+			    color: #333;
+			    text-align: center;
+			    display: table-cell;
+			    width: 1%;
+			    white-space: nowrap;
+			    vertical-align: middle;
+			    padding: 5px 5px 5px 15px;
+			}
+			.aui-input-row:first-child:after {
+			    left: 15px;
+			}
+			.aui-input-row:last-child:after {
+				left:0;
+			    border-bottom: 1px solid #E2E2E2;
+			}
+			.aui-input-row:after {
+				left: 15px;
+			}
+			li:after {
+			    right: -100%;
+			    bottom: -100%;
+			    -webkit-transform: scale(0.5);
+			}
+			.aui-btn{padding:5px 30px;}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+	        <div class="aui-noborder">       
+		        <div class="aui-form">
+		            <div class="aui-input-row">
+		                <span class="aui-input-addon">收货人</span>
+		                <input type="text" class="aui-input" placeholder="收货人姓名">
+		            </div>		
+		            <div class="aui-input-row">
+		                <span class="aui-input-addon">联系电话</span>
+		                <input type="password" class="aui-input" placeholder="联系电话">
+		            </div>
+		            <div class="aui-input-row">
+		                <span class="aui-input-addon">地区选择</span>
+		                <input type="password" class="aui-input" placeholder="选择地区">
+		            </div>
+		            <div class="aui-input-row">
+		                <span class="aui-input-addon">详细地址</span>
+		                <input type="password" class="aui-input" placeholder="详细地址">
+		            </div>
+		            <div class="aui-input-row" style="padding: 10px 0;">
+		                <span class="aui-input-addon">设为默认地址</span>
+		                <input type="checkbox" class="aui-switch aui-pull-right" checked="">
+		            </div>
+		            <div class="aui-col-xs-12 aui-text-center aui-padded-15">
+		            	<div class="aui-col-xs-6"><button class="aui-btn aui-btn-danger">删除</button></div>
+		            	<div class="aui-col-xs-6"><button class="aui-btn aui-btn-warning">保存</button></div>
+		            </div>
+		        </div>
+		    </div>
+	    </div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			api.parseTapmode();
+			
+		}
+	</script>
+</html>

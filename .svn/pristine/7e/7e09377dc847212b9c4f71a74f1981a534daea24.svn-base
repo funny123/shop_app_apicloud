@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		//		var map;
+		//		var zb;
+		var lon, lat;
+		apiready = function() {
+			//			map = api.require('bMap');
+			//alert(api.pageParam.height);
+			var map = api.require('bMap');
+			map.open({
+						rect : {
+							x : 0,
+							y : 0,
+							w : 'auto',
+							h : api.pageParam.height
+						},
+						center : {
+							lon : $api.getStorage('o2o_order_lon'),
+							lat : $api.getStorage('o2o_order_lat')
+						},
+						zoomLevel : 15,
+						showUserLocation : true,
+						fixedOn : api.frameName,
+						fixed : true
+					}, function(ret) {
+						if (ret.status) {
+							//							alert('地图打开成功');
+							map.getCenter(function(ret) {
+								open_map_getcenter(ret.lon, ret.lat);
+							});
+							map.addEventListener({
+								name : 'viewChange'
+							}, function(ret) {
+								if (ret.status) {
+									//									alert($api.getStorage('last_lon'));
+									if (Math.abs(ret.lon - $api.getStorage('last_lon')) > 1 || Math.abs(ret.lat - $api.getStorage('last_lat')) > 1) {
+										for (var j = 0; j <= $api.getStorage('last_length'); j++) {
+											map.removeAnnotations({
+												ids : [j]
+											});
+										}
+										open_map_getcenter(ret.lon, ret.lat);
+										biaozhuo2ocduan();
+									}
+								}
+							});
+						}
+					});
+					
+					
+biaozhuo2ocduan();
+
+		};
+		
+		
+function biaozhuo2ocduan(){
+		var map = api.require('bMap');
+		map.addAnnotations({
+    annotations: [{
+        id: 1,
+        lon: $api.getStorage('o2o_order_lon'),
+        lat: $api.getStorage('o2o_order_lat')
+    }],
+    icon: 'widget://',
+    draggable: true
+}, function(ret) {
+    if (ret) {
+//      alert(ret.id);
+    }
+});
+}
+		
+function showUserLocation() {
+//			api.toast({
+//				msg : '定位中',
+//				duration : 1500,
+//				location : 'top'
+//			});
+//			var map = api.require('bMap');
+//			map.showUserLocation({
+//				isShow : true,
+//				trackingMode : 'none'
+//			});
+var map = api.require('bMap');
+
+map.setCenter({
+    coords: {
+        lon: $api.getStorage('o2o_order_lon'),
+        lat: $api.getStorage('o2o_order_lat')
+    }
+});
+setTimeout("suofang();",300)
+}
+
+function suofang(){
+var map = api.require('bMap');
+map.setZoomLevel({level: 15});
+}
+
+		function open_map_getcenter(lon, lat) {
+			$api.setStorage('last_lon', lon);
+			$api.setStorage('last_lat', lat);
+			//			alert(lon,lat,$api.getStorage('mobile'),$api.getStorage('token'));
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/map_shop_list.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						boss_id:$api.getStorage('boss_id'),
+						lon : lon,
+						lat : lat
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+				//alert(JSON.stringify(ret));
+					$api.setStorage('last_length', ret.data.length);
+					api.toast({
+						msg : ret.data.length + '家店铺'
+					});
+					//					alert(ret.code + ',,' + ret.data.length + ',,' + ret.maxlon + ',' + ret.maxlat + ',' + ret.minlon + ',' + ret.minlat);
+					for ( i = 0; i < ret.data.length; i++) {
+						$api.setStorage('shop' + i, ret.data[i].id);
+						//						alert(ret.data[i].last_lon);
+						//添加标注
+						var map = api.require('bMap');
+						map.addAnnotations({
+							annotations : [{
+								id : i,
+								lon : ret.data[i].last_lon,
+								lat : ret.data[i].last_lat,
+							}],
+							icon : 'widget://image/map_flag.png',
+							draggable : true
+						}, function(ret) {
+							if (ret) {
+								api.openFrame({
+									name : 'map_shop_detail',
+									url : 'map_shop_detail.html',
+									bounces : false,
+									pageParam : {
+										UserId : $api.getStorage('shop' + ret.id)
+									},
+									rect : {
+										x : 0,
+										y : api.pageParam.height - 260,
+										w : 'auto',
+										h : 'auto'
+									}
+								});
+							}
+						});
+					}
+				} else {
+					api.toast({
+						msg : '网络错误'
+					});
+				}
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/O2O.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+	<article class="article">
+		<div class="top_fixed">
+			<select name="status" id="status">
+				<option value="0">全部状态</option>
+				<option value="1">未处理</option>
+				<option value="6">已打单</option>
+				<option value="71">已出库</option>
+				<option value="72">已出库(需收款)</option>
+				<option value="8">已收货</option>
+				<option value="30">已取消</option>
+			</select>
+		</div>
+		<div class="list" id="list">
+		</div>
+	</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script type="text/javascript" src="../script/jquery-1.7.1.min.js" ></script>
+	<script>
+		$api.setStorage("currentPage", 1);
+		$api.setStorage('get_o2o_order_status', 0);
+		$(document).ready(function() {
+			$("#status").change(function() {
+				$api.byId('list').innerHTML = '';
+				$api.setStorage("currentPage", 1);
+				var val = $(this).find("option:selected").val();
+				$api.setStorage('get_o2o_order_status', val);
+				loadData();
+			});
+		});
+		apiready = function() {
+			loadData();
+			api.addEventListener({
+				name : 'scrolltobottom',
+				extra : {
+					threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+				}
+			}, function(ret, err) {
+				loadData();
+			});
+			var map = api.require('bMap');
+			map.getCoordsFromName({
+				address : '上海市虹口区吴淞路218号'
+			}, function(ret, err) {
+			});
+		};
+		function loadData(load_page) {
+			//		alert(load_page);
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/o2o_order_list.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token'),
+						is_bossshop : $api.getStorage('is_bossshop'),
+						status : $api.getStorage('get_o2o_order_status'),
+						page : $api.getStorage("currentPage")
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					//var data = ret.data;
+					if (!ret.data) {
+						return;
+					}
+					for ( i = 0; i < ret.data.length; i++) {
+						if (ret.data[i].status == 1) {
+							var status_word = "需分配";
+						} else if (ret.data[i].status == 2) {
+							var status_word = "未付款";
+						} else if (ret.data[i].status == 3) {
+							var status_word = "需分配";
+						} else if (ret.data[i].status == 4) {
+							var status_word = "需处理";
+						} else if (ret.data[i].status == 6) {
+							var status_word = "已打单";
+						} else if (ret.data[i].status == 7 && ret.data[i].is_huodaofukuan == 2) {
+							var status_word = "需收款";
+						} else if (ret.data[i].status == 7) {
+							var status_word = "已出库";
+						} else if (ret.data[i].status == 8) {
+							var status_word = "已收货";
+						} else if (ret.data[i].status == 30) {
+							var status_word = "已取消";
+						}
+//						var str = '订单号: ' + ret.data[i].order_no + '<br>';
+//						var str = str + '总价: ' + ret.data[i].totalprice + '<br>';
+//						var str = str + '<div onclick="o2o_order_detail(' + ret.data[i].id + ');">状态: ' + status_word + '</div><br>';
+						
+						var str = '<ul onclick="o2o_order_detail(' + ret.data[i].id + ');">';
+						var str = str + '<li><label>订单:</label><span>' + ret.data[i].order_no + '</span></li>';
+						var str = str + '<li><label>总价:</label><span>' + ret.data[i].totalprice + '</span></li>';
+						var str = str + '<li><label>状态:</label><span>' + status_word + '</span></li>';
+						var str = str + '</ul>';
+						
+						
+						$api.append($api.byId('list'), str);
+					}
+					var new_page = parseInt($api.getStorage("currentPage")) + 1;
+					$api.setStorage("currentPage", new_page);
+				} else {
+					alert('网络错误');
+				}
+			});
+		}
+
+		function o2o_order_detail(id) {
+			//alert(order_no);
+			$api.setStorage('o2o_order_detail_order_id', id);
+			//alert($api.getStorage('o2o_order_detail_order_id'));
+			api.openWin({
+				name : 'o2o_order_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : 'o2o订单详情',
+					url : 'o2o_order_detail'
+				}
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<style>
+			body {
+			}
+		</style>
+	</head>
+	<body></body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			//
+			var bluetooth = api.require('bluetooth');
+			bluetooth.connect({
+				codeType : 'utf-8',
+			}, function(ret, err) {
+				var bluetooth = api.require('bluetooth');
+				bluetooth.send({
+					type : 0,
+					data : 'bluetooth send string test'
+				});
+			});
+			//
+			bluetooth.send({
+				type : 0,
+				data : 'bluetooth send string test'
+			});
+			var tp = "<IMG src='http://img5.duitang.com/uploads/item/201408/30/20140830114730_QfaMy.thumb.224_0.jpeg'/>";
+			var printModule = api.require('posPrinter');
+			var param = {
+				'status' : 'bonded'
+			};
+			printModule.getBluetoothPrinters(param, function(ret, err) {
+				alert(JSON.stringify(ret));
+			});
+			//
+			var param = {
+				'address' : 'DC:0D:30:02:91:8F',
+				'pin' : '0000'
+			};
+			printModule.createBondToPrinter(param, function(ret, err) {
+				alert(JSON.stringify(ret));
+			});
+			//打印
+			var str = "<CA>订单详情</CA><BR>";
+			var str = str + "<BR>";
+			var str = str + "-------------------------------<BR>";
+			var str = str + '图片:' + tp + '<BR>';
+			var str = str + " <BR> <BR> <BR>";
+			var printModule = api.require('posPrinter');
+			var param = {
+				'content' : str,
+				'copyNum' : 1
+			};
+			//			printModule.printOnBondedPrinter(param);
+		};
+	</script>
+</html>

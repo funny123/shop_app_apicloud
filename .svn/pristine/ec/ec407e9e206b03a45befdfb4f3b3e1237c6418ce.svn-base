@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/local_product_cat.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+	<article class="article">
+			<div class="top_fixed">
+			<div class="top">
+				<a href="local_product_cat_add.html">新增商品分类</a>
+				<div class="focus">商品分类列表</div>
+			</div>
+		</div>
+		
+		<div class="list">
+			<ul id="list">
+
+			</ul>
+		</div>
+</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js" ></script>
+	<script>
+		var db;
+		apiready = function() {
+			//		alert(11);
+			db = api.require('db');
+		//	var table = document.body.querySelector('.aui-list');
+			db.selectSql({
+				name : 'ghuog_db' + $api.getStorage('mobile'),
+				sql : "SELECT * FROM T_ProductCat order by orderby asc"
+			}, function(ret2, err2) {
+				if (ret2.data != '') {
+					//					alert(ret2.data[0].catid);
+					for (var i = 0; i < ret2.data.length; i++) {
+						if (ret2.data[i].pid > 0) {
+							var word = '___ ';
+						} else {
+							var word = '';
+						}
+						//var li = document.createElement('li');
+						//li.className = 'mui-table-view-cell mui-media';
+						var str = '<li onclick="productCatDetail(' + ret2.data[i].catid + ');"><div>' + word+ret2.data[i].ProductCatName+'</div><span>&gt;</span></li>';
+$api.append($api.byId('list'), str);
+//						var str = str + '<div onclick="productCatDetail(' + ret2.data[i].catid + ');">' +  + '</div>';
+						//li.innerHTML = str;
+						//table.appendChild(li);
+						//						db.selectSql({
+						//							name : 'ghuog_db' + $api.getStorage('mobile'),
+						//							sql : "SELECT * FROM T_ProductCat where pid="+ret2.data[i].catid
+						//						}, function(ret3, err3) {
+						//							if (ret3.data != '') {
+						//								//					alert(ret2.data[0].catid);
+						//								for (var j = 0; j <= ret2.data.length - 1; j++) {
+						//									var li = document.createElement('li');
+						//									li.className = 'mui-table-view-cell mui-media';
+						//									var str = '<div onclick="productCatDetail(' + ret3.data[i].catid + ');">-----' + ret3.data[i].ProductCatName + '</div>';
+						//									var str = str + '<div onclick="productCatDetail(' + ret3.data[i].catid + ');">/////' + ret3.data[i].catid + '</div>';
+						//									li.innerHTML = str;
+						//									table.appendChild(li);
+						//								}
+						//							}
+						//						});
+					}
+				}
+			});
+		}
+		function productCatDetail(catid) {
+			$api.setStorage('productcatid', catid);
+			api.openWin({
+				name : 'local_product_cat_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '商品分类详情',
+					url : 'local_product_cat_detail'
+				}
+			});
+		}
+	</script>
+</html>

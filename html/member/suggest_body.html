@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<style type="text/css">
+    .aui-content{margin-top:10px;}
+    textarea,input{font-size:14px;}
+    .aui-btn-block { padding: 8px 0; }
+    .aui-bg-ff9800{background:#ff9800;color:#fff;}
+    textarea {
+    width: 100%;
+    -webkit-appearance: none;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    line-height: 21px;
+    -webkit-user-select: text;
+    background-color: #fff;
+    border: 1px solid rgba(224, 224, 224, .2);
+    border-radius: 3px;
+    outline: none;
+}
+    </style>
+	</head>
+	<body>
+	<div class="aui-toast" style="display:none" id="default">
+        <i class="aui-iconfont aui-icon-check"></i>
+        <div class="aui-toast-content">提交成功</div>
+    </div>
+    <div class="aui-toast"  style="display:none" id="loading">
+        <div class="aui-toast-loading"></div>
+        <div class="aui-toast-content">加载中</div>
+    </div>
+    
+    <div class="aui-content aui-padded-0-10">       
+    	<p class="">欢迎来到意见反馈中心,您对我们的客户端有任何优化建议,请在下方留言,我们会及时给您答复.</p>      
+    </div>
+    <div class="aui-content aui-padded-0-10">       
+    	<textarea class="form-control " rows="3" id="contents" placeholder="给我们一些建议,让我们做的更好(500字以内)"></textarea>
+    	<input type="text" class="aui-input" id="phone" placeholder="留下您的邮箱或手机号" style="border: 1px solid rgba(224, 224, 224, .2);"/>
+    	<p><button class="aui-btn aui-bg-ff9800 aui-btn-block" tapmode onclick="feedBack()">发送</button></p>
+    </div>
+    
+    
+</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			api.parseTapmode();
+			
+		}
+	</script>
+</html>

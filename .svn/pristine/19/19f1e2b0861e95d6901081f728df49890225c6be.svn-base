@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>意见反馈</title>
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/re_public.css" />
+		<link rel="stylesheet" type="text/css" href="../css/new_file.css" />
+		<style>
+			body {
+				background: #f1eef5;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main" class="flex-con" >
+			<form class="mui-input-group">
+				<div class="aui-input-row">
+					<textarea name="feedback" id="feedback" cols="30" rows="10" placeholder="请输入意见建议"></textarea>
+				</div>
+				<!--<div class="mui-input-row">
+				<label>联系方式</label>
+				<input type="password" class="mui-input-clear" placeholder="请输入联系电话" id="mobile">
+				</div>-->
+				<button type="button" class="aui-button" id="reg" onclick="feedback_submit();">
+					提交
+				</button>
+			</form>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+	};
+	function feedback_submit() {
+		if (!$api.byId('feedback').value) {
+			alert('请输入意见或建议');
+			return;
+		}
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/personer_feedback.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					boss_id : $api.getStorage('boss_id'),
+					service_id : $api.getStorage('service_id'),
+					feedback : $api.byId("feedback").value
+				}
+			}
+		}, function(data, err) {
+			if (data.code == 200800) {
+				//				 api.toast({
+				//	                 msg:'提交成功'
+				//               });
+				alert('提交成功');
+				api.closeWin({
+				});
+			} else {
+				api.alert({
+					msg : ('错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode)
+				});
+			}
+		});
+	}
+</script>

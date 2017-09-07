@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link href="../css/api.css" type="text/css" rel="stylesheet" />
+		<link href="../css/minmax.css" type="text/css" rel="stylesheet" />
+		<link href="../css/css.css" type="text/css" rel="stylesheet" />
+		<link href="../css/local_product_type.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+
+		<article class="article">
+			<div class="top_fixed">
+				<div class="top">
+					<div class="focus">商品管理</div>
+					<a href="local_product_list.html">商品列表</a>
+				</div>
+			</div>
+			<div class="operate">
+				<input type="number" placeholder="请输入条码或扫描" id="barcode" class="focus_vary" />
+				<span onclick="scaner();"></span>
+			</div>
+
+			<div class="submit" onclick="submit();">提交</div>
+		</article>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var FNScanner;
+		apiready = function() {
+			FNScanner = api.require('FNScanner');
+		};
+		function scaner() {
+			FNScanner.openScanner({
+				autorotation : false
+			}, function(ret, err) {
+				if (ret.eventType == 'success') {
+					$api.byId('barcode').value = ret.content;
+					//				alert(JSON.stringify(ret));
+					submitscanner();
+				}
+			});
+		}
+
+		function openw() {
+			api.openWin({
+				name : 'local_product_list_add_detail',
+				url : './a_headback.html',
+				pageParam : {
+					title : '添加编辑商品',
+					url : 'local_product_list_add_detail'
+				}
+			});
+		}
+
+		function submit() {
+			var sBarcode = $api.byId('barcode').value;
+			if (!(/^\d{5,18}$/.test(sBarcode))) {
+				alert('请输入正确的条码');
+				return false;
+			}
+			$api.setStorage('local_product_add_barcode', $api.byId('barcode').value);
+			$api.setStorage('local_product_add_from','');
+			setTimeout("openw()", 1000);
+		}
+		
+		function submitscanner() {
+			var sBarcode = $api.byId('barcode').value;
+			if (!(/^\d{5,18}$/.test(sBarcode))) {
+				alert('请扫描正确的条码');
+				return false;
+			}
+			$api.setStorage('local_product_add_barcode', $api.byId('barcode').value);
+			$api.setStorage('local_product_add_from','');
+			setTimeout("openw()", 1000);
+		}
+
+		function winreload() {
+			window.location.reload();
+		}
+	</script>
+</html>

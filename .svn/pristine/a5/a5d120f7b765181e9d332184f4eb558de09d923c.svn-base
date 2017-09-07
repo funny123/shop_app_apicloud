@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			.aui-avatar{width:40px;height:40px;border:1px solid #fff; border-radius: 50%;margin-right:18px;}
+			.aui-arrow-right span{margin-right:18px;color:#898989; font-size:14px;margin-top:3px;}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+			<ul class="aui-list-view aui-in">
+	            <li class="aui-list-view-cell" style="line-height: 38px;">	                
+	                <div class="aui-arrow-right" tapmode onclick="loadAvatar()">
+	                		<i class="aui-iconfont aui-icon-camerafill aui-bg-33CB9A"></i>
+	                		头像
+	                		<img src="../../image/pic.jpg" id="img" class="aui-pull-right aui-avatar">
+	                </div>
+	            </li>
+	            <li class="aui-list-view-cell" >
+	                <div class="aui-arrow-right">
+	                		<i class="aui-iconfont aui-icon-mobilefill aui-bg-FC9700"></i>
+	                		手机号
+	                		<span class="aui-pull-right">18663766666</span>
+	                		</div>
+	            </li>
+	            <li class="aui-list-view-cell" onclick="editPrompt('nickname','昵称','text')">
+	                <div class="aui-arrow-right">
+	                		<i class="aui-iconfont aui-icon-profile aui-bg-67d2f8"></i>
+	                		昵称
+	                		<span class="aui-pull-right">安静的美男子</span>
+	                </div>
+	            </li>
+	            <li class="aui-list-view-cell" onclick="editsex()">
+	               <div class="aui-arrow-right"> 
+	               		<i class="aui-iconfont aui-icon-male aui-bg-fd6e90"></i>
+	               		性别
+	               		<span class="aui-pull-right">男</span>
+	               	</div>
+	            </li>
+	            <li class="aui-list-view-cell" onclick="editPrompt('bothday','生日','number')">
+	                <div class="aui-arrow-right">
+	                		<i class="aui-iconfont aui-icon-crownfill aui-bg-warning"></i>
+	                		生日
+	                		<span class="aui-pull-right">1991-05-05</span>
+	                 </div>
+	            </li>
+	            <li class="aui-list-view-cell" tapmode onclick="openWinto('editPwd_head','../login/editPwd_head')">
+	                <div class="aui-arrow-right">
+	                		<i class="aui-iconfont aui-icon-safe aui-bg-FF6665"></i>
+	                		修改密码
+	                	</div>	                
+	            </li>
+	            <li class="aui-list-view-cell" tapmode onclick="openWinto('editPwd_head','../member/address_head')">
+	                <div class="aui-arrow-right">
+	                		<i class="aui-iconfont aui-icon-activityfill aui-bg-33CB9A"></i>
+	                		收货地址
+	                	</div>	                
+	            </li>
+	        </ul>			
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		function editPrompt(name,title,type){//修改昵称  生日
+			api.prompt({
+				title:'修改'+title,
+				type:type,
+			    buttons: ['确定', '取消']
+			},function( ret, err ){
+			    if( ret ){
+			         alert( JSON.stringify( ret ) );
+			    }else{
+			         alert( JSON.stringify( err ) );
+			    }
+			});
+		}
+		function editsex(){//修改性别
+			api.actionSheet({
+				title : '选择',
+				cancelTitle : '取消',
+				buttons : ['男', '女']
+			}, function(ret, err) {
+				 if( ret ){
+			         alert( JSON.stringify( ret ) );
+			    }else{
+			         alert( JSON.stringify( err ) );
+			    }
+			});
+		}
+		function loadAvatar() {
+			//var user = $api.getStorage('user');
+			//var user_token = user.user_token;
+			api.actionSheet({
+				title : '选择图片来源',
+				cancelTitle : '取消',
+				buttons : ['照相机', '相册']
+			}, function(ret, err) {
+				if (3 == ret.buttonIndex) {
+					return;
+				}
+				var sourceType = 'album';
+				if (1 == ret.buttonIndex) {
+					sourceType = 'camera';
+				}
+				api.getPicture({
+					sourceType : sourceType,
+					encodingType : 'jpg',
+					mediaValue : 'pic',
+					destinationType : 'base64',
+					allowEdit : true,
+					quality : 100,
+					targetWidth : 500,
+					targetHeight : 300,
+					saveToPhotoAlbum : false
+				}, function(ret, err) {
+					if (ret) {
+						var systemType = api.systemType;
+					}
+				});
+			});
+		}
+		apiready = function() {
+			api.parseTapmode();
+		}
+	</script>
+</html>

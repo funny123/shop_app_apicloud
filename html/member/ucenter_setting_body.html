@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		html, body {
+				background: rgba(0,0,0,0);
+			}
+			body {
+			}
+			.aui-list-view-cell:after {
+				border-bottom: 1px solid #e2e2e2;
+				margin-left: 15px;
+			}
+			.aui-list-view-cell:last-child:after {
+				border-bottom: 1px solid #e2e2e2;
+				margin-left: 0;
+			}
+			.aui-list-view-cell {
+				color: #767677;
+			}
+			.icon-bg-eac14d {
+				color: #eac14d !important;
+			}
+			.icon-bg-7658f8 {
+				color: #7658f8 !important;
+			}
+			.icon-bg-e6567a {
+				color: #e6567a !important;
+			}
+			.icon-bg-0b5743 {
+				color: #0b5743 !important;
+			}
+			.icon-bg-919adf {
+				color: #919adf !important;
+			}
+			.aui-bg-b5292a {
+				background: #7658f8 !important;
+			}
+			.aui-badge {
+				margin-right: 20px;
+				margin-top: 4px;
+			}
+			li.aui-list-view-cell:active {
+				background: #f4f4f4;
+			}
+			.aui-switch {
+				margin-right: 0;
+			}
+			.aui-pull-right{padding-right:20px;}
+			.aui-btn-ff9800 {
+				background: #ff9800 !important;
+				color: #f9f9f9 !important;
+				border: none;
+				outline: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+			<ul class="aui-list-view">
+				<li class="aui-list-view-cell" tapmode onclick="call('10010')">
+					<div class="aui-arrow-right">
+						<i class="aui-iconfont  aui-icon-servicefill aui-bg-warning"></i>联系客服 <span class="aui-pull-right">10010</span>
+					</div>
+				</li>
+				<li class="aui-list-view-cell" tapmode id="clear-cache">
+					<div class="aui-arrow-right">
+						<i class="aui-iconfont  aui-icon-discoverfill aui-bg-success"></i>清除缓存 <span class="aui-badge aui-badge-warning aui-pull-right">0 M</span>
+					</div>
+				</li>
+				<li class="aui-list-view-cell" tapmode onclick="openWinto('suggest_head','suggest_head')">
+					<div class="aui-arrow-right">
+						<i class="aui-iconfont  aui-icon-communityfill aui-bg-info"></i>意见反馈
+					</div>
+				</li>
+				<li class="aui-list-view-cell" tapmode onclick="openWinto('aboutMe_head','aboutMe_head')">
+					<div class="aui-arrow-right">
+						<i class="aui-iconfont aui-icon-group aui-bg-b5292a"></i>关于我们
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content">
+			<p style="padding: 0 10px">
+				<button class="aui-btn aui-btn-ff9800 aui-btn-block" id="login-out">
+					退出登录
+				</button>
+			</p>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		Zepto(function($) {
+			// 清除缓存
+			$("#clear-cache").on("tap", function() {
+				api.clearCache(function(ret, err) {
+					$("#clear-cache span.aui-badge").text("0 M");
+					api.toast({
+	                    msg:'清除成功'
+                    });
+					
+				});
+			});
+			
+			$("#login-out").on("tap", function() {
+				$api.rmStorage('user');
+				setTimeout(function() {
+					openWinto('login_head', '../login/login_head');
+				}, 1000);
+			});
+		});
+		apiready = function() {
+			api.parseTapmode();
+			api.getCacheSize(function(ret, err) {
+				if (ret) {
+					$("#clear-cache span.aui-badge").text((ret.size / 1000 / 1000).toFixed(2) + " M");
+				} else {
+					$("#clear-cache span.aui-badge").text("0 M");
+				}
+			});
+		};
+	</script>
+</html>

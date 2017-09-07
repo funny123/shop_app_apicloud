@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+		.aui-list-view-cell:active {
+		    background: #FFFFFF;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="aui-content">
+		    <ul class="aui-list-view">
+		        <li class="aui-list-view-cell">
+		            订单编号: 1506260445215
+		        </li>
+		    </ul>
+		</div>		
+		<div class="step1">		
+			<!--<div>收货地址</div>	-->
+			<b class="s1-borderT"></b>				
+			<div>
+				<div style="font-size: 16px;">周杰伦 <span class="" style="margin-left: 25px;">18663767656</span></div>
+				<div>山东省济南市历下区华强电子世界B栋2308</div>
+			</div>
+			<b class="s1-borderB"></b>
+			<span class="s-point"></span>
+		</div>
+		
+		<div class="aui-content">
+			<ul class="aui-list-view">
+				<li class="aui-list-view-cell aui-img aui-counter-list" >
+	                <img class="aui-img-object aui-pull-left" src="../../image/pic.jpg" data-echo="../../image/pic.jpg">
+	                <div class="aui-img-body">
+	                    <div class="aui-text-default aui-ellipsis-1"> 茅山榴莲王 越南进口越南进口越南进口</div>
+	                    <div class="aui-counter-box">
+	                        <div class="aui-pull-left">12个/盒</div>
+	                        <div class="aui-text-default aui-pull-right">
+	                            x 1
+	                        </div>
+	                    </div>	                    
+	                </div>               
+	           	</li>
+	        </ul>
+		</div>
+		
+		<div class="aui-content">
+	        <ul class="aui-list-view aui-in">
+	            <li class="aui-list-view-cell">
+	                支付金额
+	                <div class="aui-pull-right aui-text-danger">￥49.90</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                支付方式
+	                <div class="aui-pull-right">支付宝</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                支付状态
+	                <div class="aui-pull-right">未支付</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                下单时间
+	                <div class="aui-pull-right">2016-03-29 17:50:14</div>
+	            </li>
+	        </ul>
+	    </div>
+	    
+	    <div class="aui-content">
+	        <ul class="aui-list-view aui-in">
+	            <li class="aui-list-view-cell">
+	                商品总价
+	                <div class="aui-pull-right aui-text-FF9800">￥49.90</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                运费
+	                <div class="aui-pull-right aui-text-FF9800">￥0.00</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                优惠券抵扣
+	                 <div class="aui-pull-right aui-text-default">-￥0.00</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	                积分抵扣
+	                 <div class="aui-pull-right aui-text-default">-￥0.00</div>
+	            </li>
+	            <li class="aui-list-view-cell">
+	            	 <span class=" aui-pull-right aui-text-FF9800" style="font-size: 18px;">￥49.90</span>	                
+	                 <div class="aui-pull-right aui-text-right">积分抵扣: </div>
+	            </li>
+	        </ul>
+	    </div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/common.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/echo.min.js"></script>
+	<script type="text/javascript">
+		echo.init({
+			offset : 100,
+			throttle : 250,
+			unload : false,
+			callback : function(element, op) {
+			}
+		});
+		apiready = function() {
+			api.parseTapmode();
+		};
+	</script>
+</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget id="A6939163143666" version="0.0.1"> 
+  <name>tanchiguo</name>  
+  <description>供货港</description>  
+  <author email="717900268@qq.com" href="http://www.apicloud.com">funny</author>  
+  <content src="index.html"/>  
+  <preference name="pageBounce" value="false"/>  
+  <preference name="appBackground" value="rgba(0,0,0,0.0)"/>  
+  <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>  
+  <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>  
+  <preference name="hScrollBarEnabled" value="true"/>  
+  <preference name="vScrollBarEnabled" value="false"/>  
+  <preference name="autoLaunch" value="true"/>  
+  <preference name="fullScreen" value="false"/>  
+  <preference name="autoUpdate" value="true"/>  
+  <preference name="smartUpdate" value="false"/>  
+  <preference name="debug" value="true"/>  
+  <preference name="iOS7StatusBarAppearance" value="true"/>  
+  <preference name="statusBarAppearance" value="true"/>  
+  <preference name="softInputMode" value="resize"/>  
+  <preference name="urlScheme" value="tanchiguo"/>  
+  <permission name="readPhoneState"/>  
+  <permission name="camera"/>  
+  <permission name="record"/>  
+  <permission name="location"/>  
+  <permission name="fileSystem"/>  
+  <permission name="internet"/>  
+  <permission name="bootCompleted"/>  
+  <permission name="hardware"/>  
+  <permission name="call"/>  
+  <access origin="*"/>  
+  <feature name="ajpush"> 
+    <param name="channel" value="developer-apicloud"/>  
+    <param name="app_key" value="c08ac56b590a916b500cb2fb"/> 
+  </feature>  
+  <feature name="aliPayPlus"> 
+    <param name="urlScheme" value="AliPayPlusA6939163143666"/> 
+  </feature> 
+</widget>

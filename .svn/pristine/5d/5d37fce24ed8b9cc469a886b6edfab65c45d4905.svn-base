@@ -1,0 +1,1705 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<style>
+			#main {
+				padding: 2px;
+				background-color: #e5e5e5;
+			}
+			#main .flex-vertical .layout {
+				background: #e66961 url() right bottom no-repeat;
+				margin: 0.3rem;
+				padding: 0.3rem;
+				background-size: auto 50%;
+				line-height: 2rem;
+				color: white;
+				font-size: 1.8rem;
+			}
+			#main .flex-vertical .layout p {
+				font-size: 1rem;
+			}
+			#main .flex-vertical .layout.ic-hot {
+				background-image: url(../image/ic-hot.png);
+			}
+			#main .flex-vertical .layout.ic-article {
+				background-image: url(../image/ic-article.png);
+				background-color: #6ab494;
+			}
+			#main .flex-vertical .layout.ic-tag {
+				background-image: url(../image/ic-tag.png);
+				background-color: #9e9a8d;
+				font-size: 1.6rem;
+			}
+			#main .flex-vertical .layout.ic-coffee {
+				background-image: url(../image/ic-coffee.png);
+				background-color: #ebd275;
+				font-size: 1.6rem;
+			}
+			#main .flex-vertical .layout.ic-shop {
+				background-image: url(../image/ic-shop.png);
+				background-color: #6ab494;
+			}
+			#main .flex-vertical .layout.ic-like {
+				background-image: url(../image/ic-like.png);
+				background-color: #d8c09d;
+				font-size: 1.6rem;
+			}
+			#main .flex-vertical .layout.ic-lable {
+				background-image: url(../image/ic-lable.png);
+				font-size: 1.2rem;
+			}
+			#main .flex-vertical .layout.ic-more {
+				background-image: url(../image/ic-more.png);
+				background-color: #ebd275;
+				font-size: 1.2rem;
+				background-size: 50% auto;
+				background-position: center right;
+			}
+			.flex-2 {
+				-webkit-box-flex: 2;
+				-webkit-flex: 2;
+				flex: 2;
+			}
+			.hover {
+				opacity: .8;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap" class="flex-wrap flex-vertical" >
+			<div id="main" class="flex-wrap flex-con" >
+				<div class="flex-con flex-wrap flex-vertical">
+					<div tapmode="hover" id="pro_buy" onclick="funOpenProduct();" class="flex-wrap flex-con flex-2 layout-wrap" style="display: none">
+						<div class="flex-con layout ic-hot">
+							<h6>商品采购</h6>
+							<p>
+								商品采购
+							</p>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funMap();"  class="flex-wrap flex-con flex-2 layout-wrap">
+						<div class="flex-con layout  ic-article">
+							<h6>地图</h6>
+							<p>
+								地图
+							</p>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenInquiry();"  class="flex-wrap flex-con flex-2 layout-wrap">
+						<div class="flex-con layout ic-tag">
+							<h6>询价</h6>
+							<p>
+								询价
+							</p>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenCheckOutScaner();"  class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout  ic-article">
+							<h6>扫描枪结账</h6>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenStocktaking();" class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout  ic-article">
+							<h6>盘点管理</h6>
+						</div>
+					</div>
+<!--					<div tapmode="hover" onclick="funOpenSaleActiviy();" class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout  ic-article">
+							<h6>促销活动管理</h6>
+						</div>
+					</div>-->
+					<div tapmode="hover" onclick="funOpenO2Oorder();" class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout  ic-article">
+							<h6>O2O订单管理</h6>
+						</div>
+					</div>
+					<div tapmode="hover" id="is_pid" onclick="funOpenEmployeeManage();"  class="flex-wrap flex-con layout-wrap" style="display: none">
+						<div class="flex-con layout  ic-article">
+							<h6>员工管理</h6>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenGoodReturn();"  class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout  ic-article">
+							<h6>退货管理</h6>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenMemberCard();"  class="flex-wrap flex-con flex-2 layout-wrap">
+						<div class="flex-con layout ic-shop">
+							<h6>会员卡管理</h6>
+							<p>
+								会员卡管理
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="flex-wrap flex-con flex-vertical">
+					<div tapmode="hover" onclick="funOpenAddProduct();"  class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout ic-lable">
+							<h6>商品管理</h6>
+							<p>
+								商品管理
+							</p>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="ProductCatAdd();"  class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout  ic-article">
+							<h6>商品分类管理</h6>
+							<p>
+								商品分类管理
+							</p>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenSupplierManage();"  class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout  ic-article">
+							<h6>供应商管理</h6>
+							<p>
+								供应商管理
+							</p>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenProductStorage();"  class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout ic-lable">
+							<h6>入库管理</h6>
+							<p>
+								入库管理
+							</p>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenCheckOut();"  class="flex-wrap flex-con layout-wrap">
+						<div class="flex-con layout ic-more">
+							<h6>出库管理</h6>
+							<p>
+								出库管理
+							</p>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenReport();"  class="flex-wrap flex-con flex-2 layout-wrap">
+						<div class="flex-con layout ic-shop">
+							<h6>统计报表</h6>
+							<p>
+								统计报表
+							</p>
+						</div>
+					</div>
+					<div tapmode="hover" onclick="funOpenPersoner();"  class="flex-wrap flex-con flex-2 layout-wrap">
+						<div class="flex-con layout ic-shop">
+							<h6>个人中心</h6>
+							<p>
+								个人中心
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/swipe.js"></script>
+<script type="text/javascript">
+	var db;
+	apiready = function() {
+		db = api.require('db');
+		//	alert(window.screen.width);
+		//	alert(window.screen.height);
+		if (!$api.getStorage('token')) {
+		} else {
+			//			db.openDatabase({
+			//				name : 'ghuog_db' + $api.getStorage('mobile')
+			//			}, function(ret, err) {
+			//				if (ret.status) {
+			//				}
+			//			});
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/personer_cache.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : $api.getStorage('mobile'),
+						token : $api.getStorage('token')
+					}
+				}
+			}, function(data, err) {
+			
+				if (data) {
+//										alert(data.code);
+					//					alert(data.data.end_date);
+					$api.setStorage('alipay', data.data.alipay);
+					$api.setStorage('weixin', data.data.weixin);
+				$api.setStorage('realname', data.data.realname);
+					$api.setStorage('address', data.data.address);
+					$api.setStorage('caiwu', data.data.caiwu);
+					$api.setStorage('grade', data.data.grade);
+				$api.setStorage('end_date', data.data.end_date);
+					$api.setStorage('is_buy', data.data.is_buy);
+					$api.setStorage('is_inquiry', data.data.is_inquiry);
+					$api.setStorage('is_addproduct', data.data.is_addproduct);
+				$api.setStorage('is_checkoutscaner', data.data.is_checkoutscaner);
+					$api.setStorage('is_stock', data.data.is_stock);
+					$api.setStorage('is_map', data.data.is_map);
+					$api.setStorage('is_return', data.data.is_return);
+					$api.setStorage('is_checkout', data.data.is_checkout);
+					$api.setStorage('is_procat', data.data.is_procat);
+					$api.setStorage('is_sup', data.data.is_sup);
+					$api.setStorage('is_membercard', data.data.is_membercard);
+					$api.setStorage('is_stocktaking', data.data.is_stocktaking);
+					$api.setStorage('is_saleactiviy', data.data.is_saleactiviy);
+					$api.setStorage('is_o2oorder', data.data.is_o2oorder);
+					$api.setStorage('is_report', data.data.is_report);
+					$api.setStorage('role', data.data.role);
+					$api.setStorage('service_id', data.data.service_id);
+				$api.setStorage('boss_id', data.data.boss_id);
+					$api.setStorage('is_position', data.data.is_position);
+				$api.setStorage('shop_name', data.data.shop_name);
+					$api.setStorage('is_bossshop', data.data.is_bossshop);
+					$api.setStorage('is_zhiying', data.data.is_zhiying);
+//					$api.setStorage('beilv_pifajia', data.data.beilv_pifajia);
+//					$api.setStorage('beilv_huiyuanjia', data.data.beilv_huiyuanjia);
+//					$api.setStorage('beilv_lingshoujia', data.data.beilv_lingshoujia);
+				}
+			});
+		}
+		if($api.getStorage('is_zhiying')==1){
+			$api.byId('pro_buy').style.display = "";
+		}
+		if($api.getStorage('is_pid')==1){
+			$api.byId('is_pid').style.display = "";
+		}
+		if (!$api.getStorage('updatatime')) {
+			$api.setStorage('updatatime', 0);
+		}
+		window.setInterval(funUploadData, 300000);
+	};
+	var mySwipe = new Swipe($api.dom('.swipe'), {
+		speed : 400,
+		auto : 3000,
+		continuous : true,
+		disableScroll : false,
+		stopPropagation : false,
+		transitionEnd : function(index, elem) {
+		}
+	});
+	function funOpenPersoner() {
+		if (!$api.getStorage('token')) {
+			api.openWin({
+				name : 'personer_login',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '登录',
+					url : 'personer_login'
+				}
+			});
+		} else {
+			api.openWin({
+				name : 'personer_index',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '个人中心',
+					url : 'personer_index'
+				}
+			});
+		}
+	}
+
+	//时间
+	var d = new Date();
+	var m = (d.getMonth() + 1);
+	if (m < 10) {
+		m = "0" + m;
+	}
+	var r = d.getDate();
+	if (r < 10) {
+		r = "0" + r;
+	}
+	var h = d.getHours();
+	if (h < 10) {
+		h = "0" + h;
+	}
+	var mi = d.getMinutes();
+	if (mi < 10) {
+		mi = "0" + mi;
+	}
+	var se = d.getSeconds();
+	if (se < 10) {
+		se = "0" + se;
+	}
+	var TimeNow = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+	function funOpenProduct() {
+		if ($api.getStorage('is_buy') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'product_list',
+				url : './a_headback_buy.html',
+				pageParam : {
+					title : '商品列表',
+					url : 'product_list'
+				}
+			});
+		} else if ($api.getStorage('is_buy') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_buy') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+function funOpenProduct2() {
+api.openWin({
+				name : 'new_file',
+				url : './a_headback_buy.html',
+				pageParam : {
+					title : '商品列表',
+					url : 'new_file'
+				}
+			});
+}
+
+	//询价
+	function funOpenInquiry() {
+		//		if ($api.getStorage('') == 1) {
+		if ($api.getStorage('is_inquiry') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'inquiry_index',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '询价',
+					url : 'inquiry_index'
+				}
+			});
+		} else if ($api.getStorage('is_inquiry') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_inquiry') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	//员工管理
+	function funOpenEmployeeManage() {
+		//		if ($api.getStorage('is_pid') == 1) {
+		if ($api.getStorage('is_pid') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'employee_manage',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '员工管理',
+					url : 'employee_manage'
+				}
+			});
+		} else if ($api.getStorage('is_pid') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_pid') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function ProductCatAdd() {
+		if ($api.getStorage('is_procat') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'local_product_cat_add',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '商品分类添加',
+					url : 'local_product_cat_add'
+				}
+			});
+		} else if ($api.getStorage('is_procat') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_procat') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function funOpenReport() {
+		if ($api.getStorage('is_report') == 1 && TimeNow < $api.getStorage('end_date')) {
+			//		if ($api.getStorage('is_report') == 1) {
+			api.openWin({
+				name : 'report_index',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '统计报表',
+					url : 'report_index'
+				}
+			});
+		} else if ($api.getStorage('is_report') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_report') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function funOpenStocktaking() {
+		if ($api.getStorage('is_stocktaking') == 1 && TimeNow < $api.getStorage('end_date')) {
+			//		if ($api.getStorage('is_report') == 1) {
+			api.openWin({
+				name : 'stocktaking_index',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '盘点管理',
+					url : 'stocktaking_index'
+				}
+			});
+		} else if ($api.getStorage('is_stocktaking') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_stocktaking') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function funOpenSaleActiviy() {
+		if ($api.getStorage('is_saleactiviy') == 1 && TimeNow < $api.getStorage('end_date')) {
+			//		if ($api.getStorage('is_report') == 1) {
+			api.openWin({
+				name : 'sale_activiy_index',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '促销管理',
+					url : 'sale_activiy_index'
+				}
+			});
+		} else if ($api.getStorage('is_saleactiviy') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_saleactiviy') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function funOpenO2Oorder() {
+		if ($api.getStorage('is_o2oorder') == 1 && TimeNow < $api.getStorage('end_date')) {
+			//		if ($api.getStorage('is_report') == 1) {
+			api.openWin({
+				name : 'o2o_order_index',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : 'O2O订单管理',
+					url : 'o2o_order_index'
+				}
+			});
+		} else if ($api.getStorage('is_o2oorder') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_o2oorder') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function funOpenMemberCard() {
+		//		if ($api.getStorage('is_membercard') == 1) {
+		if ($api.getStorage('is_membercard') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'member_card',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '会员卡管理',
+					url : 'member_card'
+				}
+			});
+		} else if ($api.getStorage('is_membercard') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_membercard') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	//供应商管理
+	function funOpenSupplierManage() {
+		if ($api.getStorage('is_sup') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'supplier_manage',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '供应商管理',
+					url : 'supplier_manage'
+				}
+			});
+		} else if ($api.getStorage('is_sup') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_sup') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	//录入商品
+	function funOpenAddProduct() {
+		//		if ($api.getStorage('') == 1) {
+		if ($api.getStorage('is_addproduct') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'local_product_list_add',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '商品管理',
+					url : 'local_product_list_add'
+				}
+			});
+		} else if ($api.getStorage('is_addproduct') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_addproduct') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function funOpenProductStorage() {
+		if ($api.getStorage('is_stock') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'local_product_storage',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '入库管理',
+					url : 'local_product_storage'
+				}
+			});
+		} else if ($api.getStorage('is_stock') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_stock') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function funOpenCheckOut() {
+		if ($api.getStorage('is_checkout') == 1 && TimeNow < $api.getStorage('end_date')) {
+			//		if ($api.getStorage('is_check') == 1) {
+			api.openWin({
+				name : 'local_checkout_list',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '出库管理',
+					url : 'local_checkout_list'
+				}
+			});
+		} else if ($api.getStorage('is_checkout') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_checkout') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	//	退货
+	function funOpenGoodReturn() {
+		if ($api.getStorage('is_return') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'good_return',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '商品退货',
+					url : 'good_return'
+				}
+			});
+		} else if ($api.getStorage('is_return') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_return') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	//地图
+	function funMap() {
+		if ($api.getStorage('is_map') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'map',
+				url : './map_index.html'
+			});
+		} else if ($api.getStorage('is_map') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_map') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function funOpenCheckOutScaner() {
+		//		db.executeSql({
+		//			name : 'ghuog_db' + $api.getStorage('mobile'),
+		//			sql : "drop table T_ProductCat"
+		//		}, function(ret, err) {
+		//			if (ret.status) {
+		//				alert('okk');
+		//			} else {
+		//			alert(JSON.stringify(err));
+		//			}
+		//		});
+		if ($api.getStorage('is_checkoutscaner') == 1 && TimeNow < $api.getStorage('end_date')) {
+			api.openWin({
+				name : 'local_checkout_scaner',
+				url : './local_checkout_scaner.html',
+				pageParam : {
+					title : '结账',
+					url : 'local_checkout_scaner'
+				}
+			});
+		} else if ($api.getStorage('is_checkoutscaner') != 1) {
+			api.toast({
+				msg : '没有权限'
+			});
+		} else if ($api.getStorage('is_checkoutscaner') == 1 && TimeNow >= $api.getStorage('end_date')) {
+			api.toast({
+				msg : '系统已过期，请续费'
+			});
+		} else {
+			api.toast({
+				msg : '302'
+			});
+		}
+	}
+
+	function funUploadData() {
+		if (!$api.getStorage('token')) {
+		} else {
+			var updatatime = new Date().getTime();
+			if (updatatime - $api.getStorage('updatatime') > 30000) {
+				$api.setStorage('updatatime', updatatime);
+				//				var next_db_version = parseInt($api.getStorage($api.getStorage('mobile') + '_db_version')) + 1;
+				//		alert(next_db_version);
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/db_version.php',
+					method : 'post',
+					data : {
+						values : {
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token'),
+							my_db_version : $api.getStorage($api.getStorage('mobile') + '_db_version'),
+							kehuduan:1
+						}
+					}
+				}, function(data) {
+					//		alert(data.code);
+					if (data.code == 200800) {
+						//				alert(JSON.stringify(data.sqlword.length));
+						for (var i = 0; i < data.sqlword.length; i++) {
+							db.executeSql({
+								name : 'ghuog_db' + $api.getStorage('mobile'),
+								sql : data.sqlword[i].sqlword
+							}, function(ret, err) {
+								if (ret.status) {
+									api.toast({
+										msg : '数据库升级中'
+									});
+								}
+							});
+						}
+						var d10 = new Date().getTime() - 600000;
+						var d = new Date(d10);
+						var m = (d.getMonth() + 1);
+						if (m < 10) {
+							m = "0" + m;
+						}
+						var r = d.getDate();
+						if (r < 10) {
+							r = "0" + r;
+						}
+						var h = d.getHours();
+						if (h < 10) {
+							h = "0" + h;
+						}
+						var mi = d.getMinutes();
+						if (mi < 10) {
+							mi = "0" + mi;
+						}
+						var se = d.getSeconds();
+						if (se < 10) {
+							se = "0" + se;
+						}
+						var DbTime = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+						$api.setStorage($api.getStorage('mobile') + '_db_version', DbTime);
+						api.toast({
+							msg : '数据库升级中...'
+						});
+					} else if (data.code == 200801) {
+						download_del_info();
+						setTimeout("product()", 2000);
+						setTimeout("product_update()", 4000);
+						setTimeout("checkoutshift()", 6000);
+						setTimeout("stock()", 8000);
+						setTimeout("checkout()", 10000);
+						setTimeout("cashlist()", 12000);
+						setTimeout("product_return()", 14000);
+						setTimeout("download_suppliercat()", 16000);
+						setTimeout("download_supplier()", 18000);
+						setTimeout("download_productcat()", 20000);
+						setTimeout("download_product()", 22000);
+					} else {
+						api.toast({
+							msg : '网络错误'
+						});
+					}
+				});
+			} else {
+				api.toast({
+					msg : '。。。'
+				});
+				//				alert('...');
+			}
+		}
+	}
+
+	function funUploadDataPersoner() {
+		//		var next_db_version = parseInt($api.getStorage($api.getStorage('mobile') + '_db_version')) + 1;
+		//		alert(next_db_version);
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/db_version.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					my_db_version : $api.getStorage($api.getStorage('mobile') + '_db_version'),
+					kehuduan:1
+				}
+			}
+		}, function(data) {
+			//		alert(data.code);
+			if (data.code == 200800) {
+				//				alert(JSON.stringify(data.sqlword.length));
+				for (var i = 0; i < data.sqlword.length; i++) {
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : data.sqlword[i].sqlword
+					}, function(ret, err) {
+						if (ret.status) {
+							api.toast({
+								msg : '数据库升级中'
+							});
+						}
+					});
+				}
+				var d10 = new Date().getTime() - 600000;
+				var d = new Date(d10);
+				var m = (d.getMonth() + 1);
+				if (m < 10) {
+					m = "0" + m;
+				}
+				var r = d.getDate();
+				if (r < 10) {
+					r = "0" + r;
+				}
+				var h = d.getHours();
+				if (h < 10) {
+					h = "0" + h;
+				}
+				var mi = d.getMinutes();
+				if (mi < 10) {
+					mi = "0" + mi;
+				}
+				var se = d.getSeconds();
+				if (se < 10) {
+					se = "0" + se;
+				}
+				var DbTime = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+				$api.setStorage($api.getStorage('mobile') + '_db_version', DbTime);
+				api.toast({
+					msg : '数据库升级中...'
+				});
+			} else if (data.code == 200801) {
+				download_del_info();
+				setTimeout("product()", 2000);
+				setTimeout("product_update()", 4000);
+				setTimeout("checkoutshift()", 6000);
+				setTimeout("stock()", 8000);
+				setTimeout("checkout()", 10000);
+				setTimeout("cashlist()", 12000);
+				setTimeout("product_return()", 14000);
+				setTimeout("download_suppliercat()", 16000);
+				setTimeout("download_supplier()", 18000);
+				setTimeout("download_productcat()", 20000);
+				setTimeout("download_product()", 22000);
+			} else {
+				api.toast({
+					msg : '网络错误'
+				});
+			}
+		});
+	}
+
+	//同步删除记录
+	function download_del_info() {
+		if (!$api.getStorage($api.getStorage('mobile') + 'download_delinfo_time')) {
+			$api.setStorage($api.getStorage('mobile') + 'download_delinfo_time', '2016-01-01 00:00:00');
+		}
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/download_del_info.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					time : $api.getStorage($api.getStorage('mobile') + 'download_delinfo_time')
+				}
+			}
+		}, function(data) {
+			//		alert(data.code);
+			if (data.code == 200800) {
+				for (var i = 0; i < data.data.length; i++) {
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : data.data[i].sqlword
+					}, function(ret, err) {
+						if (ret.status) {
+						}
+					});
+				}
+				var d10 = new Date().getTime() - 600000;
+				var d = new Date(d10);
+				var m = (d.getMonth() + 1);
+				if (m < 10) {
+					m = "0" + m;
+				}
+				var r = d.getDate();
+				if (r < 10) {
+					r = "0" + r;
+				}
+				var h = d.getHours();
+				if (h < 10) {
+					h = "0" + h;
+				}
+				var mi = d.getMinutes();
+				if (mi < 10) {
+					mi = "0" + mi;
+				}
+				var se = d.getSeconds();
+				if (se < 10) {
+					se = "0" + se;
+				}
+				var DownTime5 = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+				$api.setStorage($api.getStorage('mobile') + 'download_delinfo_time', DownTime5);
+				//				alert($api.getStorage($api.getStorage('mobile') + 'download_delinfo_time'));
+				api.toast({
+					msg : '开始同步'
+				});
+			} else if (data.code == 200802) {
+				api.toast({
+					msg : '正在同步'
+				});
+			} else {
+				api.toast({
+					msg : '网络错误'
+				});
+			}
+		});
+	}
+
+	//同步商品
+	function product() {
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_Product where Status=1 limit 200"
+		}, function(ret, err) {
+			//			alert(ret.data.length);
+			if (ret.data.length > 0) {
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/upload_product_info.php',
+					method : 'post',
+					data : {
+						values : {
+							product_data : JSON.stringify(ret.data),
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token'),
+							role : $api.getStorage('role'),
+							//service_id : $api.getStorage('service_id'),
+							uuid : api.deviceId,
+							boss_id : $api.getStorage('boss_id')
+						}
+					}
+				}, function(ret, err) {
+					//									alert(ret.code);
+//										alert(JSON.stringify(ret));
+					for (var i = 0; i < ret.data.length; i++) {
+						if (ret.code[i] == '700200') {
+							//修改入库状态值为更新
+							db.executeSql({
+								name : 'ghuog_db' + $api.getStorage('mobile'),
+								sql : "UPDATE T_Product SET Status=5,Pid=" + ret.data[i].Pid + " where Status=1 and BarCode=" + ret.data[i].BarCode
+							}, function(ret, err) {
+								if (ret.status) {
+								}
+							});
+						} else if (ret.code[i] == '700202') {
+							db.executeSql({
+								name : 'ghuog_db' + $api.getStorage('mobile'),
+								sql : "DELETE FROM T_Product where BarCode=" + ret.data[i].BarCodeAlready
+							}, function(ret, err) {
+								if (ret.status) {
+								}
+							});
+						}
+					}
+				});
+				api.toast({
+					msg : '新增商品上传成功'
+				});
+			} else {
+				api.toast({
+					msg : '没有新增商品，无须同步'
+				});
+			}
+		});
+	}
+
+	//更新商品信息
+	function product_update() {
+		//出库
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_Product where Status='2'"
+		}, function(ret, err) {
+			//					alert(JSON.stringify(ret.data));
+			if (ret.data.length > 0) {
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/upload_product_modify_info.php',
+					method : 'post',
+					data : {
+						values : {
+							product_data : JSON.stringify(ret.data),
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token'),
+//							role : $api.getStorage('role'),
+//							service_id : $api.getStorage('service_id'),
+							uuid : api.deviceId
+						}
+					}
+				}, function(ret, err) {
+					if (ret.code == '700200') {
+						//修改入库状态值为更新
+						db.executeSql({
+							name : 'ghuog_db' + $api.getStorage('mobile'),
+							sql : "UPDATE T_Product SET Status='5' where Status='2'"
+						}, function(ret, err) {
+							if (ret.status) {
+								//							alert('商品表更新成功');
+								api.toast({
+									msg : '商品编辑上传成功'
+								});
+							}
+						});
+					} else if (ret.code == '700201') {
+						api.toast({
+							msg : '商品编辑上传失败'
+						});
+					}
+				});
+			} else {
+				//				alert(ret.code);
+				api.toast({
+					msg : '没有编辑商品，无须同步'
+				});
+			}
+		});
+	}
+
+	function checkoutshift() {
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_CheckOutShift where Status=1"
+		}, function(ret2, err2) {
+			//					alert(JSON.stringify(ret.data));
+			if (ret2.data.length > 0) {
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/upload_checkout_shift_info.php',
+					method : 'post',
+					data : {
+						values : {
+							checkoutshift_data : JSON.stringify(ret2.data),
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token'),
+							uuid : api.deviceId,
+							boss_id : $api.getStorage('boss_id')
+						}
+					}
+				}, function(ret3, err3) {
+					if (ret3.code == '700200') {
+						//修改入库状态值为更新
+						db.executeSql({
+							name : 'ghuog_db' + $api.getStorage('mobile'),
+							sql : "UPDATE T_CheckOutShift set status=2 where status=1"
+						}, function(ret5, err5) {
+							if (ret5.status) {
+								api.toast({
+									msg : '交接班记录上传成功'
+								});
+							}
+						});
+					} else if (ret3.code == '700201') {
+						api.toast({
+							msg : '交接班记录上传失败'
+						});
+					} else {
+						alert('网络错误');
+					}
+				});
+			} else {
+				api.toast({
+					msg : '没有交接班记录，无须同步'
+				});
+			}
+		});
+	}
+
+	function stock() {
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_Stock where Status=1"
+		}, function(ret, err) {
+			//					alert(JSON.stringify(ret.data));
+			if (ret.data.length > 0) {
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/upload_storage_info.php',
+					method : 'post',
+					data : {
+						values : {
+							stock_data : JSON.stringify(ret.data),
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token'),
+							uuid : api.deviceId,
+							//service_id : $api.getStorage('service_id'),
+							boss_id : $api.getStorage('boss_id')
+						}
+					}
+				}, function(ret, err) {
+					if (ret.code == '700200') {
+						//修改入库状态值为更新
+						db.executeSql({
+							name : 'ghuog_db' + $api.getStorage('mobile'),
+							sql : "DELETE FROM T_Stock where Status=1"
+							//sql : "INSERT INTO Product(BarCode,ProName,Num,CostPrice,MarketPrice,ProPosition)VALUES('123456789','测试商品','12','25','38','A1')"
+						}, function(ret, err) {
+							if (ret.status) {
+								//							$api.setStorage('T_Stock', 1);
+								//							alert('入库库存表更新成功');
+								//							api.alert({
+								//								msg : '同步服务器成功'
+								//							});
+								api.toast({
+									msg : '入库记录上传成功'
+								});
+							}
+						});
+					} else if (ret.code == '700201') {
+						api.toast({
+							msg : '入库记录上传失败'
+						});
+					}
+				});
+			} else {
+				api.toast({
+					msg : '没有新增入库记录，无须同步'
+				});
+			}
+		});
+	}
+
+	function checkout() {
+		//出库
+		//		alert('boss_id:'+$api.getStorage('boss_id'));
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_CheckOut where Status=1"
+		}, function(ret, err) {
+			//								alert(JSON.stringify(ret.data));
+			if (ret.data.length > 0) {
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/upload_checkout_info.php',
+					method : 'post',
+					data : {
+						values : {
+							checkout_data : JSON.stringify(ret.data),
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token'),
+							uuid : api.deviceId,
+							boss_id : $api.getStorage('boss_id')
+						}
+					}
+				}, function(ret, err) {
+					if (ret.code == '700200') {
+						//修改入库状态值为更新
+						db.executeSql({
+							name : 'ghuog_db' + $api.getStorage('mobile'),
+							sql : "DELETE FROM T_CheckOut where Status=1"
+						}, function(ret, err) {
+							if (ret.status) {
+								//							alert('出库库存表更新成功');
+								api.toast({
+									msg : '出库记录上传成功'
+								});
+							}
+						});
+					} else if (ret.code == '700201') {
+						api.toast({
+							msg : '出库记录上传失败'
+						});
+					}
+				});
+			} else {
+				api.toast({
+					msg : '没有新增出库记录，无须同步'
+				});
+			}
+		});
+	}
+
+	function cashlist() {
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_CashList where Status=1"
+		}, function(ret, err) {
+			//					alert(JSON.stringify(ret.data));
+			if (ret.data.length > 0) {
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/upload_cash_info.php',
+					method : 'post',
+					data : {
+						values : {
+							cashlist_data : JSON.stringify(ret.data),
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token'),
+							uuid : api.deviceId,
+							boss_id : $api.getStorage('boss_id')
+						}
+					}
+				}, function(ret, err) {
+					if (ret.code == '700200') {
+						//修改入库状态值为更新
+						db.executeSql({
+							name : 'ghuog_db' + $api.getStorage('mobile'),
+							sql : "DELETE FROM T_CashList where Status=1"
+						}, function(ret, err) {
+							if (ret.status) {
+								//							alert('出库库存表更新成功');
+								api.toast({
+									msg : '收款记录上传成功'
+								});
+							}
+						});
+					} else if (ret.code == '700201') {
+						api.toast({
+							msg : '收款记录上传失败'
+						});
+					}
+				});
+			} else {
+				api.toast({
+					msg : '没有新增收款记录，无须同步'
+				});
+			}
+		});
+	}
+
+	//同步退货商品
+	function product_return() {
+		db.selectSql({
+			name : 'ghuog_db' + $api.getStorage('mobile'),
+			sql : "SELECT * FROM T_ProductReturn where Status=1"
+		}, function(ret, err) {
+			//					alert(JSON.stringify(ret.data));
+			if (ret.data.length > 0) {
+				api.ajax({
+					url : 'http://ririqiang.com/ghuog/api_shop/upload_return_info.php',
+					method : 'post',
+					data : {
+						values : {
+							product_return_data : JSON.stringify(ret.data),
+							mobile : $api.getStorage('mobile'),
+							token : $api.getStorage('token'),
+							uuid : api.deviceId,
+							//service_id : $api.getStorage('service_id'),
+							boss_id : $api.getStorage('boss_id')
+						}
+					}
+				}, function(ret, err) {
+					//			alert(ret.code);
+					if (ret.code == '700200') {
+						//修改入库状态值为更新
+						db.executeSql({
+							name : 'ghuog_db' + $api.getStorage('mobile'),
+							sql : "DELETE FROM T_ProductReturn where Status=1"
+						}, function(ret, err) {
+							if (ret.status) {
+								api.toast({
+									msg : '退货记录上传成功'
+								});
+							}
+						});
+					} else if (ret.code == '700201') {
+						//修改入库状态值为更新
+						api.toast({
+							msg : '退货记录上传失败'
+						});
+					}
+				});
+			} else {
+				api.toast({
+					msg : '没有新增退货记录，无须同步'
+				});
+			}
+		});
+	}
+
+	function download_suppliercat() {
+		if (!$api.getStorage($api.getStorage('mobile') + 'download_suppliercat_time')) {
+			$api.setStorage($api.getStorage('mobile') + 'download_suppliercat_time', '2016-01-01 00:00:00');
+		}
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/download_supplier_cat_info.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					uuid : api.deviceId,
+					time : $api.getStorage($api.getStorage('mobile') + 'download_suppliercat_time')
+				}
+			}
+		}, function(ret1, err1) {
+			//			alert(JSON.stringify(ret1.data2));
+			if (ret1.code == '700200') {
+				for (var i = 0; i <= ret1.data2.length - 1; i++) {
+					db.selectSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						//						sql : "UPDATE T_SupplierCat SET SupplierCatName='" + ret1.data2[i].SupplierCatName + "' where catid= '" + ret1.data2[i].catid + "'"
+						sql : "UPDATE T_SupplierCat SET SupplierCatName='" + ret1.data2[i].SupplierCatName + "' where catid='" + ret1.data2[i].catid + "'"
+					}, function(ret2, err2) {
+						if (ret2.status) {
+							//							alert('修改成功');
+						} else {
+							//							alert('修改失败');
+							//							alert(JSON.stringify(err2));
+						}
+					});
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						//						sql : "INSERT　INTO T_SupplierCat(pid,catid,SupplierCatName)VALUES('0','" + ret1.data2[i].catid + "','" + ret1.data2[i].SupplierCatName + "')"
+						sql : "INSERT INTO T_SupplierCat(pid,catid,SupplierCatName)VALUES('0','" + ret1.data2[i].catid + "','" + ret1.data2[i].SupplierCatName + "')"
+					}, function(ret3, err3) {
+						if (ret3.status) {
+							//							api.toast({
+							//								//
+							//							});
+							//							alert('插入成功');
+						} else {
+							//							alert('插入失败');
+							//							alert(JSON.stringify(err3));
+						}
+					});
+				}
+				//时间
+				var d10 = new Date().getTime() - 600000;
+				var d = new Date(d10);
+				var m = (d.getMonth() + 1);
+				if (m < 10) {
+					m = "0" + m;
+				}
+				var r = d.getDate();
+				if (r < 10) {
+					r = "0" + r;
+				}
+				var h = d.getHours();
+				if (h < 10) {
+					h = "0" + h;
+				}
+				var mi = d.getMinutes();
+				if (mi < 10) {
+					mi = "0" + mi;
+				}
+				var se = d.getSeconds();
+				if (se < 10) {
+					se = "0" + se;
+				}
+				var DownTime1 = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+				$api.setStorage($api.getStorage('mobile') + 'download_suppliercat_time', DownTime1);
+				//				alert($api.getStorage($api.getStorage('mobile') + 'download_suppliercat_time'));
+				api.toast({
+					msg : '供应商分类下载成功'
+				});
+			} else if (ret1.code == '700201') {
+				api.toast({
+					msg : '供应商分类已经最新，无须下载'
+				});
+			} else {
+				api.toast({
+					msg : '网络错误'
+				});
+			}
+		});
+	}
+
+	function download_supplier() {
+		if (!$api.getStorage($api.getStorage('mobile') + 'download_supplier_time')) {
+			$api.setStorage($api.getStorage('mobile') + 'download_supplier_time', '2016-01-01 00:00:00');
+		}
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/download_supplier_info.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					uuid : api.deviceId,
+					time : $api.getStorage($api.getStorage('mobile') + 'download_supplier_time')
+				}
+			}
+		}, function(ret1, err1) {
+			//			alert(JSON.stringify(ret1.data2));
+			if (ret1.code == '700200') {
+				for (var i = 0; i < ret1.data2.length; i++) {
+					db.selectSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "UPDATE T_Supplier SET SupplierName='" + ret1.data2[i].SupplierName + "',pid='" + ret1.data2[i].pid + "',SupplierTel='" + ret1.data2[i].SupplierTel + "',SupplierContact='" + ret1.data2[i].SupplierContact + "',Status='" + ret1.data2[i].Status + "' where supid='" + ret1.data2[i].supid + "'"
+					}, function(ret2, err2) {
+						if (ret2.status) {
+						} else {
+						}
+					});
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "INSERT INTO T_Supplier(supid,pid,SupplierName,SupplierTel,SupplierContact,Status)VALUES('" + ret1.data2[i].supid + "','" + ret1.data2[i].pid + "','" + ret1.data2[i].SupplierName + "','" + ret1.data2[i].SupplierTel + "','" + ret1.data2[i].SupplierContact + "','" + ret1.data2[i].Status + "')"
+						//					    sql : "INSERT INTO T_SupplierCat(pid,catid,SupplierCatName)VALUES('0','" + ret1.data2[i].catid + "','" + ret1.data2[i].SupplierCatName + "')"
+					}, function(ret3, err3) {
+						if (ret3.status) {
+							//							api.toast({
+							//								//
+							//							});
+							//							alert('插入成功');
+						} else {
+							//							alert('插入失败');
+							//							alert(JSON.stringify(err3));
+						}
+					});
+				}
+				//时间
+				var d10 = new Date().getTime() - 600000;
+				var d = new Date(d10);
+				var m = (d.getMonth() + 1);
+				if (m < 10) {
+					m = "0" + m;
+				}
+				var r = d.getDate();
+				if (r < 10) {
+					r = "0" + r;
+				}
+				var h = d.getHours();
+				if (h < 10) {
+					h = "0" + h;
+				}
+				var mi = d.getMinutes();
+				if (mi < 10) {
+					mi = "0" + mi;
+				}
+				var se = d.getSeconds();
+				if (se < 10) {
+					se = "0" + se;
+				}
+				var DownTime2 = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+				$api.setStorage($api.getStorage('mobile') + 'download_supplier_time', DownTime2);
+				api.toast({
+					msg : '供应商信息下载成功'
+				});
+			} else if (ret1.code == '700201') {
+				api.toast({
+					msg : '供应商信息已经最新，无须下载'
+				});
+			} else {
+				api.toast({
+					msg : '网络错误'
+				});
+			}
+		});
+	}
+
+	function download_productcat() {
+		if (!$api.getStorage($api.getStorage('mobile') + 'download_productcat_time')) {
+			$api.setStorage($api.getStorage('mobile') + 'download_productcat_time', '2016-01-01 00:00:00');
+		}
+		//				alert($api.getStorage($api.getStorage('mobile') + 'download_productcat_time') + "download_productcat_last");
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/download_product_cat_info.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					uuid : api.deviceId,
+					time : $api.getStorage($api.getStorage('mobile') + 'download_productcat_time')
+				}
+			}
+		}, function(ret1, err1) {
+			//									alert(JSON.stringify(ret1.data2));
+			if (ret1.code == '700200') {
+				for (var i = 0; i < ret1.data2.length; i++) {
+					db.selectSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						//						sql : "UPDATE T_SupplierCat SET SupplierCatName='" + ret1.data2[i].SupplierCatName + "' where catid= '" + ret1.data2[i].catid + "'"
+						sql : "UPDATE T_ProductCat SET ProductCatName='" + ret1.data2[i].ProductCatName + "',orderby='" + ret1.data2[i].orderby + "' where catid='" + ret1.data2[i].catid + "'"
+					}, function(ret2, err2) {
+						if (ret2.status) {
+							//							alert('修改成功');
+						} else {
+							//							alert('修改失败');
+							//							alert(JSON.stringify(err2));
+						}
+					});
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						//						sql : "INSERT　INTO T_SupplierCat(pid,catid,SupplierCatName)VALUES('0','" + ret1.data2[i].catid + "','" + ret1.data2[i].SupplierCatName + "')"
+						sql : "INSERT INTO T_ProductCat(catid,pid,ProductCatName,orderby)VALUES('" + ret1.data2[i].catid + "','" + ret1.data2[i].pid + "','" + ret1.data2[i].ProductCatName + "','" + ret1.data2[i].orderby + "')"
+					}, function(ret3, err3) {
+						if (ret3.status) {
+							//							api.toast({
+							//								//
+							//							});
+							//							alert('插入成功');
+						} else {
+							//							alert('插入失败');
+							//							alert(JSON.stringify(err3));
+						}
+					});
+				}
+				//时间
+				var d10 = new Date().getTime() - 600000;
+				var d = new Date(d10);
+				var m = (d.getMonth() + 1);
+				if (m < 10) {
+					m = "0" + m;
+				}
+				var r = d.getDate();
+				if (r < 10) {
+					r = "0" + r;
+				}
+				var h = d.getHours();
+				if (h < 10) {
+					h = "0" + h;
+				}
+				var mi = d.getMinutes();
+				if (mi < 10) {
+					mi = "0" + mi;
+				}
+				var se = d.getSeconds();
+				if (se < 10) {
+					se = "0" + se;
+				}
+				var DownTime3 = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+				$api.setStorage($api.getStorage('mobile') + 'download_productcat_time', DownTime3);
+				//								alert($api.getStorage($api.getStorage('mobile') + 'download_productcat_time') + "download_productcat_time_new");
+				api.toast({
+					msg : '商品分类下载成功'
+				});
+			} else if (ret1.code == '700201') {
+				api.toast({
+					msg : '商品分类已经最新，无须下载'
+				});
+			} else {
+				api.toast({
+					msg : '网络错误'
+				});
+			}
+		});
+	}
+
+	function download_product() {
+		if (!$api.getStorage($api.getStorage('mobile') + 'download_product_time')) {
+			$api.setStorage($api.getStorage('mobile') + 'download_product_time', '2016-01-01 00:00:00');
+		}
+		//		alert($api.getStorage($api.getStorage('mobile') + 'download_product_time') + "download_product_last");
+		api.ajax({
+			url : 'http://ririqiang.com/ghuog/api_shop/download_product_info.php',
+			method : 'post',
+			data : {
+				values : {
+					mobile : $api.getStorage('mobile'),
+					token : $api.getStorage('token'),
+					time : $api.getStorage($api.getStorage('mobile') + 'download_product_time')
+				}
+			}
+		}, function(ret1, err1) {
+			if (ret1.code == '700200') {
+				for (var i = 0; i <= ret1.data2.length - 1; i++) {
+					db.selectSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						//						sql : "UPDATE T_SupplierCat SET SupplierCatName='" + ret1.data2[i].SupplierCatName + "' where catid= '" + ret1.data2[i].catid + "'"
+						sql : "UPDATE T_Product SET SerialNumber='" + ret1.data2[i].SerialNumber + "',Brand='" + ret1.data2[i].Brand + "',MemberPrice='" + ret1.data2[i].MemberPrice + "',WholesalePrice='" + ret1.data2[i].WholesalePrice + "',ProCat='" + ret1.data2[i].ProCat + "',ProSpec='" + ret1.data2[i].ProSpec + "',ProName='" + ret1.data2[i].ProName + "',Num='" + ret1.data2[i].Num + "',CostPrice='" + ret1.data2[i].CostPrice + "',MarketPrice='" + ret1.data2[i].MarketPrice + "',ProPosition='" + ret1.data2[i].ProPosition + "',Status='" + ret1.data2[i].Status + "',supId='" + ret1.data2[i].supId + "',chandi='" + ret1.data2[i].chandi + "',danwei='" + ret1.data2[i].danwei + "' where Pid='" + ret1.data2[i].Pid + "'"
+					}, function(ret2, err2) {
+						if (ret2.status) {
+							//							alert('修改成功');
+						} else {
+							//							alert('修改失败');
+							//							alert(JSON.stringify(err2));
+						}
+					});
+					db.executeSql({
+						name : 'ghuog_db' + $api.getStorage('mobile'),
+						sql : "INSERT INTO T_Product(Pid,BarCode,ProName,Num,AddTime,CostPrice,MarketPrice,ProPosition,Status,supId,ProSpec,ProCat,MemberPrice,WholesalePrice,SerialNumber,Brand,chandi,danwei)VALUES('" + ret1.data2[i].Pid + "','" + ret1.data2[i].BarCode + "','" + ret1.data2[i].ProName + "','" + ret1.data2[i].Num + "','" + ret1.data2[i].AddTime + "','" + ret1.data2[i].CostPrice + "','" + ret1.data2[i].MarketPrice + "','" + ret1.data2[i].ProPosition + "','" + ret1.data2[i].Status + "','" + ret1.data2[i].supId + "','" + ret1.data2[i].ProSpec + "','" + ret1.data2[i].ProCat + "','" + ret1.data2[i].MemberPrice + "','" + ret1.data2[i].WholesalePrice + "','" + ret1.data2[i].SerialNumber + "','" + ret1.data2[i].Brand + "','" + ret1.data2[i].chandi + "','" + ret1.data2[i].danwei + "')"
+						//					    sql : "INSERT INTO T_SupplierCat(pid,catid,SupplierCatName)VALUES('0','" + ret1.data2[i].catid + "','" + ret1.data2[i].SupplierCatName + "')"
+					}, function(ret3, err3) {
+						if (ret3.status) {
+							//							api.toast({
+							//								//
+							//							});
+							//							alert('插入成功');
+						} else {
+							//							alert('插入失败');
+							//							alert(JSON.stringify(err3));
+						}
+					});
+				}
+				//时间
+				var d10 = new Date().getTime() - 600000;
+				var d = new Date(d10);
+				var m = (d.getMonth() + 1);
+				if (m < 10) {
+					m = "0" + m;
+				}
+				var r = d.getDate();
+				if (r < 10) {
+					r = "0" + r;
+				}
+				var h = d.getHours();
+				if (h < 10) {
+					h = "0" + h;
+				}
+				var mi = d.getMinutes();
+				if (mi < 10) {
+					mi = "0" + mi;
+				}
+				var se = d.getSeconds();
+				if (se < 10) {
+					se = "0" + se;
+				}
+				var DownTime5 = d.getFullYear() + "-" + m + "-" + r + " " + h + ":" + mi + ":" + se;
+				$api.setStorage($api.getStorage('mobile') + 'download_product_time', DownTime5);
+				//				alert($api.getStorage($api.getStorage('mobile') + 'download_product_time') + "download_product_new");
+				api.toast({
+					msg : '商品信息下载成功'
+				});
+			} else if (ret1.code == '700201') {
+				api.toast({
+					msg : '商品信息已经最新，无须下载'
+				});
+			} else {
+				api.toast({
+					msg : '网络错误'
+				});
+			}
+		});
+	}
+	function winreload(){
+		window.location.reload();
+	}
+</script>

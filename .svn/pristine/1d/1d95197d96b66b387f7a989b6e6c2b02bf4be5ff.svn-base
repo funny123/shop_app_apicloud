@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>index</title>
+		<link rel="stylesheet" type="text/css" href="./css/api.css" />
+		<link rel="stylesheet" type="text/css" href="./css/style.css" />
+		<link rel="stylesheet" type="text/css" href="./css/minmax.css" />
+		<style>
+			header {
+				background-color: #F2F2F2;
+				line-height: 4.3rem;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap" class="flex-wrap flex-vertical" >
+			<header class="border-b" id="biaoti" ></header>
+			<div id="main" class="flex-con" ></div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+	var db;
+	apiready = function() {
+	
+		api.setKeepScreenOn({
+    		keepOn: true
+		});
+		db = api.require('db');
+		if (!$api.getStorage('token')) {
+			$api.byId('biaoti').innerHTML = "供货港";
+		} else {
+			db.openDatabase({
+				name : 'ghuog_db' + $api.getStorage('mobile')
+			}, function(ret, err) {
+				if (ret.status) {
+					//					alert('打开成功');
+				} else {
+				}
+			});
+			$api.byId('biaoti').innerHTML = $api.getStorage('shop_name');
+		}
+		$api.fixIos7Bar($api.dom('header'));
+		api.setStatusBarStyle({
+			style : 'dark',
+			color : '#F2F2F2'
+		});
+		
+		var systemVersion = parseInt(api.systemVersion);
+			
+			if(api.systemType=="ios" && systemVersion>=10){
+				var h=$api.dom('#main').offsetHeight-20;
+			}else{
+				var h=$api.dom('#main').offsetHeight;
+			}
+		
+		api.openFrame({
+			name : 'win_home',
+			url : './html/win_home.html',
+			rect : {
+				x : 0,
+				y : $api.dom('header').offsetHeight,
+				w : api.winWidth,
+				h : h
+			}
+		});
+	};
+	function title_rename() {
+		if (!$api.getStorage('token')) {
+			$api.byId('biaoti').innerHTML = "供货港";
+		} else {
+			$api.byId('biaoti').innerHTML = $api.getStorage('shop_name');
+		}
+	}
+</script>

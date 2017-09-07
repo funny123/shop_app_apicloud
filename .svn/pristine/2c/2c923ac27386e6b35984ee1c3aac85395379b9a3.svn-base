@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.2.0.css" />
+	</head>
+	<body>
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-mobile"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="number" placeholder="手机号" id="mobile">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-lock"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="number" placeholder="验证码" id="code">
+						</div>
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-display"></i>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div align="center">
+			<button type="button"  onclick="get_code();">
+				获取验证码
+			</button>
+			<button type="button"  onclick="next_reg();">
+				下一步
+			</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var mobile = document.getElementById("mobile");
+		var code = document.getElementById("code");
+		var code_str = "";
+		for (var i = 0; i < 6; i++) {
+			code_str += Math.round(Math.random() * 10);
+		}
+		//		var getcode = document.getElementById("getcode");
+		//		alert(code_str);
+		function get_code() {
+			//		alert(mobile.value);
+			//		alert();
+			var sMobile = $api.byId('mobile').value;
+			if (!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(sMobile))) {
+				alert("请输入正确的手机号");
+				return false;
+			}
+			//			if (mobile.value.length == 0) {
+			//				alert("手机号不能为空");
+			//				return;
+			//			}
+			api.ajax({
+				url : 'http://ririqiang.com/ghuog/api_shop/user_sms.php',
+				method : 'post',
+				data : {
+					values : {
+						mobile : mobile.value,
+						yzm : code_str,
+						product:'注册',
+						product1:1
+//						signature : 'shskgfsyyxgs'
+					}
+				}
+			}, function(data) {
+				//			alert(data.code);
+				if (data) {
+					if (data.code == 1) {
+						//						alert('验证码发送成功');
+						api.toast({
+							msg : '验证码发送成功'
+						});
+					} else if (data.code == 2) {
+						alert('验证码发送失败');
+					} else if (data.code == 3) {
+						alert('手机号已注册');
+					}
+				} else {
+					alert('111');
+				}
+			});
+		}
+
+		//用户注册
+		function next_reg() {
+			if (code.value != code_str) {
+				alert("验证码错误");
+				return;
+			}
+			//			api.openWin({
+			//				name : 'personer_regsetpass',
+			//				url : 'personer_regsetpass.html',
+			//				pageParam : {
+			//					mobile : mobile.value
+			//				}
+			//			});
+			api.openWin({
+				name : 'personer_regsetpass',
+				url : './a_headbackindex.html',
+				pageParam : {
+					title : '注册',
+					url : 'personer_regsetpass',
+					mobile : $api.setStorage('mobile', mobile.value)
+				}
+			});
+		}
+
+		//		function backtoIndex() {
+		//			api.closeToWin({
+		//				name : 'root'
+		//			});
+		//		}
+		apiready = function() {
+			//		$api.fixStatusBar($api.dom('header'));
+			//			api.addEventListener({
+			//				name : 'keyback'
+			//			}, function(ret, err) {
+			//				backtoIndex();
+			//			});
+		};
+	</script>
+</html>
